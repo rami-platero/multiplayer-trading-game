@@ -1,4 +1,4 @@
-import { jwt } from "jsonwebtoken"
+import { Jwt } from "jsonwebtoken"
 
 const createToken = ()=>{
 

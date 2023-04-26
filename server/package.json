@@ -4,23 +4,32 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node build/index.js",
+    "dev": "ts-node-dev index.ts",
+    "tsc": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/morgan": "^1.9.4",
+    "@types/validator": "^13.7.15",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.4"
+  },
   "dependencies": {
+    "@types/express": "^4.17.17",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "express.js": "^1.0.0",
+    "express": "4.18.2",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.5",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.22",
     "socket.io": "^4.6.1",
     "validator": "^13.9.0"
-  },
-  "type": "module"
+  }
 }

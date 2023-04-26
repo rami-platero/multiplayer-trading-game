@@ -1,10 +1,11 @@
-import * as dotenv from 'dotenv' 
-dotenv.config()
+import * as dotenv from "dotenv";
+dotenv.config({ path: __dirname + "/.env" });
 import { connect } from "mongoose";
+const uri:any = process.env.MONGODB_URI
 
 export const connectDB = async ()=>{
     try {
-        await connect(process.env.MONGODB_URI)
+        await connect(uri)
         console.log('connected to db')
 
     } catch (error) {

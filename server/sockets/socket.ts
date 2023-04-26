@@ -1,5 +1,5 @@
 import { Server as SocketServer } from "socket.io";
-import { server } from "../app.js";
+import { server } from "../app";
 
 export const initSocket = ()=>{
   const io = new SocketServer(server, {
@@ -15,5 +15,3 @@ export const initSocket = ()=>{
     });
   });
 }
-
-

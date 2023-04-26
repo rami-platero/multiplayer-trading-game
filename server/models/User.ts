@@ -32,7 +32,13 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-userSchema.statics.Login = (email, username, password) => {
+interface IUser {
+  email?: String,
+  username: String,
+  password: String
+}
+
+userSchema.statics.Login = (user: IUser) => {
   try {
 
   } catch (error) {
@@ -40,7 +46,7 @@ userSchema.statics.Login = (email, username, password) => {
   }
 };
 
-userSchema.statics.SignUp = (email, username, password) => {
+userSchema.statics.SignUp = (user: IUser) => {
   try {
 
   } catch (error) {

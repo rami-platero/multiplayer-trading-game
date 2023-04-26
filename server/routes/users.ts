@@ -2,6 +2,6 @@ import {Router} from 'express'
 
 export const userRouter = Router()
 
-userRouter.get("/", (req,res)=>{
+userRouter.get("/", (_req,res)=>{
     res.send("works")
 })
