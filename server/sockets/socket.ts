@@ -1,7 +1,7 @@
 import { Server as SocketServer } from "socket.io";
 import { server } from "../app";
 
-export const initSocket = ()=>{
+export const initSocket = ():void =>{
   const io = new SocketServer(server, {
     cors: {
       origin: "http://localhost:5173",
@@ -14,4 +14,5 @@ export const initSocket = ()=>{
       console.log("user disconnected");
     });
   });
+  
 }

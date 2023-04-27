@@ -3,7 +3,7 @@ dotenv.config({ path: __dirname + "/.env" });
 import { connect } from "mongoose";
 const uri:any = process.env.MONGODB_URI
 
-export const connectDB = async ()=>{
+export const connectDB = async ():Promise<void> =>{
     try {
         await connect(uri)
         console.log('connected to db')

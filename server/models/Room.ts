@@ -1,4 +1,10 @@
-import { model, Schema } from "mongoose";
+import { model, Schema, Document,Types } from "mongoose";
+
+export interface IRoom extends Document {
+    name: string,
+    users: Types.ObjectId[],
+    offers: Types.ObjectId[]
+}
 
 const roomSchema = new Schema({
     name: { type: String, required: true },
@@ -6,4 +12,4 @@ const roomSchema = new Schema({
     offers: [{ type: Schema.Types.ObjectId, ref: 'Trade' }],
 });
 
-export default model('Room', roomSchema)
+export default model<IRoom>('Room', roomSchema)

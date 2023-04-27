@@ -1,4 +1,12 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types, Document } from "mongoose";
+
+interface ITrade extends Document{
+  room: Types.ObjectId,
+  createdBy: Types.ObjectId,
+  tradingWith: Types.ObjectId,
+  status: string,
+  lockedBy: Types.ObjectId
+}
 
 const tradeSchema = new Schema({
   room: { type: Schema.Types.ObjectId, ref: "Room", required: true },
@@ -8,4 +16,4 @@ const tradeSchema = new Schema({
   lockedBy: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
-export default model('Trade', tradeSchema)
+export default model<ITrade>('Trade', tradeSchema)

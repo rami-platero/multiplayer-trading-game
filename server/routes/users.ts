@@ -1,7 +1,7 @@
 import {Router} from 'express'
+import { Login, SignUp } from '../controllers/user.controller'
 
-export const userRouter = Router()
+export const userRouter: Router = Router()
 
-userRouter.get("/", (_req,res)=>{
-    res.send("works")
-})
+userRouter.post("/login", Login)
+userRouter.post("/signup", SignUp)
