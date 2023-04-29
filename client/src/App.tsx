@@ -1,20 +1,19 @@
-import io from "socket.io-client";
 import "./App.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { GameState } from "./interfaces/interfaces";
 import AuthScreen from "./components/Auth/AuthScreen";
+import { userContext } from "./context/UserContext";
 
 const App = () => {
   const [gameState, setgameState] = useState<GameState>(GameState.Auth);
-  const socket = io("http://localhost:4000");
-
+  const { user } = useContext(userContext);
   /* socket.on("connect", () => {
     console.log(socket?.id);
   }); */
 
   return <div className="game-parent">
-    <AuthScreen />
-  </div>;
+    {!user && <AuthScreen />}
+    </div>;
 };
 
 export default App;

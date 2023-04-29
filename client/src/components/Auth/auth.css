@@ -10,7 +10,12 @@
     rgba(21, 27, 31, 0.521) 100%
   );
   user-select: none;
-  gap: 2rem;
+  max-width: 1280px;
+  gap: 1.5rem;
+}
+
+.auth-container h1{
+  font-size: 3vw;
 }
 
 .auth-container h1,
@@ -35,6 +40,11 @@
 .auth-selector .title.false {
   color: rgb(119, 119, 119);
   border-bottom: 2px solid gray;
+  transition: 0.2s ease-in-out;
 }
 
-
+.auth-selector .title.false:hover {
+  color: rgb(177, 177, 177);
+  border-bottom: 2px solid rgb(168, 168, 168);
+  transition: 0.2s ease-in-out;
+}

@@ -73,19 +73,19 @@ userSchema.statics.signup = async function (
   }
   const exists = await this.findOne({ email });
   if (exists) {
-    throw Error("Email already in use");
+    throw Error(JSON.stringify({email: "Email already in use"}));
   }
   if (!validator.isEmail(email)) {
-    throw Error("Email is not valid");
+    throw Error(JSON.stringify({email: "Email is not valid"}));
   }
   if (!validator.isStrongPassword(password)) {
-    throw Error("Password not strong enough");
+    throw Error(JSON.stringify({password: "Password not strong enough"}));
   }
   if (!validator.isAlphanumeric(username)) {
-    throw Error("Username can only contain letters and numbers");
+    throw Error(JSON.stringify({username: "Username can only contain letters and numbers"}));
   }
   if (!validator.isLength(username, { min: 3, max: 15 })) {
-    throw Error("Username must be between 3 and 15 characters");
+    throw Error(JSON.stringify({username: "Username must be between 3 and 15 characters"}));
   }
 
   const salt = await bcrypt.genSalt(10);
@@ -117,11 +117,11 @@ userSchema.statics.login = async function (
   }
   const user: IUser = await this.findOne({ username });
   if (!user) {
-    throw Error("Incorrect username");
+    throw Error(JSON.stringify({username: "Incorrect username"}));
   }
   const match: boolean = await bcrypt.compare(password, user.password);
   if (!match) {
-    throw Error("Incorrect password");
+    throw Error(JSON.stringify({password: "Incorrect password"}));
   }
 
   user.socketID = socketID;
