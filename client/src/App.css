@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -13,15 +15,20 @@ body,
 #root {
   display: flex;
   align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgb(12, 16, 17) 100%);
 }
 
 .game-parent {
+  border-radius: 15px;
+  overflow: hidden;
+  font-family: "Archivo Narrow", "sans serif";
+  color: white;
   margin: 0 auto;
   aspect-ratio: 16/9;
-  background-color: rgb(180, 180, 180);
   width: 90%;
   max-width: 1280px;
-  display: grid;
+  /* display: grid;
   grid-template-areas:
     "offers online"
     "chat chat";
@@ -29,10 +36,10 @@ body,
   grid-template-columns: 77% 21%;
   row-gap: 2%;
   column-gap: 2%;
-  padding: 4% 1% 1% 1%;
+  padding: 4% 1% 1% 1%; */
 }
 
-.offers {
+/* .offers {
   grid-area: offers;
   background-color: rgb(73, 54, 25);
 }
@@ -45,4 +52,4 @@ body,
 .chat {
   grid-area: chat;
   background-color: black;
-}
+} */

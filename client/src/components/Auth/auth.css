@@ -1,0 +1,40 @@
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: linear-gradient(
+    0deg,
+    rgba(13, 16, 20, 0.452) 0%,
+    rgba(21, 27, 31, 0.521) 100%
+  );
+  user-select: none;
+  gap: 2rem;
+}
+
+.auth-container h1,
+.auth-container h3 {
+  font-weight: 600;
+  text-align: center;
+  color: rgb(207, 207, 207);
+}
+
+.auth-selector {
+  display: flex;
+  gap: 1rem;
+  width: 30%;
+}
+
+.auth-selector .title {
+  cursor: pointer;
+  border-bottom: 2px solid rgb(52, 191, 209);
+  padding-bottom: 0.2rem;
+}
+
+.auth-selector .title.false {
+  color: rgb(119, 119, 119);
+  border-bottom: 2px solid gray;
+}
+
+

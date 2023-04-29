@@ -2,8 +2,8 @@ import { model, Schema, Document,Types } from "mongoose";
 
 export interface IRoom extends Document {
     name: string,
-    users: Types.ObjectId[],
-    offers: Types.ObjectId[]
+    users?: Types.ObjectId[],
+    offers?: Types.ObjectId[]
 }
 
 const roomSchema = new Schema({
