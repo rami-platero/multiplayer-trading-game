@@ -1,9 +1,10 @@
 import { useState, useContext } from "react";
 import { IErrors, IForm } from "../components/Auth/useAuthForm";
 import { userContext } from "../context/UserContext";
+import { IGameState } from "../interfaces/interfaces";
 
 const useLogin = () => {
-  const { authDispatch, socketID } = useContext(userContext);
+  const { authDispatch, socketID,setGameState } = useContext(userContext);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -25,10 +26,9 @@ const useLogin = () => {
 
     if (res.ok) {
       setIsLoading(false);
-      console.log(res)
       localStorage.setItem("user", JSON.stringify(json));
-
       authDispatch({type: "LOGIN", payload: json})
+      setGameState(IGameState.Main)
     }
   };
 

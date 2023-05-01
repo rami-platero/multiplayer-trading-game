@@ -1,6 +1,6 @@
 import Item from "../models/Item";
 import Role from "../models/Role";
-import { IItem, ISkin } from "../models/Item";
+import { IInventory, ISkin } from "../models/Item";
 import { Types } from "mongoose";
 
 export const createRoles = async (): Promise<void> => {
@@ -60,7 +60,7 @@ export const createItems = async (): Promise<void> => {
   }
 };
 
-export const fetchItems = async (): Promise<IItem[]> => {
+export const fetchItems = async (): Promise<IInventory[]> => {
   const claws = await Item.findOne({ name: "Claws" }).select("_id");
   const anon = await Item.findOne({ name: "Anon" }).select("_id");
   const dark_skin = await Item.findOne({ name: "Dark-Skin" }).select("_id");
@@ -73,7 +73,7 @@ export const fetchItems = async (): Promise<IItem[]> => {
 };
 
 export interface IInitSetup {
-  items: IItem[];
+  items: IInventory[];
   skin: ISkin;
 }
 

@@ -1,9 +1,10 @@
 import { useState, useContext } from "react";
 import useAuthForm, { IErrors, IForm } from "../components/Auth/useAuthForm";
 import { userContext } from "../context/UserContext";
+import { IGameState } from "../interfaces/interfaces";
 
 const useSignUp = () => {
-  const { authDispatch, socketID } = useContext(userContext);
+  const { authDispatch, socketID,setGameState } = useContext(userContext);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -30,6 +31,7 @@ const useSignUp = () => {
       setIsLoading(false);
       localStorage.setItem("user", JSON.stringify(json));
       authDispatch({ type: "LOGIN", payload: json });
+      setGameState(IGameState.Main)
     }
   };
 

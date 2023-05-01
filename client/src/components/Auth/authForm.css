@@ -4,7 +4,8 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  width: 30%;
+  width: 400px;
+
 }
 
 .auth-container .error-text{
@@ -16,7 +17,7 @@
 }
 
 .auth-container .input {
-  width: 100%;
+  width: 400px;
   position: relative;
 }
 
@@ -84,4 +85,8 @@
 .auth-container form button:hover {
   background-color: rgb(159, 255, 255);
   transition: 0.2s ease-in-out;
+}
+
+.auth-container form button:disabled{
+  cursor: default;
 }

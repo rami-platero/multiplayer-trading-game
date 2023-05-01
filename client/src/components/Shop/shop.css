@@ -1,0 +1,104 @@
+.shop-container {
+  background: linear-gradient(0deg, rgb(9, 14, 17) 0%, rgb(4, 7, 8) 100%);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  user-select: none;
+  gap: 1.5rem;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.items-container {
+  width: 100%;
+}
+
+.items-wrapper {
+  background-color: rgba(0, 0, 0, 0.336);
+  height: 250px;
+}
+
+.skins-container {
+  width: 100%;
+}
+
+.skins-wrapper {
+  background-color: rgba(0, 0, 0, 0.404);
+  height: 250px;
+}
+
+.shop-wrapper {
+  /* width: 100%;
+  height: 100%; */
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+}
+
+.shop-content {
+  width: 1200px;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.shop-content button {
+  font-family: "Space Mono";
+  font-weight: 700;
+  width: fit-content;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  background: linear-gradient(
+    180deg,
+    rgb(63, 217, 255) 0%,
+    rgb(28, 172, 255) 100%
+  );
+  border: none;
+  cursor: pointer;
+}
+
+.shop-content button:hover {
+  background: linear-gradient(
+    180deg,
+    rgb(142, 232, 255) 0%,
+    rgb(104, 200, 255) 100%
+  );
+}
+
+.shop-content button > svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.shop-container.slide-enter {
+  transform: translateX(100%) !important;
+}
+
+.shop-container.slide-enter-active {
+  transform: translateX(0%) !important;
+  transition: transform 300ms ease-in-out;
+}
+
+.shop-container.slide-exit {
+  transform: translateX(0%) !important;
+}
+.shop-container.slide-exit-active {
+  transform: translateX(150%) !important;
+  transition: transform 300ms ease-in-out;
+}
+
+.shop-title{
+  color: rgb(255, 197, 36);
+}

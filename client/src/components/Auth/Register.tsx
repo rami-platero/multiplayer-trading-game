@@ -3,7 +3,6 @@ import { AiOutlineLock } from "react-icons/ai";
 import { AiOutlineEye } from "react-icons/ai";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { MdAlternateEmail } from "react-icons/md";
-import { AiOutlineCheckCircle } from "react-icons/ai";
 import { useState } from "react";
 import useAuthForm from "./useAuthForm";
 
@@ -15,12 +14,13 @@ const INITIAL_STATE = {
 
 const Register = () => {
   const [show, setShow] = useState<boolean>(false);
-  const {handleChange,handleSubmit,errors} = useAuthForm(INITIAL_STATE)
+  const {handleChange,handleSubmit,errors,loadingSignUp} = useAuthForm(INITIAL_STATE)
 
   return (
     <form onSubmit={(e)=>{
       handleSubmit(e,true)
-    }}>
+    }}
+    style={{opacity: loadingSignUp? ".5": "1"}}>
       <div className={`input ${errors?.username && "error"}`}>
         <AiOutlineUser />
         <input type="text" placeholder="Username" autoCorrect="off" name="username" onChange={handleChange} autoComplete="off"/>
@@ -52,7 +52,7 @@ const Register = () => {
       </div>
       {errors?.password && <span className="error-text">{errors.password}</span>}
 
-      <button type="submit">Sign Up</button>
+      <button type="submit" disabled={loadingSignUp}>Sign Up</button>
     </form>
   );
 };

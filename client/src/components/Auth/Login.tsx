@@ -13,13 +13,13 @@ const INITIAL_STATE = {
 
 const Login = () => {
   const [show, setShow] = useState<boolean>(false);
-  const { handleChange, handleSubmit, errors } = useAuthForm(INITIAL_STATE);
+  const { handleChange, handleSubmit, errors, loadingLogin } = useAuthForm(INITIAL_STATE);
 
   return (
     <>
       <form onSubmit={(e)=>{
       handleSubmit(e,false)
-    }}>
+    }} style={{opacity: loadingLogin? ".5": "1"}}>
         <div className={`input ${errors?.username && "error"}`}>
           <AiOutlineUser />
           <input
@@ -55,7 +55,7 @@ const Login = () => {
           )}
         </div>
         {errors?.password && <span className="error-text">{errors.password}</span>}
-        <button type="submit">Login</button>
+        <button type="submit" disabled={loadingLogin}>Login</button>
       </form>
     </>
   );

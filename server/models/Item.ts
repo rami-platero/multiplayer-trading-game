@@ -1,7 +1,7 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, Types } from "mongoose";
 
-export interface IItem {
-  itemId: string;
+export interface IInventory {
+  itemId: Types.ObjectId | Item;
   count: number;
 }
 

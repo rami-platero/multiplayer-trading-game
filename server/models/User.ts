@@ -1,7 +1,7 @@
 import { Schema, model, Document, Types, Model } from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt";
-import { IItem, ISkin } from "./Item";
+import { IInventory, ISkin } from "./Item";
 import { IInitSetup, getRole, initUser } from "../libs/intialSetup";
 
 export interface IUser extends Document {
@@ -10,9 +10,10 @@ export interface IUser extends Document {
   password: string;
   socketID: string;
   token: string;
-  items?: [IItem];
+  items?: [IInventory];
   skin: ISkin;
   roles: Types.ObjectId[];
+  createdAt: Date;
 }
 
 interface IUserModel extends Model<IUser> {
@@ -62,6 +63,14 @@ const userSchema = new Schema<IUser>(
   { timestamps: true }
 );
 
+userSchema.pre<IUser>('save', async function () {
+  await this.populate({
+    path: 'items.itemId',
+    model: 'Item',
+  })
+  await this.populate('roles')
+});
+
 userSchema.statics.signup = async function (
   username: string,
   email: string,
@@ -74,6 +83,10 @@ userSchema.statics.signup = async function (
   const exists = await this.findOne({ email });
   if (exists) {
     throw Error(JSON.stringify({email: "Email already in use"}));
+  }
+  const existsName = await this.findOne({ username });
+  if(existsName){
+    throw Error(JSON.stringify({username: "Username already in use"}))
   }
   if (!validator.isEmail(email)) {
     throw Error(JSON.stringify({email: "Email is not valid"}));
@@ -101,10 +114,10 @@ userSchema.statics.signup = async function (
     socketID,
     roles: [initRoles],
     ...initItems,
-  });
-  const savedUser = await user.save();
+  })
+  const savedUser = await user.save()
 
-  return savedUser;
+  return savedUser
 };
 
 userSchema.statics.login = async function (
@@ -115,7 +128,7 @@ userSchema.statics.login = async function (
   if (!username.trim() || !password.trim()) {
     throw Error("All fields must be filled");
   }
-  const user: IUser = await this.findOne({ username });
+  const user: IUser = await this.findOne({ username })
   if (!user) {
     throw Error(JSON.stringify({username: "Incorrect username"}));
   }

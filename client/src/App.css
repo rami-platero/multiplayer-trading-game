@@ -9,6 +9,7 @@
 html,
 body,
 #root {
+  overflow: hidden;
   height: 100vh;
 }
 
@@ -20,8 +21,6 @@ body,
 }
 
 .game-parent {
-  border-radius: 15px;
-  overflow: hidden;
   font-family: "Archivo Narrow", "sans serif";
   color: white;
   margin: 0 auto;
@@ -38,6 +37,41 @@ body,
   column-gap: 2%;
   padding: 4% 1% 1% 1%; */
 }
+
+
+.main-game-wrapper{
+  margin: 0 auto;
+  aspect-ratio: 16/9;
+  width: 100%;
+  max-width: 1280px;
+}
+
+.flex-container{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* .menu-container {
+  flex: 1;
+}
+
+.shop-container {
+  flex: 1;
+} */
+
+/* .menu {
+  background-color: lightblue;
+  height: 200px;
+}
+
+.shop {
+  background-color: lightgreen;
+  height: 200px;
+} */
+
+
 
 /* .offers {
   grid-area: offers;
