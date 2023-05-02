@@ -1,51 +1,76 @@
 import "./App.css";
-import { useState, useContext, useRef } from "react";
+import { useState, useContext, useRef, useEffect } from "react";
 import AuthScreen from "./components/Auth/AuthScreen";
 import { userContext } from "./context/UserContext";
 import { IGameState } from "./interfaces/interfaces";
 import MainGame from "./components/Game/MainGame";
 import { CSSTransition } from "react-transition-group";
 import Shop from "./components/Shop/Shop";
+import useScaleContainer from "./hooks/useScaleContainer";
 
 const App = () => {
-  const { user, gameState, setGameState } = useContext(userContext);
+  const { user, gameState } = useContext(userContext);
   const screenRef = useRef<HTMLDivElement>(null);
+  const [screenStyle, setScreenStyle] = useState<boolean>(false);
+  //const containerRef = useScaleContainer(1600);
+  const containerRef = useScaleContainer(1250);
+
   const handleFullscreen = () => {
-    screenRef.current!.requestFullscreen();
-    /*     if (!document.fullscreenElement) {
-    } else {
-      document.exitFullscreen();
-    } */
+    screenRef.current!.requestFullscreen()
+    setScreenStyle(true);
+  };
+
+  useEffect(() => {
+    screenRef.current!.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => {
+      screenRef.current!.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
+  const handleFullscreenChange = () => {
+    if (document.fullscreenElement !==screenRef.current!) {
+      setScreenStyle(false)
+    }
   };
 
   return (
-    <div className="game-parent">
-      <button onClick={handleFullscreen}>full screen</button>
-      <div className="main-game-wrapper" ref={screenRef}>
-        <div className="flex-container">
-        {!user && gameState == IGameState.Auth && <AuthScreen />}
-        {/* {gameState == IGameState.Main && <MainGame />} */}
-        {/* {gameState == IGameState.Shop && <Shop/>} */}
-        <CSSTransition
-          in={gameState === IGameState.Main}
-          timeout={300}
-          classNames="slide"
-          key={"slide"}
-          unmountOnExit
-        >
-          <MainGame />
-        </CSSTransition>
-        <CSSTransition
-          in={gameState === IGameState.Shop}
-          timeout={300}
-          classNames="slide"
-          unmountOnExit
-        >
-          <Shop />
-        </CSSTransition>
+    <>
+      <button
+        style={{ position: "absolute", top: "0" }}
+        onClick={handleFullscreen}
+      >
+        full screen
+      </button>
+      <div
+        className="game-parent"
+        style={{
+          width: screenStyle ? "1920px" : "1280px",
+          height: screenStyle ? "1080px" : "720px",
+        }}
+        ref={containerRef}
+      >
+        <div className="main-game-wrapper" ref={screenRef}>
+          {!user && gameState == IGameState.Auth && <AuthScreen />}
+          <CSSTransition
+            in={gameState === IGameState.Main}
+            timeout={300}
+            classNames="slide"
+            key={"slide"}
+            unmountOnExit
+          >
+            <MainGame />
+          </CSSTransition>
+          <CSSTransition
+            in={gameState === IGameState.Shop}
+            timeout={300}
+            classNames="slide"
+            unmountOnExit
+          >
+            <Shop />
+          </CSSTransition>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

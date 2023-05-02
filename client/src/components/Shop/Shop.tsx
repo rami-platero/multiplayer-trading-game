@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import useScaleContainer from "../../hooks/useScaleContainer";
 import "./shop.css";
 import { userContext } from "../../context/UserContext";
 import { IGameState } from "../../interfaces/interfaces";
@@ -11,15 +10,13 @@ import Item from "./Item";
 import Skin from "./Skin";
 
 const Shop = () => {
-  const containerRef = useScaleContainer(1408);
   const { setGameState } = useContext(userContext);
   const { setFromShop } = useContext(transitionContext);
 
   return (
     <div className="shop-container">
-      <div className="shop-wrapper" ref={containerRef}>
+      <Coins style={{right: "15px"}}/>
         <div className="shop-content">
-          <Coins style={{right: "0"}}/>
           <button
             onClick={async () => {
               setFromShop(true);
@@ -36,16 +33,43 @@ const Shop = () => {
             <h3 className="title">Items</h3>
             <div className="items-wrapper">
               <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
             </div>
           </div>
           <div className="skins-container">
             <h3 className="title">Skins</h3>
-            <div className="skins-wrapper">
-              <Skin />
+            <div className="items-wrapper">
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
+              <Item />
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 };

@@ -28,8 +28,6 @@
   position: relative;
   align-items: center;
   justify-content: center;
-  /* width: 100%;
-  height: 100%; */
 }
 
 .game-container .profile-actions {
@@ -61,20 +59,20 @@
   transition: 0.2s ease-in-out;
 }
 
-.game-content .game-wrapper h1 {
+.game-content h1 {
   text-align: center;
   font-size: 3.5rem;
   text-shadow: rgba(255, 255, 255, 0.767) 0px 0px 7px;
 }
 
-.game-content .game-wrapper .buttons {
+.game-content .buttons {
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.game-wrapper .buttons button {
+.game-content .buttons button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -94,7 +92,7 @@
   border-radius: 10px;
 }
 
-.game-wrapper .buttons button:hover {
+.game-content .buttons button:hover {
   background: linear-gradient(
     180deg,
     rgb(142, 232, 255) 0%,
@@ -102,15 +100,15 @@
   );
 }
 
-.game-wrapper .buttons .shop-btn {
+.game-content .buttons .shop-btn {
   background: linear-gradient(
     180deg,
-    rgb(255, 252, 82) 0%,
-    rgb(255, 232, 28) 100%
+    rgb(255, 209, 82) 0%,
+    rgb(255, 202, 28) 100%
   );
 }
 
-.game-wrapper .buttons .shop-btn:hover {
+.game-content .buttons .shop-btn:hover {
   background: linear-gradient(
     180deg,
     rgb(243, 240, 88) 0%,
@@ -118,20 +116,20 @@
   );
 }
 
-.game-container.true.slide-enter {
-  transform: translateX(-150%);
+.game-content .buttons .friends-btn{
+  background: linear-gradient(
+    180deg,
+    rgb(88, 255, 54) 0%,
+    rgb(32, 255, 11) 100%
+  );
 }
 
-.game-container.true.slide-enter-active {
-  transform: translateX(0%);
-  transition: transform 300ms ease-in-out;
+.game-content .buttons .friends-btn:hover{
+  background: linear-gradient(
+    180deg,
+    rgb(116, 255, 88) 0%,
+    rgb(73, 255, 56) 100%
+  );
 }
 
-.game-container.slide-exit {
-  transform: translateX(0%);
-}
 
-.game-container.slide-exit-active {
-  transform: translateX(-150%);
-  transition: transform 300ms ease-in-out;
-}

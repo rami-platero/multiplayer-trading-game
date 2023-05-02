@@ -14,3 +14,22 @@
   transform: scale(0);
   transition: transform 200ms ease-in-out;
 }
+
+.game-container.true.slide-enter {
+  transform: translateX(-150%);
+}
+
+.game-container.true.slide-enter-active {
+  transform: translateX(0%);
+  transition: transform 300ms ease-in-out;
+}
+
+.game-container.slide-exit {
+  transform: translateX(0%);
+}
+
+.game-container.slide-exit-active {
+  transform: translateX(-150%);
+  transition: transform 300ms ease-in-out;
+}
+
