@@ -1,21 +1,27 @@
 import { createContext, useState } from "react";
 import { contextProps } from "../interfaces/interfaces";
 
+export enum TransitionFrom {
+  none="",
+  shop = "shop",
+  selector = "selector",
+}
+
 interface ITransition {
-  fromShop: boolean;
-  setFromShop: React.Dispatch<React.SetStateAction<boolean>>;
+  changeFrom: TransitionFrom;
+  setChangeFrom: React.Dispatch<React.SetStateAction<TransitionFrom>>;
 }
 
 export const transitionContext = createContext<ITransition>({
-  fromShop: false,
-  setFromShop: () => {},
+  changeFrom: TransitionFrom.none,
+  setChangeFrom: () => {},
 });
 
 const TransitionContextProvider = ({ children }: contextProps) => {
-  const [fromShop, setFromShop] = useState(false);
+  const [changeFrom, setChangeFrom] = useState(TransitionFrom.none);
 
   return (
-    <transitionContext.Provider value={{ fromShop, setFromShop }}>
+    <transitionContext.Provider value={{ changeFrom, setChangeFrom }}>
       {children}
     </transitionContext.Provider>
   );

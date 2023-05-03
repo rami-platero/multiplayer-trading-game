@@ -6,7 +6,7 @@
   transition: transform 200ms ease-in-out;
 }
 
-.geow-exit {
+.grow-exit {
   transform: scale(1);
 }
 
@@ -15,11 +15,12 @@
   transition: transform 200ms ease-in-out;
 }
 
-.game-container.true.slide-enter {
+
+.game-container.shop.slide-enter {
   transform: translateX(-150%);
 }
 
-.game-container.true.slide-enter-active {
+.game-container.shop.slide-enter-active {
   transform: translateX(0%);
   transition: transform 300ms ease-in-out;
 }
@@ -32,4 +33,31 @@
   transform: translateX(-150%);
   transition: transform 300ms ease-in-out;
 }
+
+
+.game-container.selector.slide-exit {
+  transform: translateX(0%);
+}
+
+.game-container.selector.slide-exit-active {
+  transform: translateX(0%);
+  transition: transform 300ms ease-in-out;
+}
+
+
+.lobby-selector-container.slide2-enter{
+  transform: translateY(-150%);
+}
+.lobby-selector-container.slide2-enter-active{
+  transform: translateY(0%);
+  transition: transform 300ms ease;
+}
+.lobby-selector-container.false.slide2-exit{
+  transform: translateY(0%);
+}
+.lobby-selector-container.false.slide2-exit-active{
+  transform: translateY(-150%);
+  transition: transform 300ms ease;
+}
+
 

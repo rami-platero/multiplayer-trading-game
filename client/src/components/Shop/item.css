@@ -1,20 +1,3 @@
-/* .item-wrapper{
-    display: flex;
-}
-
-.item-wrapper .col-1{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.item-wrapper button {
-    color: yellow;
-    height: fit-content;
-    background: black;
-}
- */
-
  .item-wrapper img{
     border: 3px solid rgb(255, 255, 255);
  }
@@ -27,7 +10,6 @@
     width: 260px;
     height: 100%;
     height: fit-content;
-    transform: scale(.9);
     gap: .8rem;
     transition: 0.2s ease-in-out;
 }

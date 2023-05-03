@@ -1,0 +1,26 @@
+.back-btn {
+  font-family: "Space Mono";
+  font-weight: 700;
+  width: fit-content;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  background: linear-gradient(
+    180deg,
+    rgb(63, 217, 255) 0%,
+    rgb(28, 172, 255) 100%
+  );
+  border: none;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  background: linear-gradient(
+    180deg,
+    rgb(142, 232, 255) 0%,
+    rgb(104, 200, 255) 100%
+  );
+}

@@ -5,8 +5,9 @@ export interface contextProps {
 export enum IGameState {
   Auth = "auth",
   Main = "main",
-  Room = "room",
-  Shop = "shop"
+  Lobby = "lobby",
+  Shop = "shop",
+  Selector = "selector"
 }
 
 export interface ISkin {

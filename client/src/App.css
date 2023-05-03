@@ -25,15 +25,6 @@ body,
   color: white;
   margin: 0 auto;
   aspect-ratio: 16/9;
-  /* display: grid;
-  grid-template-areas:
-    "offers online"
-    "chat chat";
-  grid-template-rows: 70% 28%;
-  grid-template-columns: 77% 21%;
-  row-gap: 2%;
-  column-gap: 2%;
-  padding: 4% 1% 1% 1%; */
 }
 
 .main-game-wrapper{
@@ -65,17 +56,3 @@ body,
 
 
 
-/* .offers {
-  grid-area: offers;
-  background-color: rgb(73, 54, 25);
-}
-
-.online {
-  grid-area: online;
-  background-color: blue;
-}
-
-.chat {
-  grid-area: chat;
-  background-color: black;
-} */

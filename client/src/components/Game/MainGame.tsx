@@ -8,27 +8,29 @@ import { userContext } from "../../context/UserContext";
 import useLogOut from "../../hooks/useLogout";
 import Profile from "../Profile/Profile";
 import { IGameState } from "../../interfaces/interfaces";
-import { transitionContext } from "../../context/transitionContext";
+import {
+  TransitionFrom,
+  transitionContext,
+} from "../../context/transitionContext";
 import { CSSTransition } from "react-transition-group";
 import Coins from "../UI/Coins";
 import { RiShoppingCart2Fill } from "react-icons/ri";
 import { FaUserFriends } from "react-icons/fa";
-import RoomSelector from "./RoomSelector";
+import { hover_btn_SFX } from "../SFX";
 
 export enum IMainState {
   Profile = "profile",
   Inventory = "inventory",
-  Marketplace = "marketplace",
 }
 
 const MainGame = () => {
   const { user, setGameState } = useContext(userContext);
-  const { fromShop } = useContext(transitionContext);
+  const { changeFrom, setChangeFrom } = useContext(transitionContext);
   const { logout } = useLogOut();
   const [mainState, setMainState] = useState<IMainState | null>(null);
 
   return (
-    <div className={`game-container ${fromShop}`}>
+    <div className={`game-container ${changeFrom}`}>
       <Coins style={{ left: "0" }} />
       <div className="profile-actions">
         <button
@@ -51,26 +53,31 @@ const MainGame = () => {
         >
           <Profile setMainState={setMainState} />
         </CSSTransition>
-        <CSSTransition
-          in={mainState == IMainState.Marketplace}
-          timeout={200}
-          classNames={"grow"}
-          unmountOnExit
-        >
-          <RoomSelector setMainState={setMainState} />
-        </CSSTransition>
         <div className="buttons">
-          <button onClick={() => {
-            setMainState(IMainState.Marketplace)
-          }}>
+          <button
+            onClick={() => {
+              setChangeFrom(TransitionFrom.selector);
+              setGameState(IGameState.Selector);
+            }}
+            onMouseEnter={() => {
+              hover_btn_SFX.play();
+            }}
+          >
             <FaUsers />
             MARKETPLACE
           </button>
-          <button>
+          <button
+            onMouseEnter={() => {
+              hover_btn_SFX.play();
+            }}
+          >
             <BsFillBoxFill />
             INVENTORY
           </button>
           <button
+            onMouseEnter={() => {
+              hover_btn_SFX.play();
+            }}
             className="shop-btn"
             onClick={() => {
               setGameState(IGameState.Shop);
@@ -79,7 +86,12 @@ const MainGame = () => {
             <RiShoppingCart2Fill />
             SHOP
           </button>
-          <button className="friends-btn">
+          <button
+            onMouseEnter={() => {
+              hover_btn_SFX.play();
+            }}
+            className="friends-btn"
+          >
             <FaUserFriends />
             FRIENDS
           </button>

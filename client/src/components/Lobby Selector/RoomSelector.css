@@ -1,0 +1,98 @@
+.lobby-selector-container{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(#080b0e 0%, #04070a 100%);
+  /* background: radial-gradient( #090a0c 0%, #070c0f 100%); */
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0rem;
+  padding: 2rem;
+  user-select: none;
+}
+
+.lobby-selector-container h1{
+  font-size: 3rem;
+}
+
+.lobby-selector-container hr {
+  width: 100%;
+}
+
+.lobbies-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  /* top: 30%; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50%;
+  width: 35%;
+}
+
+.lobby-selector-container button {
+  font-size: 0.9rem;
+  font-family: "Space Mono";
+  font-weight: 700;
+  border: none;
+  /* width: 120px;
+  height: 25px; */
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.normal-lobbies h3,.vip-lobbies h3{
+    margin-bottom: 1rem;
+}
+.vip-lobbies {
+  color: #94d8ff;
+}
+
+.normal-lobbies,
+.vip-lobbies {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.lobby-selector-container .close-btn {
+  background: none;
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 10rem;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.5rem;
+  background: linear-gradient(
+    180deg,
+    rgb(63, 217, 255) 0%,
+    rgb(28, 172, 255) 100%
+  );
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.lobby-selector-container .close-btn:hover {
+  background: linear-gradient(180deg, #84d8ff 0%, #59c2ff 100%);
+}
+
+.lobby-selector-container .description{
+  color: #b3cbda;
+  margin-bottom: .5rem;
+}

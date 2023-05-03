@@ -7,13 +7,15 @@ import MainGame from "./components/Game/MainGame";
 import { CSSTransition } from "react-transition-group";
 import Shop from "./components/Shop/Shop";
 import useScaleContainer from "./hooks/useScaleContainer";
+import RoomSelector from "./components/Lobby Selector/RoomSelector";
+import Lobby from "./components/Lobby/Lobby";
 
 const App = () => {
   const { user, gameState } = useContext(userContext);
   const screenRef = useRef<HTMLDivElement>(null);
   const [screenStyle, setScreenStyle] = useState<boolean>(false);
-  //const containerRef = useScaleContainer(1600);
-  const containerRef = useScaleContainer(1250);
+  const containerRef = useScaleContainer(1600);
+  //const containerRef = useScaleContainer(1250);
 
   const handleFullscreen = () => {
     screenRef.current!.requestFullscreen()
@@ -68,6 +70,15 @@ const App = () => {
           >
             <Shop />
           </CSSTransition>
+          <CSSTransition
+          in={gameState == IGameState.Selector}
+          timeout={200}
+          classNames={"slide2"}
+          unmountOnExit
+        >
+          <RoomSelector />
+        </CSSTransition>
+        {gameState == IGameState.Lobby && <Lobby />}
         </div>
       </div>
     </>
