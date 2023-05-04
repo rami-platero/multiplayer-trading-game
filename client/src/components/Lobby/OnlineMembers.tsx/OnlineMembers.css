@@ -1,0 +1,32 @@
+.online-members-container {
+  grid-area: online;
+  background: linear-gradient(0deg, rgb(9, 11, 14) 0%, rgb(5, 8, 10) 100%);
+  /* box-shadow: rgba(27, 190, 255, 0.432) 0px 0px 15px; */
+  padding: .7rem;
+  font-family: "Space Mono";
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+
+.online-members-container .member-badge-box{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-shadow: rgba(27, 190, 255, 0.822) 0px 0px 15px;
+  height: 30px;
+  background: linear-gradient(0deg, #88c9ff 0%, #3ab7ff 100%);
+  /* background-color: rgb(35, 180, 224); */
+  color: black;
+  padding: 0rem .7rem;
+  transition: 0.2s background ease-in-out;
+  position: relative;
+}
+
+/* .online-members-container .member-badge-box:hover{
+  background: linear-gradient(0deg, #75c1ff 0%, #28b0ff 100%);
+  
+} */
+

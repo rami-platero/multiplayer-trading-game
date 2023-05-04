@@ -1,0 +1,6 @@
+.offers-container {
+    grid-area: offers;
+  /* box-shadow: rgba(27, 190, 255, 0.432) 0px 0px 15px; */
+  background: linear-gradient(0deg, rgb(9, 11, 14) 0%, rgb(5, 8, 10) 100%);
+  
+  }

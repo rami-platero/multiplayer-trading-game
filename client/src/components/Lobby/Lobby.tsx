@@ -1,6 +1,6 @@
-import Chat from "../Chat/Chat";
-import Offers from "../Offers/Offers";
-import OnlineMembers from "../OnlineMembers.tsx/OnlineMembers";
+import Chat from "./Chat/Chat";
+import Offers from "./Offers/Offers";
+import OnlineMembers from "./OnlineMembers.tsx/OnlineMembers";
 import BackBtn from "../UI/BackBtn";
 import "./lobby.css";
 
