@@ -3,11 +3,11 @@ import {
   TransitionFrom,
   transitionContext,
 } from "../../context/transitionContext";
+import './LobbySelector.css'
 import { IGameState } from "../../interfaces/interfaces";
-import "./RoomSelector.css";
 import { useContext,useState } from "react";
 import LobbyButton from "./LobbyButton";
-import {hover_btn_SFX} from '../SFX'
+import {btn_click_SFX, hover_btn_SFX} from '../SFX'
 
 export enum LobbyType{
   normal="normal",
@@ -17,10 +17,18 @@ export enum LobbyType{
 const VIPLobbies = ["A+","B+","C+","D+","E+"]
 const NormalLobbies = ["A","B","C","D","E"]
 
-const RoomSelector = () => {
+const LobbySelector = () => {
   const { setGameState } = useContext(userContext);
   const { setChangeFrom } = useContext(transitionContext);
   const [fromLobby, setFromLobby] = useState<boolean>(false)
+
+  const handleClickCloseBtn = ()=>{
+    setGameState(IGameState.Main);
+    setTimeout(() => {
+      setChangeFrom(TransitionFrom.none);
+    }, 400);
+    btn_click_SFX.play()
+  }
 
   return (
     <div className={`lobby-selector-container ${fromLobby}`}>
@@ -46,12 +54,7 @@ const RoomSelector = () => {
         onMouseEnter={()=>{
           hover_btn_SFX.play()
         }}
-        onClick={() => {
-          setGameState(IGameState.Main);
-          setTimeout(() => {
-            setChangeFrom(TransitionFrom.none);
-          }, 400);
-        }}
+        onClick={handleClickCloseBtn}
       >
         Close
       </button>
@@ -59,4 +62,4 @@ const RoomSelector = () => {
   );
 };
 
-export default RoomSelector;
+export default LobbySelector;

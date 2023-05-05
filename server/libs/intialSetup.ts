@@ -2,6 +2,7 @@ import Item from "../models/Item";
 import Role from "../models/Role";
 import { IInventory, ISkin } from "../models/Item";
 import { Types } from "mongoose";
+import Room, { RoomType } from "../models/Room";
 
 export const createRoles = async (): Promise<void> => {
   const count: number = await Role.estimatedDocumentCount();
@@ -21,8 +22,8 @@ export const createRoles = async (): Promise<void> => {
 };
 
 export const getRole = async (): Promise<Types.ObjectId> => {
-  const role = await Role.findOne({ name: "user" })
-  return role?._id!
+  const role = await Role.findOne({ name: "user" });
+  return role?._id!;
 };
 
 export const createItems = async (): Promise<void> => {
@@ -86,4 +87,59 @@ export const initUser = async (): Promise<IInitSetup> => {
       badgeColor: "#e0e0e0",
     },
   };
+};
+
+export const createRooms = async (): Promise<void> => {
+  const count: number = await Room.estimatedDocumentCount();
+
+  try {
+    if (count < 10) {
+      await Promise.all([
+        new Room({
+          name: "A",
+          type: RoomType.Normal,
+        }).save(),
+        new Room({
+          name: "B",
+          type: RoomType.Normal,
+        }).save(),
+        new Room({
+          name: "C",
+          type: RoomType.Normal,
+        }).save(),
+        new Room({
+          name: "D",
+          type: RoomType.Normal,
+        }).save(),
+        new Room({
+          name: "E",
+          type: RoomType.Normal,
+        }).save(),
+        new Room({
+          name: "A+",
+          type: RoomType.VIP,
+        }).save(),
+        new Room({
+          name: "B+",
+          type: RoomType.VIP,
+        }).save(),
+        new Room({
+          name: "C+",
+          type: RoomType.VIP,
+        }).save(),
+        new Room({
+          name: "D+",
+          type: RoomType.VIP,
+        }).save(),
+        new Room({
+          name: "E+",
+          type: RoomType.VIP,
+        }).save(),
+      ]);
+    } else {
+      console.log("Rooms already exist");
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };

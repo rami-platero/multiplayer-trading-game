@@ -7,31 +7,37 @@ import MainGame from "./components/Game/MainGame";
 import { CSSTransition } from "react-transition-group";
 import Shop from "./components/Shop/Shop";
 import useScaleContainer from "./hooks/useScaleContainer";
-import RoomSelector from "./components/Lobby Selector/RoomSelector";
+import LobbySelector from "./components/Lobby Selector/LobbySelector";
 import Lobby from "./components/Lobby/Lobby";
 
 const App = () => {
   const { user, gameState } = useContext(userContext);
   const screenRef = useRef<HTMLDivElement>(null);
   const [screenStyle, setScreenStyle] = useState<boolean>(false);
-  const containerRef = useScaleContainer(1600);
-  //const containerRef = useScaleContainer(1250);
+  //const containerRef = useScaleContainer(1600);
+  const containerRef = useScaleContainer(1250);
 
   const handleFullscreen = () => {
-    screenRef.current!.requestFullscreen()
+    screenRef.current!.requestFullscreen();
     setScreenStyle(true);
   };
 
   useEffect(() => {
-    screenRef.current!.addEventListener('fullscreenchange', handleFullscreenChange);
+    screenRef.current!.addEventListener(
+      "fullscreenchange",
+      handleFullscreenChange
+    );
     return () => {
-      screenRef.current!.removeEventListener('fullscreenchange', handleFullscreenChange);
+      screenRef.current!.removeEventListener(
+        "fullscreenchange",
+        handleFullscreenChange
+      );
     };
   }, []);
 
   const handleFullscreenChange = () => {
-    if (document.fullscreenElement !==screenRef.current!) {
-      setScreenStyle(false)
+    if (document.fullscreenElement !== screenRef.current!) {
+      setScreenStyle(false);
     }
   };
 
@@ -71,14 +77,14 @@ const App = () => {
             <Shop />
           </CSSTransition>
           <CSSTransition
-          in={gameState == IGameState.Selector}
-          timeout={200}
-          classNames={"slide2"}
-          unmountOnExit
-        >
-          <RoomSelector />
-        </CSSTransition>
-        {gameState == IGameState.Lobby && <Lobby />}
+            in={gameState == IGameState.Selector}
+            timeout={200}
+            classNames={"slide2"}
+            unmountOnExit
+          >
+            <LobbySelector />
+          </CSSTransition>
+          {gameState == IGameState.Lobby && <Lobby />}
         </div>
       </div>
     </>

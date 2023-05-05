@@ -16,7 +16,7 @@ import { CSSTransition } from "react-transition-group";
 import Coins from "../UI/Coins";
 import { RiShoppingCart2Fill } from "react-icons/ri";
 import { FaUserFriends } from "react-icons/fa";
-import { hover_btn_SFX } from "../SFX";
+import { btn_click_SFX, hover_btn_SFX } from "../SFX";
 
 export enum IMainState {
   Profile = "profile",
@@ -28,6 +28,12 @@ const MainGame = () => {
   const { changeFrom, setChangeFrom } = useContext(transitionContext);
   const { logout } = useLogOut();
   const [mainState, setMainState] = useState<IMainState | null>(null);
+
+  const handleClickMarketplace = (): void => {
+    setChangeFrom(TransitionFrom.selector);
+    setGameState(IGameState.Selector);
+    btn_click_SFX.play();
+  };
 
   return (
     <div className={`game-container ${changeFrom}`}>
@@ -55,10 +61,7 @@ const MainGame = () => {
         </CSSTransition>
         <div className="buttons">
           <button
-            onClick={() => {
-              setChangeFrom(TransitionFrom.selector);
-              setGameState(IGameState.Selector);
-            }}
+            onClick={handleClickMarketplace}
             onMouseEnter={() => {
               hover_btn_SFX.play();
             }}
@@ -69,6 +72,9 @@ const MainGame = () => {
           <button
             onMouseEnter={() => {
               hover_btn_SFX.play();
+            }}
+            onClick={() => {
+              btn_click_SFX.play();
             }}
           >
             <BsFillBoxFill />
@@ -81,6 +87,7 @@ const MainGame = () => {
             className="shop-btn"
             onClick={() => {
               setGameState(IGameState.Shop);
+              btn_click_SFX.play();
             }}
           >
             <RiShoppingCart2Fill />
@@ -89,6 +96,9 @@ const MainGame = () => {
           <button
             onMouseEnter={() => {
               hover_btn_SFX.play();
+            }}
+            onClick={() => {
+              btn_click_SFX.play();
             }}
             className="friends-btn"
           >

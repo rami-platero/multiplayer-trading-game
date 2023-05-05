@@ -1,6 +1,6 @@
 import { BiUser } from "react-icons/bi";
 import "./lobby_btn.css";
-import { LobbyType } from "./RoomSelector";
+import { LobbyType } from "./LobbySelector";
 import { AiFillLock } from "react-icons/ai";
 import { hover_btn_SFX } from "../SFX";
 import { useState, SetStateAction } from "react";

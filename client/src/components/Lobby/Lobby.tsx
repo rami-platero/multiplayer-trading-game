@@ -8,6 +8,7 @@ const Lobby = () => {
   return (
     <div className="lobby-container">
       <div className="lobby-top-elements">
+        <h1>Lobby A</h1>
         <BackBtn />
       </div>
       <div className="lobby-wrapper">

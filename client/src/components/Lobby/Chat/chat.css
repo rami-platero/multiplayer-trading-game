@@ -25,13 +25,12 @@
 
 .chat-container .messages .message p{
   color: rgb(0, 174, 255);
-  text-shadow: rgba(27, 190, 255, 0.575) 0px 0px 7px;
+  text-shadow: rgb(16, 187, 255) 0px 0px 10px;
 }
 
 .chat-container .messages .message span{
   color: rgb(27, 171, 255);
 }
-
 
 .chat-container input {
   outline: none;
@@ -43,9 +42,20 @@
   color: white;
   padding: .9rem .8rem;
   font-family: "Space Mono";
+  transition: 0.3s ease-in-out;
   font-weight: 700;
 }
 
 .chat-container input::placeholder{
   color: rgba(128, 128, 128, 0.521);
+}
+
+/* .chat-container input:focus{
+  background-color: rgba(5, 6, 7, 0.74);
+  transition: 0.3s ease-in-out;
+} */
+
+.chat-container {
+  /* box-shadow: 0px 7px 6px -5px rgba(48, 189, 255, 0.8); */
+  /* border-bottom: 1px solid rgb(79, 176, 255); */
 }

@@ -1,6 +1,125 @@
-.offers-container {
-    grid-area: offers;
-  /* box-shadow: rgba(27, 190, 255, 0.432) 0px 0px 15px; */
+.offers-container{
+  grid-area: offers;
   background: linear-gradient(0deg, rgb(9, 11, 14) 0%, rgb(5, 8, 10) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   
-  }
+}
+
+.offers-container .offers-wrapper{
+  position: relative;
+  width: 100%;
+  height: 90%;
+}
+
+.offers-container .offers{
+  /* box-shadow: rgba(27, 190, 255, 0.432) 0px 0px 15px; */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(75px, 1px));
+  grid-auto-flow: column;
+  grid-gap: 1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 0 auto;
+  height: 100%;
+  padding: 1rem;
+  scroll-behavior: smooth;
+}
+
+.offers-container .offers .offer-box {
+  border-radius: .5rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  background: linear-gradient(0deg, rgb(10, 14, 19) 0%, rgb(5, 8, 10) 100%);
+  width: 290px;
+  height: 4.7rem;
+  padding: .5rem 1rem;
+  cursor: pointer;
+}
+
+.offers-container .offer-box:hover{
+  background: linear-gradient(0deg, rgb(14, 21, 27) 0%, rgb(9, 14, 19) 100%);
+}
+
+.offers-container .offer-box img{
+  border: 2px solid white;
+}
+
+
+.offers-container .offer-box img{
+  aspect-ratio: 4/3;
+  width: 3.7rem;
+  height: 100%;
+}
+
+
+.offers-container .offers::-webkit-scrollbar{
+  display: none;
+  /* border: 1px solid rgb(36, 36, 36);
+  width: 10px; */
+}
+
+/* .offers-container .offers::-webkit-scrollbar-track{
+  background-color: rgb(0, 0, 0);
+}
+
+.offers-container .offers::-webkit-scrollbar-thumb{
+  border-radius: 5px;
+  background-color: rgb(22, 28, 34);
+} */
+
+.offers-container .offers-footer{
+  background-color: rgba(0, 0, 0, 0.26);
+  height: 13%;
+  display: flex;
+  align-items: center;
+  padding: 0rem 1rem;
+}
+
+.offers-container .offers-footer button{
+  font-family: "Space Mono";
+  font-weight: 700;
+  width: fit-content;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  background: linear-gradient(
+    180deg,
+    rgb(63, 217, 255) 0%,
+    rgb(28, 172, 255) 100%
+  );
+  border: none;
+  cursor: pointer;
+}
+
+.offers-container .offers-footer button:hover{
+  background: linear-gradient(
+    180deg,
+    rgb(142, 232, 255) 0%,
+    rgb(104, 200, 255) 100%
+  );
+}
+
+.left-hover{
+  position: absolute;
+  height: 100%;
+  width: 25%;
+  opacity: 0;
+}
+
+.right-hover{
+  position: absolute;
+  height: 100%;
+  width: 25%;
+  right: 0;
+  opacity: 0;
+}
+
+
