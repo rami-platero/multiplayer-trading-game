@@ -8,51 +8,51 @@
   flex-direction: column;
 }
 
-.online-members-container .title {
-  align-self: center;
-}
+.online-members-container {
+  .title {
+    align-self: center;
+  }
+  .members-box {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    gap: 0.5rem;
+    padding: 0.7rem;
+    height: max-content;
+    z-index: 3;
+    
+    .member-badge-box {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      box-shadow: rgba(27, 190, 255, 0.822) 0px 0px 15px;
+      height: 20%;
+      background: linear-gradient(0deg, #88c9ff 0%, #3ab7ff 100%);
+      color: black;
+      padding: 0.2rem 0.7rem;
+      transition: 0.2s background ease-in-out;
+      position: relative;
+      /* background-color: rgb(35, 180, 224); */
 
-.online-members-container .members-box {
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  gap: 0.5rem;
-  padding: 0.7rem;
-  height: max-content;
-  z-index: 3;
-}
-
-.members-box .member-badge-box {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  box-shadow: rgba(27, 190, 255, 0.822) 0px 0px 15px;
-  height: 20%;
-  background: linear-gradient(0deg, #88c9ff 0%, #3ab7ff 100%);
-  color: black;
-  padding: .2rem 0.7rem;
-  transition: 0.2s background ease-in-out;
-  position: relative;
-  /* background-color: rgb(35, 180, 224); */
+    }
+  }
 }
 
 /* .online-members-container .member-badge-box:hover{
   background: linear-gradient(0deg, #75c1ff 0%, #28b0ff 100%);
-  
 } */
 
-
 /*SCROLLBAR*/
-.online-members-container .members-box::-webkit-scrollbar{
+.online-members-container .members-box::-webkit-scrollbar {
   border: 1px solid rgb(36, 36, 36);
   width: 10px;
 }
 
-.online-members-container .members-box::-webkit-scrollbar-track{
+.online-members-container .members-box::-webkit-scrollbar-track {
   background-color: rgb(0, 0, 0);
 }
 
-.online-members-container .members-box::-webkit-scrollbar-thumb{
+.online-members-container .members-box::-webkit-scrollbar-thumb {
   border-radius: 5px;
   background-color: rgb(22, 28, 34);
 }

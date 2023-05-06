@@ -9,13 +9,16 @@ import Shop from "./components/Shop/Shop";
 import useScaleContainer from "./hooks/useScaleContainer";
 import LobbySelector from "./components/Lobby Selector/LobbySelector";
 import Lobby from "./components/Lobby/Lobby";
+import {StickGame} from "./Game/StickGame";
+import  Game  from "./Game/gameIndex";
 
 const App = () => {
-  const { user, gameState } = useContext(userContext);
+  /* const { user, gameState } = useContext(userContext); */
   const screenRef = useRef<HTMLDivElement>(null);
   const [screenStyle, setScreenStyle] = useState<boolean>(false);
-  //const containerRef = useScaleContainer(1600);
-  const containerRef = useScaleContainer(1250);
+  const containerRef = useScaleContainer(1600);
+  const gameContainerRef = useRef<HTMLDivElement>(null);
+  /* const containerRef = useScaleContainer(1250); */
 
   const handleFullscreen = () => {
     screenRef.current!.requestFullscreen();
@@ -27,6 +30,17 @@ const App = () => {
       "fullscreenchange",
       handleFullscreenChange
     );
+    if (gameContainerRef.current) {
+      const config: Phaser.Types.Core.GameConfig = {
+        type: Phaser.AUTO,
+        parent: gameContainerRef.current,
+        width: 1280,
+        height: 720,
+        scene: [Game]
+      };
+
+      new Phaser.Game(config);
+    }
     return () => {
       screenRef.current!.removeEventListener(
         "fullscreenchange",
@@ -40,6 +54,8 @@ const App = () => {
       setScreenStyle(false);
     }
   };
+
+
 
   return (
     <>
@@ -58,7 +74,7 @@ const App = () => {
         ref={containerRef}
       >
         <div className="main-game-wrapper" ref={screenRef}>
-          {!user && gameState == IGameState.Auth && <AuthScreen />}
+          {/* {!user && gameState == IGameState.Auth && <AuthScreen />}
           <CSSTransition
             in={gameState === IGameState.Main}
             timeout={300}
@@ -84,7 +100,8 @@ const App = () => {
           >
             <LobbySelector />
           </CSSTransition>
-          {gameState == IGameState.Lobby && <Lobby />}
+          {gameState == IGameState.Lobby && <Lobby />} */}
+          <StickGame ref={gameContainerRef} id="game-container"/>
         </div>
       </div>
     </>
