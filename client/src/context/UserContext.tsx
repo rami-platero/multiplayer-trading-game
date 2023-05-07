@@ -27,7 +27,7 @@ export const UserContextProvider = ({ children }: contextProps) => {
   const [authState, authDispatch] = useReducer(authReducer, initialState);
   const [gameState, setGameState] = useState<IGameState>(IGameState.Auth);
 
-  useEffect(() => {
+  /* useEffect(() => {
     const socket = io("http://localhost:4000");
 
     socket.on("connect", () => {
@@ -38,7 +38,7 @@ export const UserContextProvider = ({ children }: contextProps) => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, []); */
 
   return (
     <userContext.Provider

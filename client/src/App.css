@@ -35,6 +35,11 @@ body,
   position: relative;
 }
 
+#game-container{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 
 /* .menu-container {
   flex: 1;

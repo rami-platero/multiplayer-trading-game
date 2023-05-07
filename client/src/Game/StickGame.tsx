@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 
 type GameContainerProps = {
   id: string;
@@ -7,7 +7,6 @@ type GameContainerProps = {
 export const StickGame = forwardRef<HTMLDivElement, GameContainerProps>(
   ({ id }, ref) => (
     <div ref={ref} id={id}>
-        
     </div>
   )
 );

@@ -9,8 +9,8 @@ import Shop from "./components/Shop/Shop";
 import useScaleContainer from "./hooks/useScaleContainer";
 import LobbySelector from "./components/Lobby Selector/LobbySelector";
 import Lobby from "./components/Lobby/Lobby";
-import {StickGame} from "./Game/StickGame";
-import  Game  from "./Game/gameIndex";
+import { StickGame } from "./Game/StickGame";
+import Game from "./Game/gameIndex";
 
 const App = () => {
   /* const { user, gameState } = useContext(userContext); */
@@ -18,11 +18,20 @@ const App = () => {
   const [screenStyle, setScreenStyle] = useState<boolean>(false);
   const containerRef = useScaleContainer(1600);
   const gameContainerRef = useRef<HTMLDivElement>(null);
+  const gameRef = useRef<Phaser.Game | null>(null);
   /* const containerRef = useScaleContainer(1250); */
 
   const handleFullscreen = () => {
     screenRef.current!.requestFullscreen();
     setScreenStyle(true);
+    resizeGame();
+  };
+
+  const handleFullscreenChange = () => {
+    if (document.fullscreenElement !== screenRef.current!) {
+      setScreenStyle(false);
+      resizeGame();
+    }
   };
 
   useEffect(() => {
@@ -30,17 +39,6 @@ const App = () => {
       "fullscreenchange",
       handleFullscreenChange
     );
-    if (gameContainerRef.current) {
-      const config: Phaser.Types.Core.GameConfig = {
-        type: Phaser.AUTO,
-        parent: gameContainerRef.current,
-        width: 1280,
-        height: 720,
-        scene: [Game]
-      };
-
-      new Phaser.Game(config);
-    }
     return () => {
       screenRef.current!.removeEventListener(
         "fullscreenchange",
@@ -49,13 +47,45 @@ const App = () => {
     };
   }, []);
 
-  const handleFullscreenChange = () => {
-    if (document.fullscreenElement !== screenRef.current!) {
-      setScreenStyle(false);
+  const resizeGame = () => {
+    if (gameRef.current) {
+      const width = screenStyle ? 1920 : 1280;
+      const height = screenStyle ? 1080 : 720;
+      gameRef.current!.scale.resize(width, height);
     }
   };
 
+  useEffect(() => {
+    resizeGame();
+  }, [screenStyle]);
 
+  useEffect(() => {
+    if (gameContainerRef.current) {
+      const config: Phaser.Types.Core.GameConfig = {
+        type: Phaser.AUTO,
+        parent: gameContainerRef.current,
+        width: 1280,
+        height: 720,
+        scene: [Game],
+        backgroundColor: 0xADD8E6,
+        physics: {
+          default: 'arcade',
+          arcade: {
+            gravity: {y:500},
+            debug: false
+          }
+        }
+      };
+
+      gameRef.current = new Phaser.Game(config);
+    }
+
+    return () => {
+      if (gameRef.current) {
+        gameRef.current.destroy(true, false);
+      }
+    };
+  }, []);
 
   return (
     <>
@@ -101,7 +131,7 @@ const App = () => {
             <LobbySelector />
           </CSSTransition>
           {gameState == IGameState.Lobby && <Lobby />} */}
-          <StickGame ref={gameContainerRef} id="game-container"/>
+          <StickGame ref={gameContainerRef} id="game-container" />
         </div>
       </div>
     </>
