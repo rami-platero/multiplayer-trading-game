@@ -11,12 +11,14 @@ import LobbySelector from "./components/Lobby Selector/LobbySelector";
 import Lobby from "./components/Lobby/Lobby";
 import { StickGame } from "./Game/StickGame";
 import Game from "./Game/gameIndex";
+import { transitionContext } from "./context/transitionContext";
 
 const App = () => {
-  /* const { user, gameState } = useContext(userContext); */
+  const { user, gameState } = useContext(userContext);
   const screenRef = useRef<HTMLDivElement>(null);
   const [screenStyle, setScreenStyle] = useState<boolean>(false);
   const containerRef = useScaleContainer(1600);
+  const { selectorTimeout } = useContext(transitionContext);
   const gameContainerRef = useRef<HTMLDivElement>(null);
   const gameRef = useRef<Phaser.Game | null>(null);
   /* const containerRef = useScaleContainer(1250); */
@@ -34,6 +36,14 @@ const App = () => {
     }
   };
 
+  const resizeGame = () => {
+    if (gameRef.current) {
+      const width = screenStyle ? 1920 : 1280;
+      const height = screenStyle ? 1080 : 720;
+      gameRef.current!.scale.resize(width, height);
+    }
+  };
+
   useEffect(() => {
     screenRef.current!.addEventListener(
       "fullscreenchange",
@@ -47,14 +57,6 @@ const App = () => {
     };
   }, []);
 
-  const resizeGame = () => {
-    if (gameRef.current) {
-      const width = screenStyle ? 1920 : 1280;
-      const height = screenStyle ? 1080 : 720;
-      gameRef.current!.scale.resize(width, height);
-    }
-  };
-
   useEffect(() => {
     resizeGame();
   }, [screenStyle]);
@@ -67,14 +69,14 @@ const App = () => {
         width: 1280,
         height: 720,
         scene: [Game],
-        backgroundColor: 0xADD8E6,
+        backgroundColor: 0xadd8e6,
         physics: {
-          default: 'arcade',
+          default: "arcade",
           arcade: {
-            gravity: {y:500},
-            debug: false
-          }
-        }
+            gravity: { y: 500 },
+            debug: false,
+          },
+        },
       };
 
       gameRef.current = new Phaser.Game(config);
@@ -104,7 +106,7 @@ const App = () => {
         ref={containerRef}
       >
         <div className="main-game-wrapper" ref={screenRef}>
-          {/* {!user && gameState == IGameState.Auth && <AuthScreen />}
+          {!user && gameState == IGameState.Auth && <AuthScreen />}
           <CSSTransition
             in={gameState === IGameState.Main}
             timeout={300}
@@ -124,14 +126,14 @@ const App = () => {
           </CSSTransition>
           <CSSTransition
             in={gameState == IGameState.Selector}
-            timeout={200}
+            timeout={selectorTimeout}
             classNames={"slide2"}
             unmountOnExit
           >
             <LobbySelector />
           </CSSTransition>
-          {gameState == IGameState.Lobby && <Lobby />} */}
-          <StickGame ref={gameContainerRef} id="game-container" />
+          {gameState == IGameState.Lobby && <Lobby />}
+          {/* <StickGame ref={gameContainerRef} id="game-container" /> */}
         </div>
       </div>
     </>

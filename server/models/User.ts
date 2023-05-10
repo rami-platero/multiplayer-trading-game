@@ -5,6 +5,7 @@ import { IInventory, ISkin } from "./Item";
 import { IInitSetup, getRole, initUser } from "../libs/intialSetup";
 
 export interface IUser extends Document {
+  _id: string;
   username: string;
   email: string;
   password: string;
@@ -14,6 +15,7 @@ export interface IUser extends Document {
   skin: ISkin;
   roles: Types.ObjectId[];
   createdAt: Date;
+  coins: number
 }
 
 interface IUserModel extends Model<IUser> {
@@ -59,6 +61,10 @@ const userSchema = new Schema<IUser>(
       },
     },
     roles: [{ type: Schema.Types.ObjectId, ref: "Role", required: true }],
+    coins: {
+      type: Number,
+      default: 400
+    }
   },
   { timestamps: true }
 );

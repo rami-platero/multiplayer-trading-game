@@ -1,4 +1,4 @@
-export interface contextProps {
+export interface ContextProps {
   children: JSX.Element | JSX.Element[];
 }
 
@@ -42,4 +42,33 @@ export interface IUser {
   skin: ISkin;
   roles: IRole[];
   createdAt: Date;
+  coins: number;
+  _id: string
+}
+
+
+
+export interface Lobby {
+  name: string;
+  users: IUser[]
+  offers: IOffer[]
+  type: LobbyType
+}
+
+export enum LobbyType{
+  normal="normal",
+  VIP="VIP"
+}
+
+export enum Status {
+  Open = "open",
+  Locked = "locked"
+}
+
+export interface IOffer {
+  room: string,
+  createdBy: string,
+  tradingWith?: string,
+  status: Status,
+  lockedBy?: string
 }

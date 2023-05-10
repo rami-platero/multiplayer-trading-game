@@ -25,11 +25,8 @@ const Profile = ({ setMainState }: props) => {
         <h2>{user?.username}</h2>
       </div>
       <div className="info-wrapper">
-        {/* <h3>
-          Username: <span>{user?.username}</span>{" "}
-        </h3> */}
         <h3>
-          Coins: <span>5400</span>
+          Coins: <span>{user?.coins}</span>
         </h3>
         <h3>
           Account created: <span>{createdAt}</span>

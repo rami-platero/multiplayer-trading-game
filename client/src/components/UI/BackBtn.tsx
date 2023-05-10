@@ -9,14 +9,17 @@ import { btn_click_SFX, hover_btn_SFX } from "../SFX";
 
 interface Props {
   transition?: TransitionFrom;
+  handleEvents?: ()=> void
 }
 
-const BackBtn = ({ transition }: Props) => {
+const BackBtn = ({ transition, handleEvents }: Props) => {
   const { setGameState } = useContext(userContext);
-  const { setChangeFrom } = useContext(transitionContext);
+  const { setChangeFrom, setSelectorTimeout } = useContext(transitionContext);
 
   const handleClick = async (): Promise<void> => {
     btn_click_SFX.play();
+    handleEvents && handleEvents()
+
     if (transition) {
       setChangeFrom(() => transition);
       setGameState(IGameState.Main);
@@ -24,6 +27,8 @@ const BackBtn = ({ transition }: Props) => {
         setChangeFrom(() => TransitionFrom.none);
       }, 400);
     } else {
+      //Updating Selector transition timeout
+      setSelectorTimeout(300);
       setChangeFrom(() => TransitionFrom.none);
       setGameState(IGameState.Main);
     }

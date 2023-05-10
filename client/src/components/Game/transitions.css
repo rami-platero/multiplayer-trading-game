@@ -60,4 +60,12 @@
   transition: transform 300ms ease;
 }
 
+.lobby-selector-container.true.slide2-exit{
+  transform: translateY(0%);
+}
+.lobby-selector-container.true.slide2-exit-active{
+  transform: translateY(-150%);
+  transition: transform 0ms ease;
+}
+
 
