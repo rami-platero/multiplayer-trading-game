@@ -1,9 +1,9 @@
-import { UserItem } from "../../interfaces/interfaces";
+import { IInventory } from "../../interfaces/interfaces";
 import './items_styles.css'
 import {useEffect} from 'react'
 
 interface Props {
-  item: UserItem;
+  item: IInventory;
 }
 
 const Inv_Item = ({ item }: Props) => {

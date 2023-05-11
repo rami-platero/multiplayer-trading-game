@@ -15,10 +15,10 @@ export interface ISkin {
   badgeColor: string;
 }
 
-export interface UserItem{
+/* export interface UserItem{
   count: number,
   itemId: Item
-}
+} */
 
 export interface Item {
   name: string;

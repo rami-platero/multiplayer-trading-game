@@ -1,13 +1,16 @@
 .items-wrapper {
-    height: 100%;
-    padding: 1rem;
-    overflow-y: auto;
+  height: 76.6%;
+  padding: 1rem;
+  overflow-y: auto;
+  background-color: rgba(0, 0, 0, 0.514);
+  border-radius: 15px;
 
   .item {
     width: 60px;
     height: 60px;
     transition: 0.2s ease-in-out;
     z-index: 5;
+    border: 2px solid white;
 
     &:hover {
       transform: scale(1.2);
@@ -20,8 +23,3 @@
     }
   }
 }
-
-/* .items-wrapper .item img{
-    width: 60px;
-    height: 60px;
-} */

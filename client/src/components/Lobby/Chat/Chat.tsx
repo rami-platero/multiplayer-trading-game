@@ -10,7 +10,7 @@ interface IMessage {
 }
 
 const Chat = () => {
-  const { lobbyUsers, lobby } = useContext(lobbyContext);
+  const { lobby } = useContext(lobbyContext);
   const { socket, user } = useContext(userContext);
   const [message, setMessage] = useState<string>("");
   const [messages, setMessages] = useState<IMessage[]>([]);
