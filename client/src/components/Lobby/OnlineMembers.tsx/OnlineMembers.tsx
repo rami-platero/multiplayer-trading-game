@@ -12,10 +12,9 @@ const OnlineMembers = () => {
       lobbyDispatch({ type: "USER:JOINS", payload: newUsers });
     });
 
-    socket?.off('user-leaves').on('user-leaves', id =>{
-      lobbyDispatch({type: "USER:LEAVES", payload: id})
-    })
-
+    socket?.off("user-leaves").on("user-leaves", (id) => {
+      lobbyDispatch({ type: "USER:LEAVES", payload: id });
+    });
   }, []);
 
   return (
@@ -27,6 +26,7 @@ const OnlineMembers = () => {
         {lobbyUsers?.map((user) => {
           return (
             <div
+              key={user._id}
               className="member-badge-box"
               style={{ background: user.skin.badgeColor }}
             >

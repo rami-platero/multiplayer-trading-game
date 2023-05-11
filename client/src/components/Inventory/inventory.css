@@ -18,8 +18,8 @@
   box-shadow: 0px 0px 25px 5px rgb(7, 9, 12);
 }
 
-.inventory-container hr{
-    margin-bottom: 1rem;
+.inventory-container hr {
+  margin-bottom: 1rem;
 }
 
 .inventory-top-elements {
@@ -36,13 +36,12 @@
 .inventory-top-elements .header button {
   cursor: pointer;
   border: none;
-  border-radius: 0.5rem;
   font-size: 0.8rem;
   text-transform: uppercase;
   font-weight: 700;
   color: rgb(0, 0, 0);
   padding: 0.2rem 1rem;
-  font-family: 'Archivo Narrow';
+  font-family: "Archivo Narrow";
   font-weight: 600;
   background: linear-gradient(
     180deg,
@@ -107,17 +106,17 @@
     opacity: 0;
     z-index: 3;
 
-    &:hover + label{
-        opacity: .8;
+    &:hover + label {
+      opacity: 0.8;
     }
 
-    &:checked + label.rare{
-        color: black;
-        background-color: rgb(111, 255, 92);
+    &:checked + label.rare {
+      color: black;
+      background-color: rgb(111, 255, 92);
     }
-    &:checked + label.common{
-        color: black;
-        background-color: rgb(255, 255, 255);
+    &:checked + label.common {
+      color: black;
+      background-color: rgb(255, 255, 255);
     }
   }
 
@@ -125,7 +124,7 @@
     text-align: center;
     display: block;
     border: 1px solid;
-    padding: .2rem 1rem;
+    padding: 0.2rem 1rem;
   }
 }
 

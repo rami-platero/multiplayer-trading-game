@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState,SetStateAction } from "react";
 import {
   ContextProps,
   IOffer,
@@ -16,13 +16,17 @@ interface ILobbyContext {
   lobbyDispatch: React.Dispatch<LobbyActionType>;
   lobbyUsers: IUserinLobby[] | null;
   offers: IOffer[] | null
+  loading: boolean,
+  setLoading: React.Dispatch<SetStateAction<boolean>>
 }
 
 export const lobbyContext = createContext<ILobbyContext>({
   lobby: null,
   lobbyDispatch: (): void => {},
   lobbyUsers: [],
-  offers: []
+  offers: [],
+  loading: false,
+  setLoading: () =>{}
 });
 
 const LobbyContextProvider = ({ children }: ContextProps) => {
@@ -30,9 +34,10 @@ const LobbyContextProvider = ({ children }: ContextProps) => {
     lobbyReducer,
     LobbyInitialState
   );
+  const [loading, setLoading] = useState<boolean>(false)
 
   return (
-    <lobbyContext.Provider value={{ ...lobbyState, lobbyDispatch }}>
+    <lobbyContext.Provider value={{ ...lobbyState, lobbyDispatch, loading, setLoading }}>
       {children}
     </lobbyContext.Provider>
   );

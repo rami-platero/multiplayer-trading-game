@@ -56,7 +56,7 @@ const Inventory = ({ handleState }: Props) => {
       </div>
       <div className="items-wrapper">
         {filteredItems?.map((item) => {
-          return <Inv_Item item={item} />;
+          return <Inv_Item item={item} key={item.itemId._id}/>;
         })}
       </div>
     </div>

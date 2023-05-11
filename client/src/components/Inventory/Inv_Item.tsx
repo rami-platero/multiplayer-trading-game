@@ -8,10 +8,6 @@ interface Props {
 
 const Inv_Item = ({ item }: Props) => {
 
-  useEffect(()=>{
-    console.log(item.itemId.image)
-  },[])
-
   return (
     <>
     <div key={item.itemId._id} className={`item ${item.itemId.type}`}>

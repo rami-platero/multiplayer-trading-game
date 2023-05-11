@@ -12,7 +12,6 @@ import { transitionContext } from "../../context/transitionContext";
 import { LobbyType } from "../../interfaces/interfaces";
 import { lobbyContext } from "../../context/LobbyContext";
 
-
 interface Props {
   room_name: string;
   type: LobbyType;
@@ -21,23 +20,25 @@ interface Props {
 }
 
 function LobbyButton({ room_name, type, lobby, setFromLobby }: Props) {
-  const {lobbyDispatch} = useContext(lobbyContext)
+  const { lobbyDispatch, setLoading} = useContext(lobbyContext);
   const { setGameState, socket, user } = useContext(userContext);
   const isVIP: boolean = false;
   const { setSelectorTimeout } = useContext(transitionContext);
   /* const [modalIsOpen, setModalIsOpen] = useState<boolean>(false); */
 
   const handleLobby = (): void => {
-    socket?.emit("join-lobby", {lobby_name: room_name, user} );
+    setLoading(true)
+    socket?.emit("join-lobby", { lobby_name: room_name, user });
   };
 
-  socket?.off('get-lobby').on("get-lobby", (room) => {
-    lobbyDispatch({type: "JOIN", payload: room})
+  //on joining lobby
+  socket?.off("get-lobby").on("get-lobby", (room) => {
+    lobbyDispatch({ type: "JOIN", payload: room });
     setSelectorTimeout(0);
     setFromLobby(true);
     setGameState(IGameState.Lobby);
-  })
- 
+    setLoading(false)
+  });
 
   return (
     <>
@@ -48,10 +49,7 @@ function LobbyButton({ room_name, type, lobby, setFromLobby }: Props) {
           hover_btn_SFX.play();
         }}
         disabled={type == LobbyType.VIP && !isVIP ? true : false}
-        onClick={() => {
-          /* setModalIsOpen(true) */
-          handleLobby();
-        }}
+        onClick={handleLobby}
       >
         {!isVIP && type == LobbyType.VIP && <AiFillLock />}
         <p>Lobby {room_name}</p>

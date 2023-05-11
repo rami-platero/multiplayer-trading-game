@@ -40,12 +40,14 @@ const Chat = () => {
     setMessages([...messages, message])
   })
 
+
   return (
     <div className="chat-container">
       <div className="messages">
         {messages.map((msg) => {
+          const key = `${new Date().toISOString()}-${Math.random()}`;
           return (
-            <div className="message">
+            <div className="message" key={key}>
               <span className="chat-skin" style={{ color: msg.chatColor }}>
                 {msg.username}:
               </span>
@@ -53,14 +55,6 @@ const Chat = () => {
             </div>
           );
         })}
-        {/* <div className="message">
-          <span className="chat-skin">Inzanic:</span>
-          <p> Yo, what's poppin</p>
-        </div>
-        <div className="message">
-          <span className="chat-skin">Inzanic:</span>
-          <p> Yo, what's poppin</p>
-        </div> */}
       </div>
       <form onSubmit={handleSubmit}>
         <input
