@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import { ContextProps } from "../interfaces/interfaces";
+import './transitions.css'
 
 export enum TransitionFrom {
   none = "",

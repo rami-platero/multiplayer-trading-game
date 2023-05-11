@@ -1,5 +1,4 @@
 import "./game.css";
-import "./transitions.css";
 import { BsFillBoxFill } from "react-icons/bs";
 import { FaUsers } from "react-icons/fa";
 import { BiUser } from "react-icons/bi";
@@ -17,6 +16,7 @@ import Coins from "../UI/Coins";
 import { RiShoppingCart2Fill } from "react-icons/ri";
 import { FaUserFriends } from "react-icons/fa";
 import { btn_click_SFX, hover_btn_SFX } from "../SFX";
+import Inventory from "../Inventory/Inventory";
 
 export enum IMainState {
   Profile = "profile",
@@ -34,6 +34,19 @@ const MainGame = () => {
     setGameState(IGameState.Selector);
     btn_click_SFX.play();
   };
+
+  const handleClickInventory = ()=>{
+    btn_click_SFX.play();
+    setMainState(IMainState.Inventory)
+  }
+
+  const hoverSFX = ()=>{
+    hover_btn_SFX.play();
+  }
+
+  const handleState = ()=>{
+    setMainState(null)
+  }
 
   return (
     <div className={`game-container ${changeFrom}`}>
@@ -59,31 +72,31 @@ const MainGame = () => {
         >
           <Profile setMainState={setMainState} />
         </CSSTransition>
+        <CSSTransition
+          in={mainState == IMainState.Inventory}
+          timeout={200}
+          classNames={"grow"}
+          unmountOnExit
+        >
+          <Inventory handleState={handleState} />
+        </CSSTransition>
         <div className="buttons">
           <button
             onClick={handleClickMarketplace}
-            onMouseEnter={() => {
-              hover_btn_SFX.play();
-            }}
+            onMouseEnter={hoverSFX}
           >
             <FaUsers />
             MARKETPLACE
           </button>
           <button
-            onMouseEnter={() => {
-              hover_btn_SFX.play();
-            }}
-            onClick={() => {
-              btn_click_SFX.play();
-            }}
+            onMouseEnter={hoverSFX}
+            onClick={handleClickInventory}
           >
             <BsFillBoxFill />
             INVENTORY
           </button>
           <button
-            onMouseEnter={() => {
-              hover_btn_SFX.play();
-            }}
+            onMouseEnter={hoverSFX}
             className="shop-btn"
             onClick={() => {
               setGameState(IGameState.Shop);
@@ -94,9 +107,7 @@ const MainGame = () => {
             SHOP
           </button>
           <button
-            onMouseEnter={() => {
-              hover_btn_SFX.play();
-            }}
+            onMouseEnter={hoverSFX}
             onClick={() => {
               btn_click_SFX.play();
             }}

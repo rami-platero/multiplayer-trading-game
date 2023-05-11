@@ -1,0 +1,29 @@
+.inventory-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    background-color: black;
+    width: 900px;
+    height: 550px;
+}
+
+.inventory-top-elements{
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+
+}
+
+.inventory-top-elements .header{
+    display: flex;
+    gap: 2rem;
+}
+
+.inventory-container .items-wrapper{
+    overflow-y: auto;
+    display: flex;
+    gap: 1rem;
+}

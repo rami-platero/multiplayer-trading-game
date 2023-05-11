@@ -15,12 +15,18 @@ export interface ISkin {
   badgeColor: string;
 }
 
+export interface UserItem{
+  count: number,
+  itemId: Item
+}
+
 export interface Item {
   name: string;
   type: string;
   isSkin: boolean;
   skinData?: ISkin;
   image: string;
+  _id: string
 }
 
 export interface IInventory {
