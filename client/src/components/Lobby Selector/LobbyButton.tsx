@@ -28,7 +28,7 @@ function LobbyButton({ room_name, type, lobby, setFromLobby }: Props) {
   /* const [modalIsOpen, setModalIsOpen] = useState<boolean>(false); */
 
   const handleLobby = (): void => {
-    socket?.emit("join-lobby", {room_name, user} );
+    socket?.emit("join-lobby", {lobby_name: room_name, user} );
   };
 
   socket?.off('get-lobby').on("get-lobby", (room) => {

@@ -1,11 +1,13 @@
 import "./offers.css";
-import Skin from "../../../assets/items/Dark-Skin.png";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
+import { lobbyContext } from "../../../context/LobbyContext";
+import OfferItem from "./OfferItem";
 
 const Offers = () => {
   const intervalLeftRef = useRef<any>();
   const intervalRightRef = useRef<any>();
   const containerRef = useRef<HTMLDivElement>(null);
+  const { offers } = useContext(lobbyContext);
 
   const handleLeft = () => {
     if (containerRef.current!.scrollLeft !== 0) {
@@ -26,11 +28,16 @@ const Offers = () => {
   };
 
   const handleRight = () => {
-    if (containerRef.current!.scrollLeft + containerRef.current!.offsetWidth !==
-      containerRef.current!.scrollWidth) {
+    if (
+      containerRef.current!.scrollLeft + containerRef.current!.offsetWidth !==
+      containerRef.current!.scrollWidth
+    ) {
       intervalRightRef.current = setInterval(() => {
-        if (containerRef.current!.scrollLeft + containerRef.current!.offsetWidth !==
-          containerRef.current!.scrollWidth) {
+        if (
+          containerRef.current!.scrollLeft +
+            containerRef.current!.offsetWidth !==
+          containerRef.current!.scrollWidth
+        ) {
           containerRef.current!.scrollBy({ left: 30, behavior: "smooth" });
           //console.log("scrolling Right");
         } else {
@@ -60,66 +67,11 @@ const Offers = () => {
           onMouseOut={handleRightOut}
         ></div>
         <div className="offers" ref={containerRef}>
-          <div className="offer-box">
-            <img src={Skin} alt="" />
-            <h3>Stick Run Dev</h3>
-          </div>
-          <div className="offer-box">
-            <img src={Skin} alt="" />
-            <h3>Stick Run Dev</h3>
-          </div>
-          <div className="offer-box">
-            <img src={Skin} alt="" />
-            <h3>Stick Run Dev</h3>
-          </div>
-          <div className="offer-box">
-            <img src={Skin} alt="" />
-            <h3>Stick Run Dev</h3>
-          </div>
-          <div className="offer-box">
-            <img src={Skin} alt="" />
-            <h3>Stick Run Dev</h3>
-          </div>
-          <div className="offer-box">
-            <img src={Skin} alt="" />
-            <h3>Stick Run Dev</h3>
-          </div>
-          <div className="offer-box">
-            <img src={Skin} alt="" />
-            <h3>Stick Run Dev</h3>
-          </div>
-          <div className="offer-box">
-            <img src={Skin} alt="" />
-            <h3>Stick Run Dev</h3>
-          </div>
-          <div className="offer-box">
-            <img src={Skin} alt="" />
-            <h3>Stick Run Dev</h3>
-          </div>
-          <div className="offer-box">
-            <img src={Skin} alt="" />
-            <h3>Stick Run Dev</h3>
-          </div>
-          <div className="offer-box">
-            <img src={Skin} alt="" />
-            <h3>Stick Run Dev</h3>
-          </div>
-          <div className="offer-box">
-            <img src={Skin} alt="" />
-            <h3>Stick Run Dev</h3>
-          </div>
-          <div className="offer-box">
-            <img src={Skin} alt="" />
-            <h3>Stick Run Dev</h3>
-          </div>
-          <div className="offer-box">
-            <img src={Skin} alt="" />
-            <h3>Stick Run Dev</h3>
-          </div>
-          <div className="offer-box">
-            <img src={Skin} alt="" />
-            <h3>Stick Run Dev</h3>
-          </div>
+          {offers?.map((offer) => {
+            return (
+              <OfferItem key={offer._id} offer={offer}/>
+            );
+          })}
         </div>
       </div>
       <div className="offers-footer">

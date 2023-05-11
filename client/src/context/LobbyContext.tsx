@@ -1,10 +1,9 @@
-import { createContext, useContext, useState, useReducer } from "react";
+import { createContext, useReducer } from "react";
 import {
   ContextProps,
   IOffer,
-  IUser,
+  IUserinLobby,
   Lobby,
-  LobbyType,
 } from "../interfaces/interfaces";
 import {
   LobbyActionType,
@@ -15,11 +14,15 @@ import {
 interface ILobbyContext {
   lobby: Lobby | null;
   lobbyDispatch: React.Dispatch<LobbyActionType>;
+  lobbyUsers: IUserinLobby[] | null;
+  offers: IOffer[] | null
 }
 
 export const lobbyContext = createContext<ILobbyContext>({
   lobby: null,
   lobbyDispatch: (): void => {},
+  lobbyUsers: [],
+  offers: []
 });
 
 const LobbyContextProvider = ({ children }: ContextProps) => {

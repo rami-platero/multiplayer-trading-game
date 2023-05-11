@@ -46,13 +46,19 @@ export interface IUser {
   _id: string
 }
 
-
+export interface IUserinLobby{
+  _id: string;
+  username: string;
+  socketID: string;
+  skin: ISkin;
+  roles: IRole[];
+}
 
 export interface Lobby {
-  name: string;
-  users: IUser[]
-  offers: IOffer[]
-  type: LobbyType
+  name: string
+  /* users: IUserinLobby[] */
+  /* offers: IOffer[] */
+  type: LobbyType 
 }
 
 export enum LobbyType{
@@ -66,6 +72,7 @@ export enum Status {
 }
 
 export interface IOffer {
+  _id: string
   room: string,
   createdBy: string,
   tradingWith?: string,

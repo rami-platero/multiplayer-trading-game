@@ -4,6 +4,12 @@ import Room from "../models/Room";
 import { IUser } from "../models/User";
 import { IRoom } from "../models/Room";
 
+interface IChatMessage {
+  username: string;
+  message: string;
+  chatColor: string;
+}
+
 export const initSocket = (): void => {
   const io = new SocketServer(server, {
     cors: {
@@ -29,26 +35,16 @@ export const initSocket = (): void => {
     });
 
     socket.on("join-lobby", async (obj) => {
-      const { room_name, user }: { room_name: string; user: IUser } = obj;
+      const { lobby_name, user }: { lobby_name: string; user: IUser } = obj;
 
-      const room: IRoom | null = await Room.findOneAndUpdate(
-        { name: room_name },
-        {
-          $push: {
-            users: user._id,
-          },
-        },
-        {
-          new: true,
-        }
-      );
-      socket.join(room_name);
-      socket.emit("get-lobby", room);
+      const lobby = await Room.getLobby(lobby_name, user);
+      socket.join(lobby_name);
+      socket.emit("get-lobby", lobby);
+      socket.broadcast.to(lobby_name).emit("user-joins", lobby.users);
     });
 
     socket.on("leave-lobby", async (obj) => {
       const { lobby, user }: { lobby: string; user: IUser } = obj;
-      console.log("leaving Lobby");
       await Room.updateOne(
         { name: lobby },
         {
@@ -57,6 +53,17 @@ export const initSocket = (): void => {
           },
         }
       );
+
+      socket.leave(lobby);
+      socket.broadcast.to(lobby).emit("user-leaves", user._id);
+    });
+
+    socket.on("send-message", (obj) => {
+      const {
+        lobby_name,
+        ...message
+      }: { lobby_name: string; message: IChatMessage } = obj;
+      socket.broadcast.to(lobby_name).emit("receive-message", message);
     });
 
     socket.on("disconnect", () => {
