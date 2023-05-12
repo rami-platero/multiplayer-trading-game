@@ -1,7 +1,7 @@
 import { Server as SocketServer } from "socket.io";
 import { server } from "../app";
 import Room from "../models/Room";
-import { IUser } from "../models/User";
+import User, { IUser } from "../models/User";
 import { IRoom } from "../models/Room";
 
 interface IChatMessage {
@@ -65,6 +65,16 @@ export const initSocket = (): void => {
       }: { lobby_name: string; message: IChatMessage } = obj;
       socket.broadcast.to(lobby_name).emit("receive-message", message);
     });
+
+    socket.on('change-skin', async name=>{
+      await User.updateOne({socketID: socket.id}, {$set: {
+        "skin.chatColor": name,
+        "skin.badgeColor": name
+      }},{
+        new: true
+      })
+      socket.emit("changed-skin", name)
+    })
 
     socket.on("disconnect", () => {
       console.log("user disconnected");

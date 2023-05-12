@@ -18,6 +18,13 @@ interface ILobbyContext {
   offers: IOffer[] | null
   loading: boolean,
   setLoading: React.Dispatch<SetStateAction<boolean>>
+  setInventoryState: React.Dispatch<SetStateAction<InventoryState | null>>
+  inventoryState: InventoryState | null
+}
+
+export enum InventoryState {
+  Offer= "offer",
+  Trading= "trading"
 }
 
 export const lobbyContext = createContext<ILobbyContext>({
@@ -26,7 +33,9 @@ export const lobbyContext = createContext<ILobbyContext>({
   lobbyUsers: [],
   offers: [],
   loading: false,
-  setLoading: () =>{}
+  setLoading: () =>{},
+  setInventoryState: ():void=>{},
+  inventoryState: null
 });
 
 const LobbyContextProvider = ({ children }: ContextProps) => {
@@ -35,9 +44,10 @@ const LobbyContextProvider = ({ children }: ContextProps) => {
     LobbyInitialState
   );
   const [loading, setLoading] = useState<boolean>(false)
+  const [inventoryState, setInventoryState] = useState<InventoryState | null>(null)
 
   return (
-    <lobbyContext.Provider value={{ ...lobbyState, lobbyDispatch, loading, setLoading }}>
+    <lobbyContext.Provider value={{ ...lobbyState, lobbyDispatch, loading, setLoading,inventoryState,setInventoryState }}>
       {children}
     </lobbyContext.Provider>
   );

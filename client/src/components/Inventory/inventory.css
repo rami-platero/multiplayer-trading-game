@@ -16,6 +16,7 @@
   width: 900px;
   height: 550px;
   box-shadow: 0px 0px 25px 5px rgb(7, 9, 12);
+  z-index: 4;
 }
 
 .inventory-container hr {
@@ -132,4 +133,8 @@
   overflow-y: auto;
   display: flex;
   gap: 1rem;
+}
+
+.inventory-container .skins-wrapper{
+  padding: 1rem;
 }

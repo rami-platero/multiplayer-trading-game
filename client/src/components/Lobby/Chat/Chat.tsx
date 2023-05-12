@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import "./chat.css";
+import './chat_styles.css'
 import { lobbyContext } from "../../../context/LobbyContext";
 import { userContext } from "../../../context/UserContext";
 
@@ -48,7 +49,7 @@ const Chat = () => {
           const key = `${new Date().toISOString()}-${Math.random()}`;
           return (
             <div className="message" key={key}>
-              <span className="chat-skin" style={{ color: msg.chatColor }}>
+              <span className={`chat-skin ${user?.skin.chatColor}`} style={{ color: msg.chatColor }}>
                 {msg.username}:
               </span>
               <p> {msg.message}</p>

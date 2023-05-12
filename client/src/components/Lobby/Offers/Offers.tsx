@@ -1,13 +1,16 @@
 import "./offers.css";
-import { useContext, useRef } from "react";
-import { lobbyContext } from "../../../context/LobbyContext";
+import { useContext, useRef, useState } from "react";
+import { InventoryState, lobbyContext } from "../../../context/LobbyContext";
 import OfferItem from "./OfferItem";
+import Inventory from "../../Inventory/Inventory";
+import { CSSTransition } from "react-transition-group";
 
 const Offers = () => {
   const intervalLeftRef = useRef<any>();
   const intervalRightRef = useRef<any>();
   const containerRef = useRef<HTMLDivElement>(null);
-  const { offers } = useContext(lobbyContext);
+  const { offers, setInventoryState, inventoryState } = useContext(lobbyContext);
+
 
   const handleLeft = () => {
     if (containerRef.current!.scrollLeft !== 0) {
@@ -52,8 +55,20 @@ const Offers = () => {
     clearInterval(intervalRightRef.current);
   };
 
+  const makeOffer = ()=>{
+    setInventoryState(InventoryState.Offer)
+  }
+
   return (
     <div className="offers-container">
+      <CSSTransition
+        in={inventoryState == InventoryState.Offer}
+        timeout={200}
+        classNames={"grow"}
+        unmountOnExit
+      >
+        <Inventory/>
+      </CSSTransition>
       <div className="offers-wrapper">
         <div
           className="left-hover"
@@ -68,14 +83,12 @@ const Offers = () => {
         ></div>
         <div className="offers" ref={containerRef}>
           {offers?.map((offer) => {
-            return (
-              <OfferItem key={offer._id} offer={offer}/>
-            );
+            return <OfferItem key={offer._id} offer={offer} />;
           })}
         </div>
       </div>
       <div className="offers-footer">
-        <button>Open Offer</button>
+        <button onClick={makeOffer}>Open Offer</button>
       </div>
     </div>
   );

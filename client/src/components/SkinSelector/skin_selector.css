@@ -1,0 +1,75 @@
+.skin-selector-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: calc(900px / 1.2);
+  height: calc(550px / 1.2);
+  background-color: rgba(7, 8, 8, 0.979);
+  backdrop-filter: blur(10px);
+  z-index: 2;
+}
+
+.skin-selector-container .header{
+    padding: 1rem;
+
+}
+
+.skin-selector-container .header .top-elements{
+    justify-content: space-between;
+    display: flex;
+  }
+
+.skin-selector-container .header .close-btn {
+  background: none;
+  border: none;
+  color: white;
+}
+
+.skin-selector-container .header .close-btn > svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
+}
+
+.skin-selector-container .header h2 {
+  font-weight: 700;
+}
+
+.skin-selector-container .header p {
+  color: rgb(212, 212, 212);
+  font-size: 0.9rem;
+}
+
+.global-skins-container,
+.owned-skins-container {
+  height: 35%;
+  width: 100%;
+  padding: 1rem;
+}
+
+.global-skins-container .skins-wrapper,
+.owned-skins-container .skins-wrapper {
+  background-color: rgba(0, 0, 0, 0.568);
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.owned-skins-container .skins-wrapper .skin,
+.global-skins-container .skins-wrapper .skin {
+  cursor: pointer;
+  border-radius: 0.5rem;
+  width: 60px;
+  height: 60px;
+}
+
+.owned-skins-container .skins-wrapper .skin img {
+  border-radius: 0.5rem;
+  width: 100%;
+  height: 100%;
+}
+
+

@@ -15,19 +15,26 @@ import { CSSTransition } from "react-transition-group";
 import Coins from "../UI/Coins";
 import { RiShoppingCart2Fill } from "react-icons/ri";
 import { FaUserFriends } from "react-icons/fa";
+import { AiFillSkin } from "react-icons/ai";
 import { btn_click_SFX, hover_btn_SFX } from "../SFX";
 import Inventory from "../Inventory/Inventory";
+import SkinSelector from "../SkinSelector/SkinSelector";
 
 export enum IMainState {
   Profile = "profile",
   Inventory = "inventory",
+  SkinSelector = "skinSelector",
 }
 
 const MainGame = () => {
-  const { user, setGameState } = useContext(userContext);
+  const { user, setGameState, socket, authDispatch } = useContext(userContext);
   const { changeFrom, setChangeFrom } = useContext(transitionContext);
   const { logout } = useLogOut();
   const [mainState, setMainState] = useState<IMainState | null>(null);
+
+  socket?.off("changed-skin").on("changed-skin", (newSkin) => {
+    authDispatch({ type: "CHANGE_SKIN", payload: newSkin });
+  });
 
   const handleClickMarketplace = (): void => {
     setChangeFrom(TransitionFrom.selector);
@@ -35,22 +42,46 @@ const MainGame = () => {
     btn_click_SFX.play();
   };
 
-  const handleClickInventory = ()=>{
+  const handleClickInventory = () => {
     btn_click_SFX.play();
-    setMainState(IMainState.Inventory)
-  }
+    setMainState(IMainState.Inventory);
+  };
 
-  const hoverSFX = ()=>{
+  const hoverSFX = () => {
     hover_btn_SFX.play();
-  }
+  };
 
-  const handleState = ()=>{
-    setMainState(null)
-  }
+  const handleState = () => {
+    setMainState(null);
+  };
 
   return (
     <div className={`game-container ${changeFrom}`}>
       <Coins style={{ left: "0" }} />
+      <CSSTransition
+        in={mainState == IMainState.Profile}
+        timeout={200}
+        classNames={"grow"}
+        unmountOnExit
+      >
+        <Profile setMainState={setMainState} />
+      </CSSTransition>
+      <CSSTransition
+        in={mainState == IMainState.Inventory}
+        timeout={200}
+        classNames={"grow"}
+        unmountOnExit
+      >
+        <Inventory handleState={handleState} />
+      </CSSTransition>
+      <CSSTransition
+        in={mainState == IMainState.SkinSelector}
+        timeout={200}
+        classNames={"grow"}
+        unmountOnExit
+      >
+        <SkinSelector handleState={handleState} />
+      </CSSTransition>
       <div className="profile-actions">
         <button
           onClick={() => {
@@ -64,36 +95,23 @@ const MainGame = () => {
       </div>
       <span className="version">Version: 0.0.0</span>
       <div className="game-content">
-        <CSSTransition
-          in={mainState == IMainState.Profile}
-          timeout={200}
-          classNames={"grow"}
-          unmountOnExit
-        >
-          <Profile setMainState={setMainState} />
-        </CSSTransition>
-        <CSSTransition
-          in={mainState == IMainState.Inventory}
-          timeout={200}
-          classNames={"grow"}
-          unmountOnExit
-        >
-          <Inventory handleState={handleState} />
-        </CSSTransition>
         <div className="buttons">
-          <button
-            onClick={handleClickMarketplace}
-            onMouseEnter={hoverSFX}
-          >
+          <button onClick={handleClickMarketplace} onMouseEnter={hoverSFX}>
             <FaUsers />
             MARKETPLACE
           </button>
-          <button
-            onMouseEnter={hoverSFX}
-            onClick={handleClickInventory}
-          >
+          <button onMouseEnter={hoverSFX} onClick={handleClickInventory}>
             <BsFillBoxFill />
             INVENTORY
+          </button>
+          <button
+            onMouseEnter={hoverSFX}
+            onClick={() => {
+              setMainState(IMainState.SkinSelector);
+              btn_click_SFX.play();
+            }}
+          >
+            <AiFillSkin /> CHANGE SKIN
           </button>
           <button
             onMouseEnter={hoverSFX}
@@ -106,7 +124,8 @@ const MainGame = () => {
             <RiShoppingCart2Fill />
             SHOP
           </button>
-          <button
+
+          {/* <button
             onMouseEnter={hoverSFX}
             onClick={() => {
               btn_click_SFX.play();
@@ -115,7 +134,7 @@ const MainGame = () => {
           >
             <FaUserFriends />
             FRIENDS
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

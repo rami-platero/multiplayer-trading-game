@@ -1,6 +1,7 @@
 import { lobbyContext } from "../../../context/LobbyContext";
 import { userContext } from "../../../context/UserContext";
 import "./OnlineMembers.css";
+import './onlineMembers_styles.css'
 import { useContext, useEffect } from "react";
 
 const OnlineMembers = () => {
@@ -27,7 +28,7 @@ const OnlineMembers = () => {
           return (
             <div
               key={user._id}
-              className="member-badge-box"
+              className={`member-badge-box ${user.skin.badgeColor}`}
               style={{ background: user.skin.badgeColor }}
             >
               <p>{user.username}</p>

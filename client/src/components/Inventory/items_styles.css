@@ -23,3 +23,8 @@
     }
   }
 }
+
+.item.rare{
+  border: 2px solid rgb(107, 252, 71);
+}
+
