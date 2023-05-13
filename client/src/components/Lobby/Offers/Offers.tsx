@@ -4,22 +4,23 @@ import { InventoryState, lobbyContext } from "../../../context/LobbyContext";
 import OfferItem from "./OfferItem";
 import Inventory from "../../Inventory/Inventory";
 import { CSSTransition } from "react-transition-group";
+import { btn_click_SFX, hover_btn_SFX } from "../../SFX";
+import { userContext } from "../../../context/UserContext";
 
 const Offers = () => {
   const intervalLeftRef = useRef<any>();
   const intervalRightRef = useRef<any>();
   const containerRef = useRef<HTMLDivElement>(null);
-  const { offers, setInventoryState, inventoryState } = useContext(lobbyContext);
-
+  const { offers, setInventoryState, inventoryState, lobbyDispatch } =
+    useContext(lobbyContext);
+  const { socket } = useContext(userContext);
 
   const handleLeft = () => {
     if (containerRef.current!.scrollLeft !== 0) {
       intervalLeftRef.current = setInterval(() => {
         if (containerRef.current!.scrollLeft !== 0) {
           containerRef.current!.scrollBy({ left: -30, behavior: "smooth" });
-          //console.log("scrolling left");
         } else {
-          //console.log("clearing interval");
           clearInterval(intervalLeftRef.current);
         }
       }, 100);
@@ -42,9 +43,7 @@ const Offers = () => {
           containerRef.current!.scrollWidth
         ) {
           containerRef.current!.scrollBy({ left: 30, behavior: "smooth" });
-          //console.log("scrolling Right");
         } else {
-          //console.log("clearing interval")
           clearInterval(intervalRightRef.current);
         }
       }, 100);
@@ -55,9 +54,10 @@ const Offers = () => {
     clearInterval(intervalRightRef.current);
   };
 
-  const makeOffer = ()=>{
-    setInventoryState(InventoryState.Offer)
-  }
+  const makeOffer = () => {
+    btn_click_SFX.play();
+    setInventoryState(InventoryState.Offer);
+  };
 
   return (
     <div className="offers-container">
@@ -67,7 +67,7 @@ const Offers = () => {
         classNames={"grow"}
         unmountOnExit
       >
-        <Inventory/>
+        <Inventory />
       </CSSTransition>
       <div className="offers-wrapper">
         <div
@@ -88,7 +88,14 @@ const Offers = () => {
         </div>
       </div>
       <div className="offers-footer">
-        <button onClick={makeOffer}>Open Offer</button>
+        <button
+          onClick={makeOffer}
+          onMouseEnter={() => {
+            hover_btn_SFX.play();
+          }}
+        >
+          Open Offer
+        </button>
       </div>
     </div>
   );

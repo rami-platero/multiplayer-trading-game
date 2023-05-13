@@ -79,9 +79,7 @@ export enum Status {
 
 export interface IOffer {
   _id: string
-  room: string,
   createdBy: string,
   tradingWith?: string,
   status: Status,
-  lockedBy?: string
 }

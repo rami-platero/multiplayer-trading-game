@@ -3,18 +3,18 @@ import { IOffer, IUserinLobby, Lobby } from "../interfaces/interfaces";
 export const LobbyInitialState = {
   lobby: null,
   lobbyUsers: [],
-  offers: []
+  offers: [],
 };
 
 interface LobbyModel extends Lobby {
   users: IUserinLobby[];
-  offers: IOffer[]
+  offers: IOffer[];
 }
 
 interface IState {
   lobby: Lobby | null;
   lobbyUsers: IUserinLobby[] | null;
-  offers: IOffer[] | null
+  offers: IOffer[] | null;
 }
 
 export type LobbyActionType =
@@ -27,6 +27,10 @@ export type LobbyActionType =
   | {
       type: "USER:LEAVES";
       payload: string;
+    }
+  | {
+      type: "OPEN_OFFER";
+      payload: IOffer[];
     };
 
 export const lobbyReducer = (
@@ -46,6 +50,11 @@ export const lobbyReducer = (
         return user._id !== action.payload;
       });
       return { ...state, lobbyUsers: filtered! };
+    case "OPEN_OFFER":
+      return {
+        ...state,
+        offers: action.payload,
+      };
     default:
       return state;
   }

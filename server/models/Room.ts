@@ -44,7 +44,7 @@ roomSchema.statics.getLobby = async function (room_name: string, user: IUser) {
       path: 'offers',
       model: Trade,
       populate: {
-        path: 'createdBy tradingWith lockedBy itemTrading lockedBy'
+        path: 'createdBy tradingWith itemTrading'
       }
   })
 

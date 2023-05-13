@@ -3,6 +3,8 @@ import { server } from "../app";
 import Room from "../models/Room";
 import User, { IUser } from "../models/User";
 import { IRoom } from "../models/Room";
+import { Item } from "../models/Item";
+import Trade, { ITrade, Status } from "../models/Trade";
 
 interface IChatMessage {
   username: string;
@@ -19,6 +21,7 @@ export const initSocket = (): void => {
 
   io.on("connection", (socket) => {
     console.log("user connected");
+    let currentLobby = "";
 
     socket.on("getLobbies", async () => {
       const lobbies = await Room.aggregate([
@@ -36,6 +39,7 @@ export const initSocket = (): void => {
 
     socket.on("join-lobby", async (obj) => {
       const { lobby_name, user }: { lobby_name: string; user: IUser } = obj;
+      currentLobby = lobby_name;
 
       const lobby = await Room.getLobby(lobby_name, user);
       socket.join(lobby_name);
@@ -54,6 +58,7 @@ export const initSocket = (): void => {
         }
       );
 
+      currentLobby = "";
       socket.leave(lobby);
       socket.broadcast.to(lobby).emit("user-leaves", user._id);
     });
@@ -66,15 +71,55 @@ export const initSocket = (): void => {
       socket.broadcast.to(lobby_name).emit("receive-message", message);
     });
 
-    socket.on('change-skin', async name=>{
-      await User.updateOne({socketID: socket.id}, {$set: {
-        "skin.chatColor": name,
-        "skin.badgeColor": name
-      }},{
-        new: true
-      })
-      socket.emit("changed-skin", name)
-    })
+    socket.on("change-skin", async (name) => {
+      await User.updateOne(
+        { socketID: socket.id },
+        {
+          $set: {
+            "skin.chatColor": name,
+            "skin.badgeColor": name,
+          },
+        },
+        {
+          new: true,
+        }
+      );
+      socket.emit("changed-skin", name);
+    });
+
+    socket.on("new-offer", async (obj) => {
+      const { item, user }: { item: Item; user: IUser } = obj;
+
+      const newTrade: ITrade = await new Trade({
+        itemTrading: item._id,
+        createdBy: user._id,
+        status: Status.Open,
+      }).save();
+
+      const Offers = await Room.findOneAndUpdate(
+        { name: currentLobby },
+        {
+          $push: {
+            offers: newTrade._id,
+          },
+        },
+        {
+          new: true,
+        }
+      )
+        .populate({
+          path: "offers",
+          model: Trade,
+          populate: {
+            path: "createdBy tradingWith itemTrading",
+          },
+        })
+        .select("offers");
+
+      console.log(currentLobby);
+
+      socket.emit("send-new-offer", Offers);
+    });
 
     socket.on("disconnect", () => {
       console.log("user disconnected");

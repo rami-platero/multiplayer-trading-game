@@ -45,6 +45,7 @@ const Chat = () => {
   return (
     <div className="chat-container">
       <div className="messages">
+        <p className="welcome-message">Welcome to Lobby {lobby?.name}</p>
         {messages.map((msg) => {
           const key = `${new Date().toISOString()}-${Math.random()}`;
           return (

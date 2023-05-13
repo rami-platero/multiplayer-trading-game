@@ -15,6 +15,11 @@
   overflow-y: auto;
 }
 
+.chat-container .messages .welcome-message{
+  color: rgb(82, 177, 255);
+  text-shadow: rgb(0, 140, 255) 0px 0px 10px;
+}
+
 .chat-container .messages .message{
   display: flex;
   align-items: center;

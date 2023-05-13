@@ -7,6 +7,7 @@ interface Props {
 
 const OfferItem = ({offer}:Props) => {
 
+
   return (
     <div className="offer-box">
       <img src={Skin} alt="" />

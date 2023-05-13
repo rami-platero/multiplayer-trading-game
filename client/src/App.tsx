@@ -23,7 +23,7 @@ const App = () => {
   const gameRef = useRef<Phaser.Game | null>(null);
   /* const containerRef = useScaleContainer(1250); */
 
-  const handleFullscreen = () => {
+  /* const handleFullscreen = () => {
     screenRef.current!.requestFullscreen();
     setScreenStyle(true);
     resizeGame();
@@ -87,13 +87,13 @@ const App = () => {
         gameRef.current.destroy(true, false);
       }
     };
-  }, []);
+  }, []); */
 
   return (
     <>
       <button
         style={{ position: "absolute", top: "0" }}
-        onClick={handleFullscreen}
+        /* onClick={handleFullscreen} */
       >
         full screen
       </button>
