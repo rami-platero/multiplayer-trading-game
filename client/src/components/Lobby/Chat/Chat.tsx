@@ -50,7 +50,7 @@ const Chat = () => {
           const key = `${new Date().toISOString()}-${Math.random()}`;
           return (
             <div className="message" key={key}>
-              <span className={`chat-skin ${user?.skin.chatColor}`} style={{ color: msg.chatColor }}>
+              <span className={`chat-skin ${msg.chatColor}`} style={{ color: msg.chatColor }}>
                 {msg.username}:
               </span>
               <p> {msg.message}</p>

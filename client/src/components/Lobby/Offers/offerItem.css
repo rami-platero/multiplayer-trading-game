@@ -1,0 +1,36 @@
+.offers-container .offers-wrapper .offers {
+  .offer-box {
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    background: linear-gradient(0deg, rgb(10, 14, 19) 0%, rgb(5, 8, 10) 100%);
+    width: 290px;
+    height: 4.7rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-family: "Space Mono";
+
+    &:hover {
+      background: linear-gradient(
+        0deg,
+        rgb(14, 21, 27) 0%,
+        rgb(9, 14, 19) 100%
+      );
+    }
+
+    > img {
+      border: 2px solid white;
+      aspect-ratio: 4/3;
+      width: 3.7rem;
+      height: 100%;
+    }
+  }
+}
+
+.offer-box.locked {
+    opacity: .5;
+    pointer-events: none;
+  }

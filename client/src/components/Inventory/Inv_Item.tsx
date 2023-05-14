@@ -9,11 +9,11 @@ interface Props {
 
 const Inv_Item = ({ item }: Props) => {
 
-  const {openOffer,inventoryState}= useContext(lobbyContext)
+  const {makeOffer,inventoryState}= useContext(lobbyContext)
 
   const handleItem = ()=>{
     if(inventoryState==InventoryState.Offer){
-      openOffer(item.itemId)
+      makeOffer(item.itemId)
     }
   }
 

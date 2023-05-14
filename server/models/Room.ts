@@ -8,14 +8,15 @@ export enum RoomType {
 }
 
 export interface IRoom extends Document {
-    name: string;
-    users?: Types.ObjectId[] | IUser[];
-    offers?: Types.ObjectId[] | ITrade[];
-    type: RoomType;
+  name: string;
+  users?: Types.ObjectId[] | IUser[];
+  offers?: Types.ObjectId[] | ITrade[];
+  type: RoomType;
 }
 
 interface RoomModel extends Model<IUser> {
-    getLobby(room_name: string, user: IUser):Promise<IRoom>
+  getLobby(room_name: string, user: IUser): Promise<IRoom>;
+  newOffer(tradeID: string, lobby_name: string): Promise<ITrade[]>;
 }
 
 const roomSchema = new Schema({
@@ -38,17 +39,54 @@ roomSchema.statics.getLobby = async function (room_name: string, user: IUser) {
     }
   )
     .populate({
-        path: 'users',
-        select: 'username skin socketID roles'
-    }).populate({
-      path: 'offers',
+      path: "users",
+      select: "username skin socketID roles",
+    })
+    .populate({
+      path: "offers",
       model: Trade,
       populate: {
-        path: 'createdBy tradingWith itemTrading'
-      }
-  })
+        path: "createdBy tradingWith itemOffering",
+      },
+    });
 
-  return room
+  return room;
+};
+
+roomSchema.statics.newOffer = async function (
+  tradeID: string,
+  lobby_name: string
+) {
+  const offers = await this.findOneAndUpdate(
+    { name: lobby_name },
+    {
+      $push: {
+        offers: tradeID,
+      },
+    },
+    {
+      new: true,
+    }
+  )
+    .populate({
+      path: "offers",
+      model: Trade,
+      populate: [
+        {
+          path: "createdBy",
+          select: "username socketID _id ",
+        },
+        {
+          path: "tradingWith",
+        },
+        {
+          path: "itemOffering",
+        },
+      ],
+    })
+    .select("offers");
+
+  return offers;
 };
 
 export default model<IRoom, RoomModel>("Room", roomSchema);

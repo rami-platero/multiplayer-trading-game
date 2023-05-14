@@ -1,17 +1,24 @@
+import { lobbyContext } from "../../../context/LobbyContext";
 import { IOffer } from "../../../interfaces/interfaces";
-import Skin from "../../../assets/items/Dark-Skin.png";
+import { useContext } from "react";
+import "./offerItem.css";
 
 interface Props {
-    offer: IOffer
+  offer: IOffer;
 }
 
-const OfferItem = ({offer}:Props) => {
-
+const OfferItem = ({ offer }: Props) => {
+  const { openOffer } = useContext(lobbyContext);
 
   return (
-    <div className="offer-box">
-      <img src={Skin} alt="" />
-      <h3>{offer.createdBy}</h3>
+    <div
+      className={`offer-box ${offer.tradingWith ? "locked" : "unlocked"}`}
+      onClick={() => {
+        openOffer(offer);
+      }}
+    >
+      <img src={`../src/assets/items/${offer.itemOffering.image}`} />
+      <h3>{offer.createdBy.username}</h3>
     </div>
   );
 };

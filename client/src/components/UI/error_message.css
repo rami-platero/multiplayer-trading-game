@@ -1,0 +1,59 @@
+.error-message {
+  position: absolute;
+  top: 15px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0 auto;
+  width: 450px;
+  height: fit-content;
+  /* background-color: #020405bd; */
+  background: linear-gradient(
+    286deg,
+    rgba(62, 14, 14, 1) 0%,
+    rgba(2, 4, 5, 0.555) 100%
+  );
+  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem 2rem 1.5rem 2rem;
+  border-radius: 10px;
+  color: rgb(255, 78, 78);
+  z-index: 4;
+
+  > p {
+    padding-left: 4rem;
+  }
+}
+
+.error-message > svg {
+  position: absolute;
+  margin: auto;
+  z-index: 3;
+  width: 2rem;
+  height: 2rem;
+  color: red;
+}
+
+.error-message button {
+  font-size: 1rem;
+  font-family: "Archivo Narrow";
+  font-weight: bolder;
+  padding: 0.4rem 1rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  color: rgb(255, 255, 255);
+  border: 1px solid rgb(255, 255, 255);
+  background-color: rgba(255, 111, 111, 0);
+  transition: 0.2s ease-in-out;
+}
+
+.error-message button:hover {
+  transition: 0.2s ease-in-out;
+  color: black;
+  background-color: white;
+}

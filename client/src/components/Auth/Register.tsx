@@ -3,8 +3,10 @@ import { AiOutlineLock } from "react-icons/ai";
 import { AiOutlineEye } from "react-icons/ai";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { MdAlternateEmail } from "react-icons/md";
-import { useState } from "react";
+import { useState,useContext } from "react";
 import useAuthForm from "./useAuthForm";
+import { userContext } from "../../context/UserContext";
+import LoadingScreen from "../UI/LoadingScreen";
 
 const INITIAL_STATE = {
   username: "",
@@ -14,13 +16,17 @@ const INITIAL_STATE = {
 
 const Register = () => {
   const [show, setShow] = useState<boolean>(false);
-  const {handleChange,handleSubmit,errors,loadingSignUp} = useAuthForm(INITIAL_STATE)
+  const {handleChange,handleSubmit,errors,} = useAuthForm(INITIAL_STATE)
+  const {loading} = useContext(userContext)
 
   return (
     <form onSubmit={(e)=>{
       handleSubmit(e,true)
     }}
-    style={{opacity: loadingSignUp? ".5": "1"}}>
+    >
+      {loading &&
+      <LoadingScreen />
+      }
       <div className={`input ${errors?.username && "error"}`}>
         <AiOutlineUser />
         <input type="text" placeholder="Username" autoCorrect="off" name="username" onChange={handleChange} autoComplete="off"/>
@@ -52,7 +58,7 @@ const Register = () => {
       </div>
       {errors?.password && <span className="error-text">{errors.password}</span>}
 
-      <button type="submit" disabled={loadingSignUp}>Sign Up</button>
+      <button type="submit" disabled={loading}>Sign Up</button>
     </form>
   );
 };

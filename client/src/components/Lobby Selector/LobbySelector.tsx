@@ -9,8 +9,7 @@ import { useContext, useState, useEffect } from "react";
 import LobbyButton from "./LobbyButton";
 import { btn_click_SFX, hover_btn_SFX } from "../SFX";
 import { LobbyType } from "../../interfaces/interfaces";
-import { lobbyContext } from "../../context/LobbyContext";
-import Loader from "../../assets/loader.gif";
+import LoadingScreen from "../UI/LoadingScreen";
 
 export interface LobbyCount {
   name: string;
@@ -21,9 +20,8 @@ const VIPLobbies = ["A+", "B+", "C+", "D+", "E+"];
 const NormalLobbies = ["A", "B", "C", "D", "E"];
 
 const LobbySelector = () => {
-  const { setGameState } = useContext(userContext);
+  const { setGameState,loading } = useContext(userContext);
   const { setChangeFrom } = useContext(transitionContext);
-  const { loading } = useContext(lobbyContext);
   const [fromLobby, setFromLobby] = useState<boolean>(false);
   const [lobbies, setLobbies] = useState([]);
   const { socket } = useContext(userContext);
@@ -56,9 +54,7 @@ const LobbySelector = () => {
   return (
     <div className={`lobby-selector-container ${fromLobby}`}>
       {loading && (
-        <div className="loading-screen">
-          <img className="loader" src={Loader} />
-        </div>
+        <LoadingScreen />
       )}
       <h1 className="title">Lobby Selector</h1>
       <p className="description">

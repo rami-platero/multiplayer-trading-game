@@ -77,9 +77,16 @@ export enum Status {
   Locked = "locked"
 }
 
+export interface ICreatedBy{
+  _id: string,
+  username: string,
+  socketID: string
+}
+
 export interface IOffer {
-  _id: string
-  createdBy: string,
-  tradingWith?: string,
+  _id: string,
+  itemOffering: Item
+  createdBy: ICreatedBy,
+  tradingWith?: IUser | {},
   status: Status,
 }

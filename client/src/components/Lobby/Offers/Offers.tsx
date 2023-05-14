@@ -94,7 +94,7 @@ const Offers = () => {
             hover_btn_SFX.play();
           }}
         >
-          Open Offer
+          Make Offer
         </button>
       </div>
     </div>

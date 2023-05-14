@@ -12,9 +12,11 @@ import Lobby from "./components/Lobby/Lobby";
 import { StickGame } from "./Game/StickGame";
 import Game from "./Game/gameIndex";
 import { transitionContext } from "./context/transitionContext";
+import ErrorModal from "./components/UI/ErrorModal";
 
 const App = () => {
-  const { user, gameState } = useContext(userContext);
+  const { user, gameState, errorMessage} =
+    useContext(userContext);
   const screenRef = useRef<HTMLDivElement>(null);
   const [screenStyle, setScreenStyle] = useState<boolean>(false);
   const containerRef = useScaleContainer(1600);
@@ -107,6 +109,14 @@ const App = () => {
       >
         <div className="main-game-wrapper" ref={screenRef}>
           {!user && gameState == IGameState.Auth && <AuthScreen />}
+          <CSSTransition
+            in={errorMessage !== null}
+            timeout={300}
+            unmountOnExit
+            classNames={"grow"}
+          >
+            <ErrorModal/>
+          </CSSTransition>
           <CSSTransition
             in={gameState === IGameState.Main}
             timeout={300}

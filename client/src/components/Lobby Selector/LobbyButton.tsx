@@ -20,8 +20,8 @@ interface Props {
 }
 
 function LobbyButton({ room_name, type, lobby, setFromLobby }: Props) {
-  const { lobbyDispatch, setLoading} = useContext(lobbyContext);
-  const { setGameState, socket, user } = useContext(userContext);
+  const { lobbyDispatch} = useContext(lobbyContext);
+  const { setGameState, socket, user,setLoading } = useContext(userContext);
   const isVIP: boolean = false;
   const { setSelectorTimeout } = useContext(transitionContext);
   /* const [modalIsOpen, setModalIsOpen] = useState<boolean>(false); */
