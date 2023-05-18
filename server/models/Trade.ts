@@ -9,9 +9,17 @@ export enum Status {
 
 export interface ITrade extends Document{
   /* room: Types.ObjectId, */
-  itemOffering: Types.ObjectId | Item
+  itemOffering: Types.ObjectId
   createdBy: Types.ObjectId,
-  tradingWith?: Types.ObjectId | IUser,
+  tradingWith?: Types.ObjectId,
+  status: Status,
+}
+
+export interface IOffer{
+  _id: string
+  itemOffering: Item
+  createdBy: IUser,
+  tradingWith?: IUser,
   status: Status,
 }
 

@@ -22,7 +22,7 @@
     }
 
     > img {
-      border: 2px solid white;
+      /* border: 2px solid white; */
       aspect-ratio: 4/3;
       width: 3.7rem;
       height: 100%;
@@ -34,3 +34,4 @@
     opacity: .5;
     pointer-events: none;
   }
+

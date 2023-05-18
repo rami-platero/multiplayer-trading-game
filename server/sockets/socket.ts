@@ -6,6 +6,7 @@ import { offerEvents } from "./offerEvents";
 import { chatEvents } from "./chatEvents";
 import { lobbyEvents } from "./lobbyEvents";
 import { authEvents } from "./authEvents";
+import { tradeEvents } from "./tradeEvents";
 
 export interface ConnectedUsers {
   [username: string]: Socket;
@@ -60,11 +61,14 @@ export const initSocket = (): void => {
     lobbyEvents(socket, currentLobby);
     chatEvents(socket);
     offerEvents(io, socket, currentLobby);
+    tradeEvents(socket,io)
 
     socket.on("disconnect", async () => {
-      if (currentLobby) {
+      if (currentLobby.value!=="") {
+        console.log("Leaving lobby")
         socket.leave(currentLobby.value);
         const user = await User.findOne({ socketID: socket.id });
+        socket.broadcast.to(currentLobby.value).emit("user-leaves", user?._id)
         await Room.updateOne(
           { name: currentLobby.value },
           {

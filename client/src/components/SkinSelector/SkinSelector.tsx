@@ -19,8 +19,12 @@ interface Props {
 }
 
 const SkinSelector = ({ handleState }: Props) => {
-  const { user, socket } = useContext(userContext);
+  const { user, socket, authDispatch } = useContext(userContext);
   const [currentSkin, setCurrentSkin] = useState(user?.skin.badgeColor);
+
+  socket?.off("changed-skin").on("changed-skin", (newSkin) => {
+    authDispatch({ type: "CHANGE_SKIN", payload: newSkin });
+  });
 
   const filteredItems = user?.items.filter((item) => {
     return item.itemId.isSkin;

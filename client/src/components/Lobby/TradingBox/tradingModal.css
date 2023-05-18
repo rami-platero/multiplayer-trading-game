@@ -1,12 +1,194 @@
-.trading-modal{
+.trading-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 800px;
+  height: 450px;
+  background-color: rgba(14, 14, 14, 0.733);
+  z-index: 9;
+  display: flex;
+  justify-content: center;
+  gap: 17rem;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+
+  > hr {
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
     bottom: 0;
-    margin: auto;
-    width: 750px;
-    height: 450px;
-    background-color: rgb(14, 14, 14);
-    z-index: 9;
+    margin: 0 auto;
+    height: 75%;
+  }
+
+  .actions-buttons {
+    display: flex;
+    gap: 2rem;
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    bottom: 2rem;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+  }
+
+  .user-offer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    > h2 {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .your-offer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    > h2 {
+      margin-bottom: 1rem;
+    }
+
+    .trading-items {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      grid-gap: 1rem;
+      margin-bottom: 2rem;
+    }
+  }
+
+  .coins-slot {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    .input-box {
+      position: relative;
+      width: 12rem;
+      height: 2rem;
+      > input {
+        width: 100%;
+        height: 100%;
+        outline: none;
+        text-align: right;
+        font-family: "Space Mono";
+        font-size: 1rem;
+        border: none;
+        background-color: rgba(71, 71, 71, 0.548);
+        color: #ffd30d;
+        border: 2px solid #ffd207;
+        padding: 1rem 1rem 1rem 2rem;
+      }
+      > svg {
+        color: rgb(255, 226, 95);
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        margin: auto;
+        z-index: 10;
+      }
+    }
+    >button{
+      background-color: #ffe260;
+      cursor: pointer;
+      border: none;
+      width: fit-content;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .3rem .7rem;
+      font-family: "Space Mono";
+      font-weight: bold;
+      transition: 0.2s ease-in-out;
+      &:hover{
+      transition: 0.2s ease-in-out;
+      background-color: #ffd723;
+      }
+    }
+  }
+}
+
+.trading-modal .actions-buttons {
+  > button {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    font-family: "Space Mono";
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.3rem 0.7rem;
+    cursor: pointer;
+  }
+
+  .close-offer-btn {
+    background-color: rgb(255, 72, 72);
+    transition: 0.2s ease-in-out;
+    border: none;
+
+    &:hover {
+      background-color: rgb(255, 103, 103);
+      transition: 0.2s ease-in-out;
+    }
+  }
+
+  .lock-offer-btn {
+    background-color: rgb(149, 255, 100);
+    border: none;
+    transition: 0.2s ease-in-out;
+
+    &:hover {
+      background-color: rgb(170, 255, 130);
+      transition: 0.2s ease-in-out;
+    }
+  }
+}
+
+.trading-modal .your-offer .trading-items {
+  > button,
+  > img {
+    width: 3.3rem;
+    height: 3.3rem;
+
+    > svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+
+  > button {
+    cursor: pointer;
+  }
+
+  .add-item {
+    border: none;
+    background-color: rgba(121, 201, 255, 0.932);
+    transition: 0.2s ease-in-out;
+
+    &:hover {
+      background-color: rgba(137, 229, 252, 0.932);
+      transition: 0.2s ease-in-out;
+    }
+  }
+
+  .remove-item {
+    border: none;
+    background-color: rgba(255, 86, 86, 0.842);
+    transition: 0.2s ease-in-out;
+
+    &:hover {
+      background-color: rgba(255, 129, 107, 0.842);
+      transition: 0.2s ease-in-out;
+    }
+  }
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  display: none;
 }

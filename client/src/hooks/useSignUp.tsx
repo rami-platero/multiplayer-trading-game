@@ -4,7 +4,7 @@ import { userContext } from "../context/UserContext";
 import { IGameState } from "../interfaces/interfaces";
 
 const useSignUp = () => {
-  const { authDispatch, socketID,setGameState,setLoading } = useContext(userContext);
+  const { authDispatch, socketID,setGameState,setLoading,socket } = useContext(userContext);
 
   const signup = async (
     form: IForm,
@@ -28,6 +28,7 @@ const useSignUp = () => {
     if (res.ok) {
       setLoading(false);
       localStorage.setItem("user", JSON.stringify(json));
+      socket?.emit('login', json?.username)
       authDispatch({ type: "LOGIN", payload: json });
       setGameState(IGameState.Main)
     }

@@ -2,8 +2,8 @@ import {
   createContext,
   useReducer,
   useState,
-  SetStateAction,
   useContext,
+  SetStateAction,
 } from "react";
 import {
   ContextProps,
@@ -17,12 +17,7 @@ import {
   LobbyInitialState,
   lobbyReducer,
 } from "../reducers/lobbyReducer";
-import { userContext } from "./UserContext";
-
-export enum InventoryState {
-  Offer = "offer",
-  Trading = "trading",
-}
+import { InventoryState, userContext } from "./UserContext";
 
 export enum OfferState {
   None = "none",
@@ -34,15 +29,15 @@ interface ILobbyContext {
   lobbyDispatch: React.Dispatch<LobbyActionType>;
   lobbyUsers: IUserinLobby[] | null;
   offers: IOffer[] | null;
-  setInventoryState: React.Dispatch<SetStateAction<InventoryState | null>>;
-  inventoryState: InventoryState | null;
   offerState: OfferState;
   makeOffer: (item: Item) => void;
   closeOffer: () => void;
   itemOffering: Item | null;
-  openOffer: (offer: IOffer)=>void;
+  openOffer: (offer: IOffer) => void;
   isTrading: boolean;
-  closeTrade: () => void
+  currentTradeOffer: IOffer | null;
+  setIsTrading: React.Dispatch<SetStateAction<boolean>>
+  setCurrentTradeOffer: React.Dispatch<SetStateAction<IOffer | null>>
 }
 
 export const lobbyContext = createContext<ILobbyContext>({
@@ -50,15 +45,15 @@ export const lobbyContext = createContext<ILobbyContext>({
   lobbyDispatch: (): void => {},
   lobbyUsers: [],
   offers: [],
-  setInventoryState: (): void => {},
-  inventoryState: null,
   offerState: OfferState.None,
   makeOffer: () => {},
   closeOffer: () => {},
   itemOffering: null,
   openOffer: () => {},
   isTrading: false,
-  closeTrade: ()=>{}
+  currentTradeOffer: null,
+  setIsTrading: ()=>{},
+  setCurrentTradeOffer: ()=>{}
 });
 
 const LobbyContextProvider = ({ children }: ContextProps) => {
@@ -66,16 +61,36 @@ const LobbyContextProvider = ({ children }: ContextProps) => {
     lobbyReducer,
     LobbyInitialState
   );
-  const [inventoryState, setInventoryState] = useState<InventoryState | null>(
-    null
-  );
   const [offerState, setOfferState] = useState<OfferState>(OfferState.None);
   const [itemOffering, setItemOffering] = useState<Item | null>(null);
-  const { socket, user } = useContext(userContext);
-  const [currentTradeOffer, setCurrentTradeOffer] = useState<IOffer | null>(null)
-  const [isTrading, setIsTrading] = useState(false)
+  const { socket, user,setInventoryState,closeInventory } = useContext(userContext);
+  const [currentTradeOffer, setCurrentTradeOffer] = useState<IOffer | null>(
+    null
+  );
+  const [isTrading, setIsTrading] = useState(false);
+
+  socket?.off("send-new-offer").on("send-new-offer", (offers) => {
+    lobbyDispatch({ type: "MAKE_OFFER", payload: offers.offers });
+  });
+
+  socket?.off("remove-offer").on("remove-offer", (itemID) => {
+    lobbyDispatch({ type: "REMOVE_OFFER", payload: itemID });
+  });
+
+  socket?.off("lock-offer").on("lock-offer", (offer) => {
+    lobbyDispatch({ type: "LOCK_OFFER", payload: { ...offer } });
+  });
+
+  socket?.off("unlock-offer").on("unlock-offer", (ID) => {
+    lobbyDispatch({ type: "UNLOCK_OFFER", payload: ID });
+  });
+
+  socket?.off("user:leaves").on("user-leaves", (id) => {
+    lobbyDispatch({ type: "USER:LEAVES", payload: id });
+  });
 
   const makeOffer = (item: Item) => {
+    closeInventory()
     setInventoryState(null);
     setItemOffering(item);
     setOfferState(OfferState.Offering);
@@ -91,32 +106,30 @@ const LobbyContextProvider = ({ children }: ContextProps) => {
     lobbyDispatch({ type: "REMOVE_OFFER", payload: itemOffering?._id! });
   };
 
-  const openOffer = (offer: IOffer)=>{
-    setIsTrading(true)
-    setCurrentTradeOffer(offer)
-    socket?.emit('USER:OPEN_OFFER', {offer,user})
-  }
+  const openOffer = (offer: IOffer) => {
+    if(!isTrading && currentTradeOffer==null){
+      setInventoryState(InventoryState.Trading)
+      setIsTrading(true);
+      setCurrentTradeOffer(offer);
+      socket?.emit("USER:OPEN_OFFER", { offer, user });
+    }
+  };
 
-  const closeTrade = ()=>{
-    setIsTrading(false)
-    socket?.emit('USER:CLOSE_TRADE', currentTradeOffer)
-    setCurrentTradeOffer(null)
-  }
 
   return (
     <lobbyContext.Provider
       value={{
         ...lobbyState,
         lobbyDispatch,
-        inventoryState,
-        setInventoryState,
         offerState,
         makeOffer,
         closeOffer,
         itemOffering,
         openOffer,
         isTrading,
-        closeTrade
+        currentTradeOffer,
+        setIsTrading,
+        setCurrentTradeOffer
       }}
     >
       {children}

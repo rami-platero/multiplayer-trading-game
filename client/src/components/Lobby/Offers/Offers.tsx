@@ -1,19 +1,23 @@
 import "./offers.css";
-import { useContext, useRef, useState } from "react";
-import { InventoryState, lobbyContext } from "../../../context/LobbyContext";
+import { useContext, useRef, useEffect } from "react";
+import { lobbyContext } from "../../../context/LobbyContext";
 import OfferItem from "./OfferItem";
 import Inventory from "../../Inventory/Inventory";
 import { CSSTransition } from "react-transition-group";
-import { btn_click_SFX, hover_btn_SFX } from "../../SFX";
-import { userContext } from "../../../context/UserContext";
+import { hover_btn_SFX } from "../../SFX";
+import { InventoryState, userContext } from "../../../context/UserContext";
 
 const Offers = () => {
   const intervalLeftRef = useRef<any>();
   const intervalRightRef = useRef<any>();
   const containerRef = useRef<HTMLDivElement>(null);
-  const { offers, setInventoryState, inventoryState, lobbyDispatch } =
+  const { offers} =
     useContext(lobbyContext);
-  const { socket } = useContext(userContext);
+  const { openInventory, isInventoryOpen,setInventoryState,inventoryState } = useContext(userContext);
+
+  useEffect(() => {
+    setInventoryState(InventoryState.Offer);
+  }, []);
 
   const handleLeft = () => {
     if (containerRef.current!.scrollLeft !== 0) {
@@ -54,15 +58,12 @@ const Offers = () => {
     clearInterval(intervalRightRef.current);
   };
 
-  const makeOffer = () => {
-    btn_click_SFX.play();
-    setInventoryState(InventoryState.Offer);
-  };
+ 
 
   return (
     <div className="offers-container">
       <CSSTransition
-        in={inventoryState == InventoryState.Offer}
+        in={isInventoryOpen === true && inventoryState === InventoryState.Offer}
         timeout={200}
         classNames={"grow"}
         unmountOnExit
@@ -89,7 +90,7 @@ const Offers = () => {
       </div>
       <div className="offers-footer">
         <button
-          onClick={makeOffer}
+          onClick={openInventory}
           onMouseEnter={() => {
             hover_btn_SFX.play();
           }}

@@ -2,8 +2,8 @@ import "./game.css";
 import { BsFillBoxFill } from "react-icons/bs";
 import { FaUsers } from "react-icons/fa";
 import { BiUser } from "react-icons/bi";
-import { useContext, useState } from "react";
-import { userContext } from "../../context/UserContext";
+import { useContext, useEffect, useState } from "react";
+import { InventoryState, userContext } from "../../context/UserContext";
 import useLogOut from "../../hooks/useLogout";
 import Profile from "../Profile/Profile";
 import { IGameState } from "../../interfaces/interfaces";
@@ -27,24 +27,19 @@ export enum IMainState {
 }
 
 const MainGame = () => {
-  const { user, setGameState, socket, authDispatch } = useContext(userContext);
+  const { user, setGameState,isInventoryOpen,openInventory,setInventoryState } = useContext(userContext);
   const { changeFrom, setChangeFrom } = useContext(transitionContext);
   const { logout } = useLogOut();
   const [mainState, setMainState] = useState<IMainState | null>(null);
 
-  socket?.off("changed-skin").on("changed-skin", (newSkin) => {
-    authDispatch({ type: "CHANGE_SKIN", payload: newSkin });
-  });
+  useEffect(()=>{
+    setInventoryState(null)
+  },[])
 
   const handleClickMarketplace = (): void => {
     setChangeFrom(TransitionFrom.selector);
     setGameState(IGameState.Selector);
     btn_click_SFX.play();
-  };
-
-  const handleClickInventory = () => {
-    btn_click_SFX.play();
-    setMainState(IMainState.Inventory);
   };
 
   const hoverSFX = () => {
@@ -67,12 +62,12 @@ const MainGame = () => {
         <Profile setMainState={setMainState} />
       </CSSTransition>
       <CSSTransition
-        in={mainState == IMainState.Inventory}
+        in={isInventoryOpen === true}
         timeout={200}
         classNames={"grow"}
         unmountOnExit
       >
-        <Inventory handleState={handleState} />
+        <Inventory />
       </CSSTransition>
       <CSSTransition
         in={mainState == IMainState.SkinSelector}
@@ -100,7 +95,7 @@ const MainGame = () => {
             <FaUsers />
             MARKETPLACE
           </button>
-          <button onMouseEnter={hoverSFX} onClick={handleClickInventory}>
+          <button onMouseEnter={hoverSFX} onClick={openInventory}>
             <BsFillBoxFill />
             INVENTORY
           </button>

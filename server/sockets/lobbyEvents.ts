@@ -29,18 +29,18 @@ export const lobbyEvents = (socket:Socket, currentLobby: ICurrentLobby) =>{
       });
   
       socket.on("leave-lobby", async (obj) => {
-        const { lobby, user }: { lobby: string; user: IUser } = obj;
+        const { lobby, _id }: { lobby: string; _id: string } = obj;
         await Room.updateMany(
           { name: lobby },
           {
             $pull: {
-              users: user._id,
+              users: _id,
             },
           }
         );
   
         currentLobby.value = "";
         socket.leave(lobby);
-        socket.broadcast.to(lobby).emit("user-leaves", user._id);
+        socket.broadcast.to(lobby).emit("user-leaves", _id);
       });
 }
