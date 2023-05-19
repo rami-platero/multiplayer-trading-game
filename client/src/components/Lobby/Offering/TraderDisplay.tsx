@@ -1,7 +1,6 @@
 import { tradingContext } from "../../../context/TradingContext";
 import { useContext } from "react";
 import "./traderDisplay.css";
-import { userContext } from "../../../context/UserContext";
 
 const TraderDisplay = () => {
   const { tradingWith, items } = useContext(tradingContext);

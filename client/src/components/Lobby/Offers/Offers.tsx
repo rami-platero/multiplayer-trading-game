@@ -14,6 +14,7 @@ const Offers = () => {
   const { offers} =
     useContext(lobbyContext);
   const { openInventory, isInventoryOpen,setInventoryState,inventoryState } = useContext(userContext);
+  const {isTrading} = useContext(lobbyContext)
 
   useEffect(() => {
     setInventoryState(InventoryState.Offer);
@@ -90,6 +91,7 @@ const Offers = () => {
       </div>
       <div className="offers-footer">
         <button
+        disabled={isTrading? true: false}
           onClick={openInventory}
           onMouseEnter={() => {
             hover_btn_SFX.play();

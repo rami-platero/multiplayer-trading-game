@@ -1,3 +1,12 @@
+@keyframes item {
+  0% {transform: scale(1.5)}
+  100% {transform: scale(1)}
+}
+
+.trading-display .trading-items-slots .item-slot img{
+  animation: item 0.2s ease-in-out;
+}
+
 .trading-display {
   position: absolute;
   left: 0;
@@ -36,7 +45,7 @@
       }
     }
   }
-
+ 
   .actions-buttons {
     display: flex;
     gap: 1rem;

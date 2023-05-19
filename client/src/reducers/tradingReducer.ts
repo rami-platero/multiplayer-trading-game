@@ -15,7 +15,8 @@ interface ISlotItem {
 
 export type ActionType =
   | { type: "ADD_ITEM"; payload: ISlotItem }
-  | { type: "RESET" };
+  | { type: "RESET" }
+  | { type: "REMOVE_ITEM"; payload: number} | {type: "ADD_AMOUNT_ITEM", payload: number};
 
 export const tradingReducer = (state: IState, action: ActionType): IState => {
   switch (action.type) {
@@ -25,6 +26,16 @@ export const tradingReducer = (state: IState, action: ActionType): IState => {
       return { ...state, items: [...newItems] };
     case "RESET":
       return initalTradingItemsState;
+    case "REMOVE_ITEM":
+      const itemsRemove: (IInventory | null)[] = [...state.items];
+      itemsRemove.splice(action.payload, 1, null);
+      return { ...state, items: [...itemsRemove] };
+    case "ADD_AMOUNT_ITEM":
+      const itemsUpdatedAmount = state.items.map((item,index)=>{
+        if(index==action.payload){
+          return {...item, count: item?.count!+1}
+        }
+      })
     default:
       return state;
   }

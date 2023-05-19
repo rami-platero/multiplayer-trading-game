@@ -11,10 +11,20 @@
     transition: 0.2s ease-in-out;
     z-index: 5;
     border: 2px solid white;
+    position: relative;
 
     &:hover {
       transform: scale(1.2);
       transition: 0.2s ease-in-out;
+    }
+
+    .item-count{
+      position: absolute;
+      right: 0;
+      bottom: -.5rem;
+      font-family: "Space Mono";
+      font-weight: bold;
+      font-size: 1.5rem;
     }
 
     > img {

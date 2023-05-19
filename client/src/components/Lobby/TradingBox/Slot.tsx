@@ -13,7 +13,7 @@ interface Props {
 
 const Slot = ({ item, index }: Props) => {
   const { openInventory } = useContext(userContext);
-  const {setCurrentIndexItem} = useContext(tradingContext)
+  const {setCurrentIndexItem,removeItem,items} = useContext(tradingContext)
 
   const handleSlot = ()=>{
     if(item==null){
@@ -23,18 +23,18 @@ const Slot = ({ item, index }: Props) => {
   }
 
   const addItemAmount = ()=>{
-    console.log("adding amount")
+    if(item?.count!==items[index]?.count){
+        console.log("adding amount")
+    }
   }
 
-  const removeItem = ()=>{
-    
-  }
 
   return (
     <button className={`add-item ${item !== null && "disabled"}`} onClick={handleSlot}>
       {item === null? <GrAdd />: <img className={`item ${item.itemId.type}`} src={`../../src/assets/items/${item.itemId.image}`}/>}
-      {item?.count==1 && item!==null && <GrAdd onClick={addItemAmount}/>}
-      {item?.count==1 && item!==null && <GrFormClose onClick={()=>{removeItem()}}/>}
+      {item!==null && <GrAdd onClick={addItemAmount}/>}
+      {item!==null && <GrFormClose onClick={()=>{removeItem(index)}}/>}
+      {item?.count!>1 && <p>{item?.count}</p>}
     </button>
   );
 };

@@ -11,12 +11,13 @@ import {
   useReducer,
   SetStateAction,
 } from "react";
-import { ErrorType, userContext } from "./UserContext";
+import { ErrorType, InventoryState, userContext } from "./UserContext";
 import { OfferState, lobbyContext } from "./LobbyContext";
 import {
   initalTradingItemsState,
   tradingReducer,
 } from "../reducers/tradingReducer";
+import { place_item_SFX } from "../components/SFX";
 
 export enum OfferingState {
   Offering = "offering",
@@ -29,7 +30,8 @@ interface ITradingContext {
   items: (IInventory | null)[];
   addItem: (item: IInventory) => void;
   setCurrentIndexItem: React.Dispatch<SetStateAction<number | null>>;
-  closeTrade: ()=>void
+  closeTrade: () => void;
+  removeItem: (index: number) => void;
 }
 
 export const tradingContext = createContext<ITradingContext>({
@@ -39,6 +41,7 @@ export const tradingContext = createContext<ITradingContext>({
   addItem: () => {},
   setCurrentIndexItem: () => {},
   closeTrade: () => {},
+  removeItem: () => {},
 });
 
 const TradingContextProvider = ({ children }: ContextProps) => {
@@ -60,9 +63,9 @@ const TradingContextProvider = ({ children }: ContextProps) => {
     closeOffer,
     currentTradeOffer,
     setIsTrading,
-    setCurrentTradeOffer
+    setCurrentTradeOffer,
   } = useContext(lobbyContext);
-  const { closeInventory } = useContext(userContext);
+  const { closeInventory, setInventoryState } = useContext(userContext);
 
   const displayTrader = (trader: IUser) => {
     setTradingWith(trader);
@@ -98,12 +101,25 @@ const TradingContextProvider = ({ children }: ContextProps) => {
 
   const closeTrade = () => {
     setIsTrading(false);
+    setInventoryState(InventoryState.Offer);
     socket?.emit("USER:CLOSE_TRADE", currentTradeOffer);
     setTimeout(() => {
       setCurrentTradeOffer(null);
-      tradingDispatch({type: "RESET"})
+      tradingDispatch({ type: "RESET" });
     }, 300);
   };
+
+  const removeItem = (index: number) => {
+    tradingDispatch({ type: "REMOVE_ITEM", payload: index });
+    socket?.emit("TRADER:REMOVE-ITEM", {
+      index,
+      socketID: currentTradeOffer?.createdBy.socketID,
+    });
+  };
+
+  socket?.off("TRADE:REMOVE-ITEM").on("TRADE:REMOVE-ITEM", (index) => {
+    tradingDispatch({ type: "REMOVE_ITEM", payload: index });
+  });
 
   function handleSocketUserEvents() {
     socket?.off("error").on("error", ({ message, type }) => {
@@ -130,6 +146,7 @@ const TradingContextProvider = ({ children }: ContextProps) => {
   handleSocketUserEvents();
 
   socket?.off("TRADE:ADD-ITEM").on("TRADE:ADD-ITEM", (obj) => {
+    place_item_SFX.play();
     tradingDispatch({ type: "ADD_ITEM", payload: obj });
   });
 
@@ -141,7 +158,8 @@ const TradingContextProvider = ({ children }: ContextProps) => {
         ...tradingState,
         addItem,
         setCurrentIndexItem,
-        closeTrade
+        closeTrade,
+        removeItem,
       }}
     >
       {children}
