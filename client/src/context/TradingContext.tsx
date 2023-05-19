@@ -32,6 +32,7 @@ interface ITradingContext {
   setCurrentIndexItem: React.Dispatch<SetStateAction<number | null>>;
   closeTrade: () => void;
   removeItem: (index: number) => void;
+  addItemAmount: (item: IInventory, index: number) => void;
 }
 
 export const tradingContext = createContext<ITradingContext>({
@@ -42,6 +43,7 @@ export const tradingContext = createContext<ITradingContext>({
   setCurrentIndexItem: () => {},
   closeTrade: () => {},
   removeItem: () => {},
+  addItemAmount: () => {},
 });
 
 const TradingContextProvider = ({ children }: ContextProps) => {
@@ -67,12 +69,10 @@ const TradingContextProvider = ({ children }: ContextProps) => {
   } = useContext(lobbyContext);
   const { closeInventory, setInventoryState } = useContext(userContext);
 
-  const displayTrader = (trader: IUser) => {
+  socket?.off("new-trader").on("new-trader", (trader:IUser)=>{
     setTradingWith(trader);
     setOfferingState(OfferingState.Trading);
-  };
-
-  socket?.off("new-trader").on("new-trader", (trader) => displayTrader(trader));
+  })
 
   socket?.off("trader-leaves").on("trader-leaves", () => {
     setOfferingState(OfferingState.Offering);
@@ -88,7 +88,7 @@ const TradingContextProvider = ({ children }: ContextProps) => {
       closeInventory();
       tradingDispatch({
         type: "ADD_ITEM",
-        payload: { item, index: currentIndexItem! },
+        payload: { item: { ...item, count: 1 }, index: currentIndexItem! },
       });
       socket?.emit("TRADER:ADD-ITEM", {
         item: item.itemId,
@@ -117,8 +117,25 @@ const TradingContextProvider = ({ children }: ContextProps) => {
     });
   };
 
+  const addItemAmount = (item: IInventory, index: number) => {
+    const userItem = user?.items.find((it) => {
+      return it.itemId._id === item.itemId._id;
+    });
+    if (userItem?.count !== tradingState.items[index]?.count) {
+      tradingDispatch({ type: "ADD_AMOUNT_ITEM", payload: index });
+      socket?.emit("TRADER:ADDS_ITEM_AMOUNT", {
+        index,
+        socketID: currentTradeOffer?.createdBy.socketID,
+      });
+    }
+  };
+
   socket?.off("TRADE:REMOVE-ITEM").on("TRADE:REMOVE-ITEM", (index) => {
     tradingDispatch({ type: "REMOVE_ITEM", payload: index });
+  });
+
+  socket?.off("TRADE:ADD_ITEM_AMOUNT").on("TRADE:ADD_ITEM_AMOUNT", (index) => {
+    tradingDispatch({ type: "ADD_AMOUNT_ITEM", payload: index });
   });
 
   function handleSocketUserEvents() {
@@ -160,6 +177,7 @@ const TradingContextProvider = ({ children }: ContextProps) => {
         setCurrentIndexItem,
         closeTrade,
         removeItem,
+        addItemAmount,
       }}
     >
       {children}

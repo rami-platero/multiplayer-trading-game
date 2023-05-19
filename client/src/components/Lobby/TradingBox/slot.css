@@ -28,6 +28,16 @@
       background-color: rgba(137, 229, 252, 0.932);
       transition: 0.2s ease-in-out;
     }
+
+    >p{
+      color: white;
+      font-family: "Space Mono";
+      font-weight: bold;
+      font-size: 1.5rem;
+      position: absolute;
+      bottom: -5px;
+      right: 3px;
+    }
   }
 
   .add-item.disabled {

@@ -14,6 +14,7 @@ const TraderDisplay = () => {
               {item !== null && (
                 <img src={`../../src/assets/items/${item.itemId.image}`} />
               )}
+              {item!== null && item.count>1 && <p>{item?.count}</p>}
             </div>
           );
         })}

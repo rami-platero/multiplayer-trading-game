@@ -55,6 +55,7 @@ export const offerEvents = (io:SocketServer ,socket:Socket, currentLobby: ICurre
   
       socket.on("USER:CLOSE_TRADE", async (offer:IOffer) => {
         if(offer._id){
+          console.log("closes trade")
           io.to(offer.createdBy.socketID).emit('trader-leaves')
           io.to(currentLobby.value).emit('unlock-offer', offer._id)
           await Trade.updateOne({_id: offer._id},{

@@ -87,6 +87,6 @@ export interface IOffer {
   _id: string,
   itemOffering: Item
   createdBy: ICreatedBy,
-  tradingWith?: IUser | {},
+  tradingWith?: IUser,
   status: Status,
 }

@@ -31,11 +31,11 @@ export const tradingReducer = (state: IState, action: ActionType): IState => {
       itemsRemove.splice(action.payload, 1, null);
       return { ...state, items: [...itemsRemove] };
     case "ADD_AMOUNT_ITEM":
-      const itemsUpdatedAmount = state.items.map((item,index)=>{
-        if(index==action.payload){
-          return {...item, count: item?.count!+1}
-        }
+      console.log("adding")
+      const itemsWithUpdatedAmount: (IInventory | null)[] = state.items.map((item,index)=>{
+        return index==action.payload && item!==null? {...item, count: item?.count+1} : item
       })
+      return {...state, items: [...itemsWithUpdatedAmount]}
     default:
       return state;
   }

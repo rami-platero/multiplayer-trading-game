@@ -14,4 +14,8 @@ export const tradeEvents = (socket:Socket, io: Server)=>{
         const {index,socketID}:{index:number,socketID:string}=obj
         io.to(socketID).emit('TRADE:REMOVE-ITEM', index)
     })
+    socket.on('TRADER:ADD_ITEM_AMOUNT', obj => {
+        const {index,socketID}:{index:number,socketID:string}=obj
+        io.to(socketID).emit("TRADE:ADD_ITEM_AMOUNT", index)
+    })
 }
