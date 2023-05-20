@@ -16,6 +16,9 @@ const TradingModal = () => {
   const { isInventoryOpen, inventoryState } = useContext(userContext);
   const {closeTrade} = useContext(tradingContext)
   const { items } = useContext(tradingContext);
+
+  
+
   return (
     <div className="trading-modal">
       <div className="user-offer">

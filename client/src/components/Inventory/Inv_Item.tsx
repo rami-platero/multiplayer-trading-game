@@ -11,9 +11,28 @@ interface Props {
 
 const Inv_Item = ({ item }: Props) => {
 
-  const {makeOffer}= useContext(lobbyContext)
-  const {inventoryState} = useContext(userContext)
-  const {addItem} = useContext(tradingContext)
+  const {makeOffer,currentTradeOffer}= useContext(lobbyContext)
+  const {inventoryState,closeInventory,socket} = useContext(userContext)
+  const {tradingDispatch,items,setCurrentIndexItem,currentIndexItem} = useContext(tradingContext)
+
+  const addItem = (item: IInventory) => {
+    const result = items.some((it) => {
+      return it?.itemId.name == item.itemId.name;
+    });
+    if (!result && item.itemId._id !== currentTradeOffer?.itemOffering._id) {
+      closeInventory();
+      tradingDispatch({
+        type: "ADD_ITEM",
+        payload: { item: { ...item, count: 1 }, index: currentIndexItem! },
+      });
+      socket?.emit("TRADER:ADD-ITEM", {
+        item: item.itemId,
+        socketID: currentTradeOffer?.createdBy.socketID,
+        index: currentIndexItem,
+      });
+      setCurrentIndexItem(null);
+    }
+  };
 
   const handleItem = ()=>{
     if(inventoryState==InventoryState.Offer){
@@ -23,6 +42,7 @@ const Inv_Item = ({ item }: Props) => {
       addItem(item)
     }
   }
+
 
   return (
     <>

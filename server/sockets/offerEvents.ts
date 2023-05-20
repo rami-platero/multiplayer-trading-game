@@ -36,12 +36,6 @@ export const offerEvents = (io:SocketServer ,socket:Socket, currentLobby: ICurre
       socket.on("USER:OPEN_OFFER", async (obj) => {
         const { offer, user }: { offer: IOffer; user: IUser } = obj;
         const {socketID, username, _id, roles, skin, ...rest} = user
-        io.to(offer.createdBy.socketID).emit('new-trader', {socketID, username, _id, roles, skin})
-        io.to(currentLobby.value).emit("lock-offer", {
-          ...offer,
-          status: Status.Locked,
-          tradingWith: user,
-        });
         await Trade.updateOne(
           { _id: offer._id },
           {
@@ -50,20 +44,26 @@ export const offerEvents = (io:SocketServer ,socket:Socket, currentLobby: ICurre
               tradingWith: user._id,
             },
           }
-        );
-      });
+          );
+          io.to(offer.createdBy.socketID).emit('new-trader', {socketID, username, _id, roles, skin})
+          io.to(currentLobby.value).emit("lock-offer", {
+            ...offer,
+            status: Status.Locked,
+            tradingWith: user,
+          });
+        });
   
       socket.on("USER:CLOSE_TRADE", async (offer:IOffer) => {
         if(offer._id){
           console.log("closes trade")
+          await Trade.updateOne({_id: offer._id},{
+            "status": Status.Open,
+            $unset: {
+              tradingWith: 1
+            }
+          })
           io.to(offer.createdBy.socketID).emit('trader-leaves')
           io.to(currentLobby.value).emit('unlock-offer', offer._id)
-          await Trade.updateOne({_id: offer._id},{
-              "status": Status.Open,
-              $unset: {
-                  tradingWith: 1
-              }
-          })
         }
       })
 }

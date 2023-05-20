@@ -1,12 +1,27 @@
 import { lobbyContext } from "../../../context/LobbyContext";
 import { OfferingState, tradingContext } from "../../../context/TradingContext";
+import { userContext } from "../../../context/UserContext";
+import { IUser } from "../../../interfaces/interfaces";
 import TraderDisplay from "./TraderDisplay";
 import "./offering.css";
 import { useContext } from "react";
 
 const Offering = () => {
   const { itemOffering, closeOffer } = useContext(lobbyContext);
-  const { offeringState } = useContext(tradingContext);
+  const { offeringState, setTradingWith,setOfferingState,tradingDispatch } = useContext(tradingContext);
+  const {socket} = useContext(userContext)
+
+  socket?.off("new-trader").on("new-trader", (trader:IUser)=>{
+    setTradingWith(trader);
+    setOfferingState(OfferingState.Trading);
+  })
+
+  socket?.off("trader-leaves").on("trader-leaves", () => {
+    console.log("trader-leaves")
+    setOfferingState(OfferingState.Offering);
+    setTradingWith(null);
+    tradingDispatch({ type: "RESET" });
+  });
 
   return (
     <div className="offering-container">

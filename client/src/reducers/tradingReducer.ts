@@ -13,12 +13,12 @@ interface ISlotItem {
   index: number;
 }
 
-export type ActionType =
+export type TradingActionType =
   | { type: "ADD_ITEM"; payload: ISlotItem }
   | { type: "RESET" }
   | { type: "REMOVE_ITEM"; payload: number} | {type: "ADD_AMOUNT_ITEM", payload: number};
 
-export const tradingReducer = (state: IState, action: ActionType): IState => {
+export const tradingReducer = (state: IState, action: TradingActionType): IState => {
   switch (action.type) {
     case "ADD_ITEM":
       const newItems: (IInventory | null)[] = [...state.items];

@@ -1,9 +1,27 @@
 import { tradingContext } from "../../../context/TradingContext";
 import { useContext } from "react";
 import "./traderDisplay.css";
+import { userContext } from "../../../context/UserContext";
+import { place_item_SFX } from "../../SFX";
 
 const TraderDisplay = () => {
-  const { tradingWith, items } = useContext(tradingContext);
+  const { tradingWith, items,tradingDispatch } = useContext(tradingContext);
+  const {socket} = useContext(userContext)
+
+  socket?.off("TRADE:REMOVE-ITEM").on("TRADE:REMOVE-ITEM", (index) => {
+    tradingDispatch({ type: "REMOVE_ITEM", payload: index });
+  });
+
+  socket?.off("TRADE:ADD_ITEM_AMOUNT").on("TRADE:ADD_ITEM_AMOUNT", (index) => {
+    console.log("index is", index)
+    tradingDispatch({ type: "ADD_AMOUNT_ITEM", payload: index });
+  });
+
+  socket?.off("TRADE:ADD-ITEM").on("TRADE:ADD-ITEM", (obj) => {
+    place_item_SFX.play();
+    tradingDispatch({ type: "ADD_ITEM", payload: obj });
+  });
+
   return (
     <div className="trading-display">
       <h3>Trading with {tradingWith?.username}</h3>

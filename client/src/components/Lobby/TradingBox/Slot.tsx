@@ -22,7 +22,6 @@ const Slot = ({ item, index }: Props) => {
     }
   }
 
-
   return (
     <button className={`add-item ${item !== null && "disabled"}`} onClick={handleSlot}>
       {item === null? <GrAdd />: <img className={`item ${item.itemId.type}`} src={`../../src/assets/items/${item.itemId.image}`}/>}
