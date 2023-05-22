@@ -93,12 +93,11 @@ const App = () => {
 
   return (
     <>
-      <button
+      {/* <button
         style={{ position: "absolute", top: "0" }}
-        /* onClick={handleFullscreen} */
       >
         full screen
-      </button>
+      </button> */}
       <div
         className="game-parent"
         style={{

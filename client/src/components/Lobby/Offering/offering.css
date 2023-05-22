@@ -8,12 +8,10 @@
     align-items: center;
     position: absolute;
     right: 45%;
-    top: 10%;
+    top: 5%;
     left: 45%;
     bottom: 0;
     margin: auto;
-
-    
   }
 
   .displayed-trader {

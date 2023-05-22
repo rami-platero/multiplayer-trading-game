@@ -18,11 +18,20 @@ import {
   initalTradingItemsState,
   tradingReducer,
 } from "../reducers/tradingReducer";
-import { place_item_SFX } from "../components/SFX";
 
 export enum OfferingState {
   Offering = "offering",
   Trading = "trading",
+}
+
+export interface TradeFlags {
+  isTradeLocked: boolean,
+  coinsLocked: boolean
+}
+
+export const tradeFlagsInitialState = {
+  isTradeLocked: false,
+  coinsLocked: false
 }
 
 interface ITradingContext {
@@ -37,6 +46,12 @@ interface ITradingContext {
   setOfferingState: React.Dispatch<SetStateAction<OfferingState>>;
   tradingDispatch: React.Dispatch<TradingActionType>
   currentIndexItem: number | null
+  lockOffer: ()=>void
+  tradeFlags: TradeFlags
+  unlockOffer: ()=>void
+  setTradeFlags: React.Dispatch<SetStateAction<TradeFlags>>
+  lockCoins: (coins:number)=>void
+  coins: number
 }
 
 export const tradingContext = createContext<ITradingContext>({
@@ -50,7 +65,13 @@ export const tradingContext = createContext<ITradingContext>({
   setTradingWith: () => {},
   setOfferingState: ()=>{},
   tradingDispatch: ()=>{},
-  currentIndexItem: null
+  currentIndexItem: null,
+  lockOffer: ()=>{},
+  tradeFlags: tradeFlagsInitialState,
+  unlockOffer: ()=>{},
+  setTradeFlags: ()=>{},
+  lockCoins: ()=>{},
+  coins: 0
 });
 
 const TradingContextProvider = ({ children }: ContextProps) => {
@@ -63,6 +84,7 @@ const TradingContextProvider = ({ children }: ContextProps) => {
   );
   const [currentIndexItem, setCurrentIndexItem] = useState<number | null>(null);
   const [tradingWith, setTradingWith] = useState<IUser | null>(null);
+  const [tradeFlags, setTradeFlags] = useState<TradeFlags>(tradeFlagsInitialState)
   const { socket, setErrorMessage, authDispatch, setGameState, user } =
     useContext(userContext);
   const {
@@ -81,6 +103,7 @@ const TradingContextProvider = ({ children }: ContextProps) => {
     setInventoryState(InventoryState.Offer);
     socket?.emit("USER:CLOSE_TRADE", currentTradeOffer);
     setTimeout(() => {
+      setTradeFlags(tradeFlagsInitialState)
       setCurrentTradeOffer(null);
       tradingDispatch({ type: "RESET" });
     }, 300);
@@ -106,6 +129,27 @@ const TradingContextProvider = ({ children }: ContextProps) => {
       });
     }
   };
+
+  const lockOffer = ()=>{
+    setTradeFlags((prevFlags)=>({
+      ...prevFlags,isTradeLocked: true
+    }))
+    socket?.emit("TRADER:LOCKS_OFFER", currentTradeOffer?.createdBy.socketID)
+  }
+
+  const unlockOffer = ()=>{
+    setTradeFlags((prevFlags)=>({
+      ...prevFlags,isTradeLocked: false
+    }))
+    socket?.emit("SELLER:UNLOCKS_OFFER", tradingWith?.socketID)
+  }
+
+  const lockCoins = (coins:number)=>{
+    setTradeFlags((prevFlags)=>({
+      ...prevFlags,coinsLocked: true
+    }))
+    socket?.emit("TRADER:LOCKS_COINS", {socketID: currentTradeOffer?.createdBy.socketID, coins})
+  }
 
   function handleSocketUserEvents() {
     socket?.off("error").on("error", ({ message, type }) => {
@@ -144,7 +188,12 @@ const TradingContextProvider = ({ children }: ContextProps) => {
         setTradingWith,
         setOfferingState,
         tradingDispatch,
-        currentIndexItem
+        currentIndexItem,
+        lockOffer,
+        tradeFlags,
+        unlockOffer,
+        setTradeFlags,
+        lockCoins
       }}
     >
       {children}

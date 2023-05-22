@@ -18,4 +18,14 @@ export const tradeEvents = (socket:Socket, io: Server)=>{
         const {index,socketID}:{index:number,socketID:string}=obj
         io.to(socketID).emit("TRADE:ADD_ITEM_AMOUNT", index)
     })
+    socket.on('TRADER:LOCKS_OFFER', (socketID:string)=>{
+        io.to(socketID).emit("TRADE:LOCKED")
+    })
+    socket.on('SELLER:UNLOCKS_OFFER', (socketID: string)=>{
+        io.to(socketID).emit("TRADE:UNLOCKED")
+    })
+    socket.on("TRADER:LOCKS_COINS", obj =>{
+        const {coins,socketID}:{coins:number,socketID:string}=obj
+        io.to(socketID).emit("TRADE:UPDATE_COINS", coins)
+    })
 }

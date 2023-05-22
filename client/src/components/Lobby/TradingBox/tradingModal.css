@@ -92,7 +92,12 @@
         margin: auto;
         z-index: 10;
       }
+
     }
+    >h3 span{
+      color: rgb(197, 164, 17);
+     font-size: .8rem;
+    } 
     >button{
       background-color: #ffe260;
       cursor: pointer;
@@ -123,9 +128,13 @@
     font-size: 0.9rem;
     padding: 0.3rem 0.7rem;
     cursor: pointer;
+    width: 9rem;
   }
 
   .close-offer-btn {
+    position: absolute;
+    top: -2rem;
+    right: 1rem;
     background-color: rgb(255, 72, 72);
     transition: 0.2s ease-in-out;
     border: none;
@@ -137,14 +146,25 @@
   }
 
   .lock-offer-btn {
+    position: absolute;
+    top: -2rem;
+    left: 1rem;
     background-color: rgb(149, 255, 100);
     border: none;
     transition: 0.2s ease-in-out;
+    width: 8.5rem;
 
     &:hover {
       background-color: rgb(170, 255, 130);
       transition: 0.2s ease-in-out;
     }
+  }
+  .lock-offer-btn.true{
+    pointer-events: none;
+    width: fit-content;
+    color: rgb(124, 124, 124);
+    background-color: rgb(195, 253, 168);
+    opacity: .5;
   }
 }
 
