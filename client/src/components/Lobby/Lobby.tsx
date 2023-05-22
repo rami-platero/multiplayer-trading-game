@@ -9,16 +9,38 @@ import { OfferState, lobbyContext } from "../../context/LobbyContext";
 import Offering from "./Offering/Offering";
 import { CSSTransition } from "react-transition-group";
 import TradingModal from "./TradingBox/TradingModal";
+import { tradingContext } from "../../context/TradingContext";
+import LobbyModal from "../UI/LobbyModal";
 
 const Lobby = () => {
   const { socket, user } = useContext(userContext);
-  const { lobby, offerState, closeOffer, isTrading } =
+  const { lobby, offerState, closeOffer, isTrading, currentTradeOffer } =
     useContext(lobbyContext);
+  const { closeTrade, setTradeMessage,tradeMessage } = useContext(tradingContext);
 
   const handleLeaveLobby = () => {
     socket?.emit("leave-lobby", { _id: user!._id, lobby: lobby?.name });
     offerState == OfferState.Offering && closeOffer();
   };
+
+  socket?.off("TRADE:REJECTED").on("TRADE:REJECTED", () => {
+    setTradeMessage({
+      username: currentTradeOffer?.createdBy.username,
+      description: "rejected your offer.",
+      reason: "Trade Rejected",
+      dismissed: false
+    });
+    closeTrade();
+  });
+
+  socket?.off("ERROR:OPENING-OFFER").on("ERROR:OPENING-OFFER",()=>{
+    setTradeMessage({
+      description: "You can't open this offer because the seller already closed it.",
+      reason: "Offer Error",
+      dismissed: false
+    })
+    closeTrade()
+  })
 
   return (
     <div className="lobby-container">
@@ -29,6 +51,14 @@ const Lobby = () => {
         classNames={"grow"}
       >
         <TradingModal />
+      </CSSTransition>
+      <CSSTransition
+        in={tradeMessage?.dismissed == false}
+        timeout={300}
+        unmountOnExit
+        classNames={"grow"}
+      >
+        <LobbyModal />
       </CSSTransition>
       <div className="lobby-top-elements">
         <h1>Lobby {lobby?.name}</h1>

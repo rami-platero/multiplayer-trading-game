@@ -108,10 +108,10 @@ const LobbyContextProvider = ({ children }: ContextProps) => {
 
   const openOffer = (offer: IOffer) => {
     if(!isTrading && currentTradeOffer==null){
+      socket?.emit("USER:OPEN_OFFER", { offer, user });
       setInventoryState(InventoryState.Trading)
       setIsTrading(true);
       setCurrentTradeOffer(offer);
-      socket?.emit("USER:OPEN_OFFER", { offer, user });
     }
   };
 

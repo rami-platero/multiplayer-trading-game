@@ -59,13 +59,12 @@ export const initSocket = (): void => {
     });
     authEvents({connectedSockets,modalError,socket})
     lobbyEvents(socket, currentLobby);
-    chatEvents(socket);
+    chatEvents(socket,io);
     offerEvents(io, socket, currentLobby);
-    tradeEvents(socket,io)
+    tradeEvents(socket,io,currentLobby)
 
     socket.on("disconnect", async () => {
       if (currentLobby.value!=="") {
-        console.log("Leaving lobby")
         socket.leave(currentLobby.value);
         const user = await User.findOne({ socketID: socket.id });
         socket.broadcast.to(currentLobby.value).emit("user-leaves", user?._id)

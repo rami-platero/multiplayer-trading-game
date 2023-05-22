@@ -1,4 +1,4 @@
-.normal-lobbies .lobby-modal{
+/* .normal-lobbies .lobby-modal{
     position: fixed;
     left: 0;
     right: 0;
@@ -8,9 +8,7 @@
     width: 60%;
     height: 60%;
     backdrop-filter: blur(10px);
-    /* width: 750px;
-    height: 500px; */
     background-color: rgba(0, 0, 0, 0.9);
     z-index: 3;
-  }
+  } */
   

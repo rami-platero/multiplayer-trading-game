@@ -16,7 +16,8 @@ const TraderDisplay = () => {
     tradeFlags,
     unlockOffer,
     setTradeFlags,
-    coins
+    coins,
+    rejectUser
   } = useContext(tradingContext);
   const { socket } = useContext(userContext);
 
@@ -82,7 +83,7 @@ const TraderDisplay = () => {
           <AiOutlineUnlock />
           Unlock
         </button>
-        <button className="reject-trade-btn">
+        <button className="reject-trade-btn" onClick={rejectUser}>
           <AiFillCloseCircle />
           Reject
         </button>

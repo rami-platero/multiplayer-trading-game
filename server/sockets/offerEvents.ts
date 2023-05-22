@@ -16,7 +16,7 @@ export const offerEvents = (io:SocketServer ,socket:Socket, currentLobby: ICurre
         }).save();
   
         const updatedOffers = await Room.newOffer(newTrade._id, currentLobby.value);
-        socket.to(currentLobby.value).emit("send-new-offer", updatedOffers);
+        io.to(currentLobby.value).emit("send-new-offer", updatedOffers);
       });
   
       socket.on("close-offer", async (itemID) => {
@@ -35,22 +35,27 @@ export const offerEvents = (io:SocketServer ,socket:Socket, currentLobby: ICurre
   
       socket.on("USER:OPEN_OFFER", async (obj) => {
         const { offer, user }: { offer: IOffer; user: IUser } = obj;
-        const {socketID, username, _id, roles, skin, ...rest} = user
-        await Trade.updateOne(
-          { _id: offer._id },
-          {
-            $set: {
+        const exists = await Trade.findOne({_id:offer._id})
+        if(!exists){
+          io.to(user.socketID).emit("ERROR:OPENING-OFFER")
+        } else {
+          const {socketID, username, _id, roles, skin, ...rest} = user
+          await Trade.updateOne(
+            { _id: offer._id },
+            {
+              $set: {
+                status: Status.Locked,
+                tradingWith: user._id,
+              },
+            }
+            );
+            io.to(offer.createdBy.socketID).emit('new-trader', {socketID, username, _id, roles, skin})
+            io.to(currentLobby.value).emit("lock-offer", {
+              ...offer,
               status: Status.Locked,
-              tradingWith: user._id,
-            },
-          }
-          );
-          io.to(offer.createdBy.socketID).emit('new-trader', {socketID, username, _id, roles, skin})
-          io.to(currentLobby.value).emit("lock-offer", {
-            ...offer,
-            status: Status.Locked,
-            tradingWith: user,
-          });
+              tradingWith: user,
+            });
+        }
         });
   
       socket.on("USER:CLOSE_TRADE", async (offer:IOffer) => {

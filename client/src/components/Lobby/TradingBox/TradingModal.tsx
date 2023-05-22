@@ -77,6 +77,11 @@ const TradingModal = () => {
     }
   }
 
+  const handleCloseOffer = ()=>{
+    socket?.emit("USER:CLOSE_TRADE", currentTradeOffer);
+    closeTrade()
+  }
+
   return (
     <div className="trading-modal">
       <div className="user-offer">
@@ -117,7 +122,9 @@ const TradingModal = () => {
         </div>
       </div>
       <div className="actions-buttons">
-        <button onClick={closeTrade} className="close-offer-btn">
+        <button onClick={()=>{
+          handleCloseOffer()
+        }} className="close-offer-btn">
           <AiOutlineCloseCircle />
           Close Offer
         </button>

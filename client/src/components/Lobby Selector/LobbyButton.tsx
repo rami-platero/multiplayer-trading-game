@@ -4,7 +4,7 @@ import { LobbyCount } from "./LobbySelector";
 import { AiFillLock } from "react-icons/ai";
 import { hover_btn_SFX } from "../SFX";
 import { useState, SetStateAction } from "react";
-import LobbyModal from "./LobbyModal";
+import LobbyModal from "./LobbyModalBox";
 import { userContext } from "../../context/UserContext";
 import { useContext, useEffect } from "react";
 import { IGameState } from "../../interfaces/interfaces";

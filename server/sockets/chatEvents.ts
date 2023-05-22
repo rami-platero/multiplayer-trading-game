@@ -2,7 +2,7 @@ import { Socket, Server as SocketServer } from "socket.io";
 import Room from "../models/Room";
 import { IUser } from "../models/User";
 
-export const chatEvents = (socket:Socket)=>{
+export const chatEvents = (socket:Socket,io:SocketServer)=>{
 
     interface IChatMessage {
         username: string;
@@ -17,5 +17,10 @@ export const chatEvents = (socket:Socket)=>{
         }: { lobby_name: string; message: IChatMessage } = obj;
         socket.broadcast.to(lobby_name).emit("receive-message", message);
       });
+
+    socket.on("send-private-message", obj=>{
+      const {to,...message}:{to:string,message:IChatMessage} = obj
+      io.to(to).emit("receive-private-message", message)
+    }) 
 
 }
