@@ -7,6 +7,8 @@ import { chatEvents } from "./chatEvents";
 import { lobbyEvents } from "./lobbyEvents";
 import { authEvents } from "./authEvents";
 import { tradeEvents } from "./tradeEvents";
+import { app } from "../app";
+import { Request,Response,NextFunction } from "express";
 
 export interface ConnectedUsers {
   [username: string]: Socket;
@@ -26,6 +28,10 @@ export interface ICurrentLobby{
   value: string
 }
 
+interface CustomRequest extends Request {
+  io: SocketServer;
+}
+
 export const initSocket = (): void => {
   const connectedSockets: ConnectedUsers = {};
 
@@ -34,6 +40,8 @@ export const initSocket = (): void => {
       origin: "http://localhost:5173",
     },
   });
+
+  app.set("io",io)
 
   io.on("connection", (socket) => {
     console.log("user connected");

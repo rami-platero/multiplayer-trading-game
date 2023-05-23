@@ -15,7 +15,7 @@ import { transitionContext } from "./context/transitionContext";
 import ErrorModal from "./components/UI/ErrorModal";
 
 const App = () => {
-  const { user, gameState, errorMessage} =
+  const { user, gameState, errorMessage,socket} =
     useContext(userContext);
   const screenRef = useRef<HTMLDivElement>(null);
   const [screenStyle, setScreenStyle] = useState<boolean>(false);
@@ -90,6 +90,11 @@ const App = () => {
       }
     };
   }, []); */
+
+  socket?.off("TRADE:UPDATE-ITEMS").on("TRADE:UPDATE-ITEMS", items=>{
+    console.log("new items", items)
+  })
+  
 
   return (
     <>

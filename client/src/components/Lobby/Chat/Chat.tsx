@@ -76,7 +76,7 @@ const Chat = () => {
       setMessages([
         {
           message: `You are now in a private room with ${tradingWith?.username}`,
-          chatColor: "#dbfc03",
+          chatColor: "#0fa7ff",
           special: true,
         },
       ]);
@@ -84,7 +84,7 @@ const Chat = () => {
       setMessages([
         {
           message: `You are now in a private room with ${currentTradeOffer?.createdBy.username}`,
-          chatColor: "#dbfc03",
+          chatColor: "#0fa7ff",
           special: true,
         },
       ]);

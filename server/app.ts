@@ -6,6 +6,7 @@ import morgan from 'morgan'
 import { userRouter } from "./routes/users";
 import http from "http";
 import { initSocket } from "./sockets/socket";
+import { tradeRouter } from "./routes/trades";
 
 export const app = express();
 export const server = http.createServer(app);
@@ -15,6 +16,6 @@ app.use(express.json());
 app.use(cors())
 app.use(morgan("dev"))
 
-app.use("/", userRouter);
+app.use("/", userRouter,tradeRouter);
 
 app.set("port", process.env.PORT);
