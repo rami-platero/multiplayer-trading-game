@@ -9,11 +9,12 @@ export enum Status {
 }
 
 export interface ITrade extends Document {
-  /* room: Types.ObjectId, */
   itemOffering: Types.ObjectId;
   createdBy: Types.ObjectId;
   tradingWith?: Types.ObjectId;
   status: Status;
+  tradingItems: IInventory[];
+  coins: number;
 }
 
 interface ITradeModel extends Model<ITrade> {
@@ -68,6 +69,8 @@ const tradeSchema = new Schema({
     default: Status.Open,
     required: true,
   },
+  tradingItems: [{item: {type: Schema.Types.ObjectId, ref: 'Item', required: true}, count: Number}],
+  coins: Number
 });
 
 tradeSchema.statics.removeItemFromSeller = async function (
@@ -208,7 +211,7 @@ tradeSchema.statics.tradeCoins = async function (
   );
 };
 
-tradeSchema.statics.closeOffer = async function (room:string,sellingItem:string,session: mongoose.mongo.ClientSession){
+tradeSchema.statics.closeOffer = async function (room:string,sellingItem:string){
   const trade = await this.findOne({ itemOffering: sellingItem });
         await this.deleteOne({ itemOffering: sellingItem });
         await Room.updateOne(
