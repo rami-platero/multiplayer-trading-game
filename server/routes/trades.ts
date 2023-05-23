@@ -4,4 +4,4 @@ import { verifyToken } from '../middlewares/verifyUser'
 
 export const tradeRouter: Router = Router()
 
-tradeRouter.post("/trade", [verifyToken,tradeItems])
+tradeRouter.post("/trade", [/* verifyToken, */tradeItems])

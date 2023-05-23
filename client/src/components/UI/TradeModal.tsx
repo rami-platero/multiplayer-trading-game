@@ -1,24 +1,37 @@
 import { userContext } from "../../context/UserContext";
-import { useContext, useState,useRef } from "react";
+import { SetStateAction, useContext, useState} from "react";
 import "./tradeModal.css";
 
-const TradeModal = () => {
+interface Props{
+  setTradeAccept: React.Dispatch<SetStateAction<boolean>>
+}
+
+const TradeModal = ({setTradeAccept}:Props) => {
   const { socket } = useContext(userContext);
   const [tradeStatus, setTradeStatus] = useState<string>("Verifying users");
-
-  const progressRef = useRef<number>(0)
+  const [progressState, setProgressState] = useState<number>(0)
 
   const style = {
-    '--progressWidth': `${progressRef.current}%`
+    '--progressWidth': `${progressState}%`
   } as React.CSSProperties;
+
+  const resetTradeModal = ()=>{
+    setTradeAccept(false)
+    setTimeout(()=>{
+      setTradeStatus("Verifying users")
+      setProgressState(0)
+    },300)
+  }
 
   socket?.off("TRADE:STATUS").on("TRADE:STATUS", (msg) => {
     setTradeStatus(msg);
   });
 
   socket?.off("TRADE:PROGRESS").on("TRADE:PROGRESS", (num:number) => {
-    console.log(num,"%")
-    progressRef.current = num
+    setProgressState(num)
+    if(num===100){
+      resetTradeModal()
+    }
   })
 
   return (

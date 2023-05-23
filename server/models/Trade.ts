@@ -1,6 +1,7 @@
 import mongoose, { Schema, model, Types, Document, Model } from "mongoose";
 import User, { IUser } from "./User";
 import { IInventory, Item } from "./Item";
+import Room from "./Room";
 
 export enum Status {
   Open = "open",
@@ -206,5 +207,19 @@ tradeSchema.statics.tradeCoins = async function (
     { session }
   );
 };
+
+tradeSchema.statics.closeOffer = async function (room:string,sellingItem:string,session: mongoose.mongo.ClientSession){
+  const trade = await this.findOne({ itemOffering: sellingItem });
+        await this.deleteOne({ itemOffering: sellingItem });
+        await Room.updateOne(
+          { name: room },
+          {
+            $pull: {
+              offers: trade?._id,
+            },
+          }
+        );
+  /* io.to(room).emit("remove-offer", sellingItem); */
+}
 
 export default model<ITrade, ITradeModel>("Trade", tradeSchema);

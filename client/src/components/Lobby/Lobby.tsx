@@ -18,7 +18,7 @@ const Lobby = () => {
   const { lobby, offerState, closeOffer, isTrading, currentTradeOffer } =
     useContext(lobbyContext);
   const { closeTrade, setTradeMessage,tradeMessage } = useContext(tradingContext);
-  const [tradeAccept, setTradeAccept] = useState<boolean>(true)
+  const [tradeAccept, setTradeAccept] = useState<boolean>(false)
 
   const handleLeaveLobby = () => {
     socket?.emit("leave-lobby", { _id: user!._id, lobby: lobby?.name });
@@ -72,7 +72,7 @@ const Lobby = () => {
         unmountOnExit
         classNames={"trade"}
       >
-        <TradeModal />
+        <TradeModal setTradeAccept={setTradeAccept}/>
       </CSSTransition>
       <div className="lobby-top-elements">
         <h1>Lobby {lobby?.name}</h1>

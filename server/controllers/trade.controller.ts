@@ -9,9 +9,9 @@ export const tradeItems = async (req: Request, res: Response) => {
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
-    const { buyerName, sellerName, sellingItem, tradingItems, coins } =
+    const { buyerName, sellerName, sellingItem, tradingItems, coins, room } =
       req.body;
-
+  
     const buyer: IUser | null = await User.findOne({
       username: buyerName,
     }).session(session);
@@ -25,6 +25,7 @@ export const tradeItems = async (req: Request, res: Response) => {
 
     io.to(buyer?.socketID).to(seller?.socketID).emit("TRADE:ACCEPT");
     emitProgress(0);
+    
     io.to(buyer?.socketID)
       .to(seller?.socketID)
       .emit("TRADE:STATUS", "Checking items");
@@ -76,6 +77,9 @@ export const tradeItems = async (req: Request, res: Response) => {
     await Trade.addItemToBuyer(sellingItem, buyerName, buyer, session);
     emitProgress(90);
 
+    
+    await session.commitTransaction();
+    session.endSession();
     // SOCKET EVENTS
     io.to(buyer?.socketID)
     .to(seller?.socketID)
@@ -95,9 +99,6 @@ export const tradeItems = async (req: Request, res: Response) => {
       sellerUpdated?.items
     );
     emitProgress(100);
-
-    await session.commitTransaction();
-    session.endSession();
     return res.status(200).json({ message: "Trade successful!" });
   } catch (error: any) {
     await session.abortTransaction();

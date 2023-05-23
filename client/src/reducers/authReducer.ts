@@ -1,4 +1,4 @@
-import { ISkin, IUser } from "../interfaces/interfaces";
+import { IInventory, ISkin, IUser } from "../interfaces/interfaces";
 
 export const initialState = {
   user: null,
@@ -14,7 +14,8 @@ export type ActionType =
       payload: IUser;
     }
   | { type: "LOG_OUT" }
-  | { type: "CHANGE_SKIN"; payload: string };
+  | { type: "CHANGE_SKIN"; payload: string }
+  | { type: "UPDATE_INVENTORY"; payload: IInventory[] };
 
 export const authReducer = (state: IState, action: ActionType) => {
   switch (action.type) {
@@ -26,14 +27,19 @@ export const authReducer = (state: IState, action: ActionType) => {
       const newUser: IState = {
         ...state,
         user: {
-          ...(state.user as IUser), 
+          ...(state.user as IUser),
           skin: {
             chatColor: action.payload!,
             badgeColor: action.payload!,
           },
         },
       };
-      return newUser
+      return newUser;
+    case "UPDATE_INVENTORY":
+      return {
+        ...state,
+        user: { ...(state.user as IUser), items: action.payload },
+      };
     default:
       return state;
   }

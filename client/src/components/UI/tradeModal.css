@@ -19,6 +19,7 @@
     width: 300px;
     position: relative;
     background-color: rgba(184, 233, 240, 0.589);
+    transition: 0.2s ease-in-out;
     > h3 {
       text-align: center;
       color: black;
@@ -39,6 +40,7 @@
     width: var(--progressWidth);
     height: 100%;
     z-index: 1;
+    transition: 0.2s ease-in-out;
   }
 
   > h1 {
