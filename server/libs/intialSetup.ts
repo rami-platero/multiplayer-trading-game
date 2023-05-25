@@ -27,32 +27,32 @@ export const getRole = async (): Promise<Types.ObjectId> => {
 };
 
 export const createItems = async (): Promise<void> => {
-  const count: number = await Item.estimatedDocumentCount();
-  if (count >= 3) return;
+  /* const count: number = await Item.estimatedDocumentCount();
+  if (count >= 3) return; */
 
   try {
     const newItems = await Promise.all([
       new Item({
-        name: "Claws",
-        type: "rare",
+        name: "Fireman",
+        type: "premium",
         isSkin: false,
-        image: "Claws.png",
+        image: "Fireman.png",
       }).save(),
       new Item({
-        name: "Anon",
-        type: "rare",
+        name: "Blue Bandana",
+        type: "premium",
         isSkin: false,
-        image: "Anon.png",
+        image: "Blue Bandana.png",
       }).save(),
       new Item({
-        name: "Dark-Skin",
-        type: "rare",
+        name: "Biohazard",
+        type: "premium",
         isSkin: true,
         skinData: {
-          chatColor: "black",
-          badgeColor: "black",
+          chatColor: "#dcffc9",
+          badgeColor: "#dcffc9",
         },
-        image: "Dark-Skin.png",
+        image: "Biohazard.png",
       }).save(),
     ]);
     console.log(newItems);

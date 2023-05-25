@@ -18,6 +18,7 @@ import {
   initalTradingItemsState,
   tradingReducer,
 } from "../reducers/tradingReducer";
+import { makeTrade } from "../api/lobby";
 
 export enum OfferingState {
   Offering = "offering",
@@ -25,27 +26,27 @@ export enum OfferingState {
 }
 
 export interface TradeFlags {
-  isTradeLocked: boolean,
-  coinsLocked: boolean
+  isTradeLocked: boolean;
+  coinsLocked: boolean;
 }
 
 export const tradeFlagsInitialState = {
   isTradeLocked: false,
-  coinsLocked: false
-}
+  coinsLocked: false,
+};
 
-export interface ITradeMessage  {
-  username?: string,
-  description: string,
-  reason: string,
-  dismissed: boolean
+export interface ITradeMessage {
+  username?: string;
+  description: string;
+  reason: string;
+  dismissed: boolean;
 }
 
 export const tradeMessageInitialState = {
   description: "",
   reason: "",
-  dismissed: true
-}
+  dismissed: true,
+};
 
 interface ITradingContext {
   offeringState: OfferingState;
@@ -57,17 +58,18 @@ interface ITradingContext {
   addItemAmount: (item: IInventory, index: number) => void;
   setTradingWith: React.Dispatch<SetStateAction<IUser | null>>;
   setOfferingState: React.Dispatch<SetStateAction<OfferingState>>;
-  tradingDispatch: React.Dispatch<TradingActionType>
-  currentIndexItem: number | null
-  lockOffer: ()=>void
-  tradeFlags: TradeFlags
-  unlockOffer: ()=>void
-  setTradeFlags: React.Dispatch<SetStateAction<TradeFlags>>
-  lockCoins: (coins:number)=>void
-  coins: number
-  rejectUser: ()=>void
-  tradeMessage: ITradeMessage | null
-  setTradeMessage: React.Dispatch<SetStateAction<ITradeMessage>>
+  tradingDispatch: React.Dispatch<TradingActionType>;
+  currentIndexItem: number | null;
+  lockOffer: () => void;
+  tradeFlags: TradeFlags;
+  unlockOffer: () => void;
+  setTradeFlags: React.Dispatch<SetStateAction<TradeFlags>>;
+  lockCoins: (coins: number) => void;
+  coins: number;
+  rejectUser: () => void;
+  tradeMessage: ITradeMessage | null;
+  setTradeMessage: React.Dispatch<SetStateAction<ITradeMessage>>;
+  acceptTrade: () => void;
 }
 
 export const tradingContext = createContext<ITradingContext>({
@@ -79,18 +81,19 @@ export const tradingContext = createContext<ITradingContext>({
   removeItem: () => {},
   addItemAmount: () => {},
   setTradingWith: () => {},
-  setOfferingState: ()=>{},
-  tradingDispatch: ()=>{},
+  setOfferingState: () => {},
+  tradingDispatch: () => {},
   currentIndexItem: null,
-  lockOffer: ()=>{},
+  lockOffer: () => {},
   tradeFlags: tradeFlagsInitialState,
-  unlockOffer: ()=>{},
-  setTradeFlags: ()=>{},
-  lockCoins: ()=>{},
+  unlockOffer: () => {},
+  setTradeFlags: () => {},
+  lockCoins: () => {},
   coins: 0,
-  rejectUser: ()=>{},
+  rejectUser: () => {},
   tradeMessage: tradeMessageInitialState,
-  setTradeMessage: ()=>{}
+  setTradeMessage: () => {},
+  acceptTrade: () => {},
 });
 
 const TradingContextProvider = ({ children }: ContextProps) => {
@@ -107,10 +110,20 @@ const TradingContextProvider = ({ children }: ContextProps) => {
   // BUYER
   const [tradingWith, setTradingWith] = useState<IUser | null>(null);
   //
-  const [tradeFlags, setTradeFlags] = useState<TradeFlags>(tradeFlagsInitialState)
-  const [tradeMessage, setTradeMessage] = useState<ITradeMessage>(tradeMessageInitialState)
-  const { socket, setErrorMessage, authDispatch, setGameState, user,setInventoryState } =
-    useContext(userContext);
+  const [tradeFlags, setTradeFlags] = useState<TradeFlags>(
+    tradeFlagsInitialState
+  );
+  const [tradeMessage, setTradeMessage] = useState<ITradeMessage>(
+    tradeMessageInitialState
+  );
+  const {
+    socket,
+    setErrorMessage,
+    authDispatch,
+    setGameState,
+    user,
+    setInventoryState,
+  } = useContext(userContext);
   const {
     lobby,
     isTrading,
@@ -119,14 +132,17 @@ const TradingContextProvider = ({ children }: ContextProps) => {
     currentTradeOffer,
     setIsTrading,
     setCurrentTradeOffer,
-    offers
+    offers,
+    lobbyDispatch,
+    itemOffering,
+    setOfferState
   } = useContext(lobbyContext);
 
   const closeTrade = () => {
     setIsTrading(false);
     setInventoryState(InventoryState.Offer);
     setTimeout(() => {
-      setTradeFlags(tradeFlagsInitialState)
+      setTradeFlags(tradeFlagsInitialState);
       setCurrentTradeOffer(null);
       tradingDispatch({ type: "RESET" });
     }, 300);
@@ -137,6 +153,7 @@ const TradingContextProvider = ({ children }: ContextProps) => {
     socket?.emit("TRADER:REMOVE-ITEM", {
       index,
       socketID: currentTradeOffer?.createdBy.socketID,
+      offerID: currentTradeOffer?._id,
     });
   };
 
@@ -149,41 +166,68 @@ const TradingContextProvider = ({ children }: ContextProps) => {
       socket?.emit("TRADER:ADDS_ITEM_AMOUNT", {
         index,
         socketID: currentTradeOffer?.createdBy.socketID,
+        offerID: currentTradeOffer?._id,
       });
     }
   };
 
-  const lockOffer = ()=>{
-    setTradeFlags((prevFlags)=>({
-      ...prevFlags,isTradeLocked: true
-    }))
-    socket?.emit("TRADER:LOCKS_OFFER", currentTradeOffer?.createdBy.socketID)
-  }
+  const lockOffer = () => {
+    setTradeFlags((prevFlags) => ({
+      ...prevFlags,
+      isTradeLocked: true,
+    }));
+    socket?.emit("TRADER:LOCKS_OFFER", currentTradeOffer?.createdBy.socketID);
+  };
 
-  const unlockOffer = ()=>{
-    setTradeFlags((prevFlags)=>({
-      ...prevFlags,isTradeLocked: false
-    }))
-    socket?.emit("SELLER:UNLOCKS_OFFER", tradingWith?.socketID)
-  }
+  const unlockOffer = () => {
+    setTradeFlags((prevFlags) => ({
+      ...prevFlags,
+      isTradeLocked: false,
+    }));
+    socket?.emit("SELLER:UNLOCKS_OFFER", tradingWith?.socketID);
+  };
 
-  const lockCoins = (coins:number)=>{
-    setTradeFlags((prevFlags)=>({
-      ...prevFlags,coinsLocked: true
-    }))
-    socket?.emit("TRADER:LOCKS_COINS", {socketID: currentTradeOffer?.createdBy.socketID, coins})
-  }
+  const lockCoins = (coins: number) => {
+    setTradeFlags((prevFlags) => ({
+      ...prevFlags,
+      coinsLocked: true,
+    }));
+    socket?.emit("TRADER:LOCKS_COINS", {
+      socketID: currentTradeOffer?.createdBy.socketID,
+      coins,
+      offerID: currentTradeOffer?._id,
+    });
+  };
 
-  const rejectUser = ()=>{
-    setTradeFlags(tradeFlagsInitialState)
+  const rejectUser = () => {
+    setTradeFlags(tradeFlagsInitialState);
     setOfferingState(OfferingState.Offering);
     setTradingWith(null);
     tradingDispatch({ type: "RESET" });
-    const foundOffer = offers?.find((offer)=>{
-      return offer.createdBy.username === user?.username
-    })
-    socket?.emit("SELLER:REJECTS", {offerID: foundOffer?._id, buyer: tradingWith?.socketID})
-  }
+    const foundOffer = offers?.find((offer) => {
+      return offer.createdBy.username === user?.username;
+    });
+    socket?.emit("SELLER:REJECTS", {
+      offerID: foundOffer?._id,
+      buyer: tradingWith?.socketID,
+    });
+  };
+
+  const acceptTrade = async () => {
+    const foundOffer = offers?.find((offer) => {
+      return offer.createdBy._id === user?._id;
+    });
+    if (foundOffer?._id) {
+      lobbyDispatch({ type: "REMOVE_OFFER", payload: itemOffering?._id! });
+      setTradeFlags(tradeFlagsInitialState);
+      setInventoryState(InventoryState.Offer);
+      setOfferingState(OfferingState.Offering);
+      setOfferState(OfferState.None)
+      setTradingWith(null);
+      tradingDispatch({ type: "RESET" });
+      await makeTrade(foundOffer._id, lobby?.name!);
+    }
+  };
 
   function handleSocketUserEvents() {
     socket?.off("error").on("error", ({ message, type }) => {
@@ -230,7 +274,8 @@ const TradingContextProvider = ({ children }: ContextProps) => {
         lockCoins,
         rejectUser,
         tradeMessage,
-        setTradeMessage
+        setTradeMessage,
+        acceptTrade,
       }}
     >
       {children}

@@ -4,9 +4,13 @@ import { userContext } from "../../../context/UserContext";
 import { IUser } from "../../../interfaces/interfaces";
 import TraderDisplay from "./TraderDisplay";
 import "./offering.css";
-import { useContext } from "react";
+import { useContext,SetStateAction } from "react";
 
-const Offering = () => {
+interface Props{
+  setAcceptTrade: React.Dispatch<SetStateAction<boolean>>
+}
+
+const Offering = ({setAcceptTrade}:Props) => {
   const { itemOffering, closeOffer } = useContext(lobbyContext);
   const { offeringState, setTradingWith,setOfferingState,tradingDispatch,setTradeFlags } = useContext(tradingContext);
   const {socket} = useContext(userContext)
@@ -42,7 +46,7 @@ const Offering = () => {
           </div>
         </>
       )}
-      {offeringState === OfferingState.Trading && <TraderDisplay />}
+      {offeringState === OfferingState.Trading && <TraderDisplay setAcceptTrade={setAcceptTrade}/>}
     </div>
   );
 };

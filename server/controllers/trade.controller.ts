@@ -1,69 +1,85 @@
 import { Request, Response } from "express";
-import mongoose from "mongoose";
-import User, { IUser } from "../models/User";
-import { IInventory } from "../models/Item";
-import Trade, { IOffer, ITrade } from "../models/Trade";
+import User from "../models/User";
+import Trade from "../models/Trade";
+import { ITradeData } from "../middlewares/checkTrade";
 
 interface MyParams {
-  offerID: string
+  offerID: string;
 }
 
 export const tradeItems = async (req: Request<MyParams>, res: Response) => {
-  try{
-    console.log(req.tradeData)
-    /* 
+  const io = req.app.get("io");
+  const {
+    offer,
+    buyer,
+    seller,
+    sellerItem,
+    session,
+    emitProgress,
+    filteredItems,
+  }: ITradeData = req.tradeData!;
+  try {
     io.to(buyer?.socketID)
       .to(seller?.socketID)
       .emit("TRADE:STATUS", "Completing transaction");
-    await Trade.tradeCoins(sellerName, buyerName, coins, session);
+    if (offer?.coins! > 1) {
+      await Trade.tradeCoins(
+        seller?.username!,
+        buyer?.username!,
+        offer?.coins!,
+        session
+      );
+    }
     emitProgress(30);
     await Trade.removeItemFromSeller(
       sellerItem,
-      sellerName,
-      sellingItem,
+      seller?.username!,
+      offer?.itemOffering.toString()!,
       session
     );
     emitProgress(50);
-    await Trade.addItemsToSeller(
-      seller?.items!,
-      tradingItems,
-      sellerName,
-      session
-    );
-    emitProgress(60);
-    await Trade.removeItemsFromBuyer(tradingItems, buyer, session, buyerName);
+    if (filteredItems.length) {
+      await Trade.addItemsToSeller(seller, filteredItems, session);
+      emitProgress(60);
+      await Trade.removeItemsFromBuyer(filteredItems, buyer, session);
+    }
     emitProgress(80);
-    await Trade.addItemToBuyer(sellingItem, buyerName, buyer, session);
+    await Trade.addItemToBuyer(offer?.itemOffering.toString()!, buyer, session);
     emitProgress(90);
 
-    
     await session.commitTransaction();
     session.endSession();
+    // UPDATE USERS
     io.to(buyer?.socketID)
-    .to(seller?.socketID)
-    .emit("TRADE:STATUS", "Updating items");
-    const buyerUpdated = await User.findOne({ username: buyerName }).populate(
-      "items.itemId"
-    );
+      .to(seller?.socketID)
+      .emit("TRADE:STATUS", "Updating items");
+    const buyerUpdated = await User.findOne({
+      username: buyer?.username,
+    }).populate("items.itemId");
     io.to(buyerUpdated?.socketID).emit(
       "TRADE:UPDATE-ITEMS",
       buyerUpdated?.items
     );
-    const sellerUpdated = await User.findOne({ username: sellerName }).populate(
-      "items.itemId"
+    io.to(buyerUpdated?.socketID).emit(
+      "TRADE:UPDATE-COINS",
+      buyerUpdated?.coins
     );
+    const sellerUpdated = await User.findOne({
+      username: seller?.username,
+    }).populate("items.itemId");
     io.to(sellerUpdated?.socketID).emit(
       "TRADE:UPDATE-ITEMS",
       sellerUpdated?.items
     );
+    io.to(sellerUpdated?.socketID).emit(
+      "TRADE:UPDATE-COINS",
+      sellerUpdated?.coins
+    );
     emitProgress(100);
-    return res.status(200).json({ message: "Trade successful!" }); */
     return res.status(200).json({ message: "Trade successful!" });
   } catch (error: any) {
-    return res.status(400).json(error);
-    /* await session.abortTransaction();
+    await session.abortTransaction();
     session.endSession();
-    console.log(error.message);
-    return res.status(400).json(error); */
+    return res.status(400).json(error);
   }
-}
+};

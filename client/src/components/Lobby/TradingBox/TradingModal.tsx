@@ -48,7 +48,6 @@ const TradingModal = () => {
   const handleBlurCoins = ()=>{
     setTimeout(()=>{
       if(isLocked.current){
-        console.log("it was locked before")
         if(currentCoins===coins){
           setTradeFlags((prevFlags)=>({
             ...prevFlags,coinsLocked: true
@@ -103,9 +102,9 @@ const TradingModal = () => {
           <h3>Coins <span>(max: {user?.coins})</span></h3>
           <div className="input-box">
             <RiCoinLine />
-            <input type="number" min={0} placeholder="0" onChange={handleCoinsChange} max={user?.coins} value={coins} onFocus={handleFocusCoins} onBlur={handleBlurCoins}/>
+            <input type="number" min={0} placeholder="0" onChange={handleCoinsChange} max={user?.coins} value={coins} onFocus={handleFocusCoins} onBlur={handleBlurCoins} disabled={tradeFlags.isTradeLocked? true: false}/>
           </div>
-          <button disabled={tradeFlags.coinsLocked? true: false} onClick={handleLockCoins}>
+          <button disabled={tradeFlags.coinsLocked? true: false || tradeFlags.isTradeLocked? true: false} onClick={handleLockCoins}>
             {!tradeFlags.coinsLocked && 
             <>
             <AiOutlineUnlock />

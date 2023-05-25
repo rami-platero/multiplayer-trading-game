@@ -29,6 +29,7 @@ const Inv_Item = ({ item }: Props) => {
         item: item.itemId,
         socketID: currentTradeOffer?.createdBy.socketID,
         index: currentIndexItem,
+        offerID: currentTradeOffer?._id
       });
       setCurrentIndexItem(null);
     }

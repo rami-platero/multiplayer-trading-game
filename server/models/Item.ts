@@ -16,6 +16,7 @@ export interface Item extends Document {
   isSkin: boolean;
   skinData?: ISkin
   image: string;
+  price?: number
 }
 
 const itemSchema = new Schema({
@@ -27,6 +28,7 @@ const itemSchema = new Schema({
     badgeColor: String,
   },
   image: { type: String, required: true },
+  price: Number
 });
 
 export default model<Item>("Item", itemSchema);

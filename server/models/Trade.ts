@@ -25,20 +25,17 @@ interface ITradeModel extends Model<ITrade> {
     session: mongoose.mongo.ClientSession
   ): Promise<void>;
   addItemsToSeller(
-    sellerItems: IInventory[],
+    seller: IUser | null,
     tradingItems: IInventory[],
-    sellerName: string,
     session: mongoose.mongo.ClientSession
   ): Promise<void>;
   removeItemsFromBuyer(
     tradingItems: IInventory[],
     buyer: IUser | null,
     session: mongoose.mongo.ClientSession,
-    buyerName: string
   ): Promise<void>;
   addItemToBuyer(
     sellingItem: string,
-    buyerName: string,
     buyer: IUser | null,
     session: mongoose.mongo.ClientSession
   ): Promise<void>;
@@ -56,6 +53,8 @@ export interface IOffer {
   createdBy: IUser;
   tradingWith?: IUser;
   status: Status;
+  tradingItems: IInventory[];
+  coins: number;
 }
 
 const tradeSchema = new Schema({
@@ -69,7 +68,7 @@ const tradeSchema = new Schema({
     default: Status.Open,
     required: true,
   },
-  tradingItems: [{item: {type: Schema.Types.ObjectId, ref: 'Item', required: true}, count: Number}],
+  tradingItems: [{itemId: {type: Schema.Types.ObjectId, ref: 'Item', required: true}, count: Number}],
   coins: Number
 });
 
@@ -95,24 +94,23 @@ tradeSchema.statics.removeItemFromSeller = async function (
 };
 
 tradeSchema.statics.addItemsToSeller = async function (
-  sellerItems: IInventory[],
+  seller: IUser | null,
   tradingItems: IInventory[],
-  sellerName: string,
   session: mongoose.mongo.ClientSession
 ) {
   for (const item of tradingItems) {
-    const foundItem = sellerItems.find((it) => {
+    const foundItem = seller?.items?.find((it) => {
       return it.itemId.toString() === item.itemId.toString();
     });
     if (foundItem !== undefined) {
       await User.updateOne(
-        { username: sellerName, "items.itemId": item.itemId },
+        { username: seller?.username, "items.itemId": item.itemId },
         { $inc: { "items.$.count": +item.count } },
         { session }
       );
     } else {
       await User.updateOne(
-        { username: sellerName },
+        { username: seller?.username },
         { $push: { items: item } },
         { session }
       );
@@ -124,7 +122,6 @@ tradeSchema.statics.removeItemsFromBuyer = async function (
   tradingItems: IInventory[],
   buyer: IUser | null,
   session: mongoose.mongo.ClientSession,
-  buyerName: string
 ) {
   for (const item of tradingItems) {
     const foundItem = buyer?.items?.find((it) => {
@@ -140,7 +137,7 @@ tradeSchema.statics.removeItemsFromBuyer = async function (
         );
       } else if (item.count < foundItem.count) {
         await User.updateOne(
-          { username: buyerName, "items.itemId": item.itemId },
+          { username: buyer?.username, "items.itemId": item.itemId },
           { $inc: { "items.$.count": -item.count } },
           { session }
         );
@@ -150,7 +147,6 @@ tradeSchema.statics.removeItemsFromBuyer = async function (
 };
 tradeSchema.statics.addItemToBuyer = async function (
   sellingItem: string,
-  buyerName: string,
   buyer: IUser | null,
   session: mongoose.mongo.ClientSession
 ) {
@@ -163,13 +159,13 @@ tradeSchema.statics.addItemToBuyer = async function (
   }
   if (exists) {
     await User.updateOne(
-      { username: buyerName, "items.itemId": sellingItem },
+      { username: buyer?.username, "items.itemId": sellingItem },
       { $inc: { "items.$.count": +1 } },
       { session }
     );
   } else {
     await User.updateOne(
-      { username: buyerName },
+      { username: buyer?.username },
       {
         $push: {
           items: {
@@ -182,7 +178,7 @@ tradeSchema.statics.addItemToBuyer = async function (
     );
   }
 
-  await User.updateOne({ username: buyerName }, {}, { session });
+  await User.updateOne({ username: buyer?.username }, {}, { session });
 };
 
 tradeSchema.statics.tradeCoins = async function (

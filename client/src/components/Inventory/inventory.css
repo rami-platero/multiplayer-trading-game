@@ -115,9 +115,9 @@
       color: black;
       background-color: rgb(111, 255, 92);
     }
-    &:checked + label.common {
+    &:checked + label.premium {
       color: black;
-      background-color: rgb(255, 255, 255);
+      background-color: rgb(252, 255, 60);
     }
   }
 

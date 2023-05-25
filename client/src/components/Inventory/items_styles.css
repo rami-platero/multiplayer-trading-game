@@ -37,4 +37,7 @@
 .item.rare{
   border: 2px solid rgb(107, 252, 71) !important;
 }
+.item.premium{
+  border: 2px solid rgb(239, 255, 91) !important;
+}
 

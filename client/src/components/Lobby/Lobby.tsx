@@ -15,10 +15,26 @@ import TradeModal from "../UI/TradeModal";
 
 const Lobby = () => {
   const { socket, user } = useContext(userContext);
-  const { lobby, offerState, closeOffer, isTrading, currentTradeOffer } =
+  const { lobby, offerState, closeOffer, isTrading, currentTradeOffer,lobbyDispatch } =
     useContext(lobbyContext);
   const { closeTrade, setTradeMessage,tradeMessage } = useContext(tradingContext);
   const [tradeAccept, setTradeAccept] = useState<boolean>(false)
+
+  socket?.off("send-new-offer").on("send-new-offer", (offers) => {
+    lobbyDispatch({ type: "MAKE_OFFER", payload: offers.offers });
+  });
+
+  socket?.off("remove-offer").on("remove-offer", (itemID) => {
+    lobbyDispatch({ type: "REMOVE_OFFER", payload: itemID });
+  });
+
+  socket?.off("lock-offer").on("lock-offer", (offer) => {
+    lobbyDispatch({ type: "LOCK_OFFER", payload: { ...offer } });
+  });
+
+  socket?.off("unlock-offer").on("unlock-offer", (ID) => {
+    lobbyDispatch({ type: "UNLOCK_OFFER", payload: ID });
+  });
 
   const handleLeaveLobby = () => {
     socket?.emit("leave-lobby", { _id: user!._id, lobby: lobby?.name });
@@ -45,6 +61,7 @@ const Lobby = () => {
   })
 
   socket?.off("TRADE:ACCEPT").on("TRADE:ACCEPT", ()=>{
+    closeTrade()
     setTradeAccept(true)
   })
 
@@ -80,7 +97,7 @@ const Lobby = () => {
       </div>
       <div className="lobby-wrapper">
         {offerState == OfferState.None && <Offers />}
-        {offerState == OfferState.Offering && <Offering />}
+        {offerState == OfferState.Offering && <Offering setAcceptTrade={setTradeAccept}/>}
         <OnlineMembers />
         <Chat />
       </div>

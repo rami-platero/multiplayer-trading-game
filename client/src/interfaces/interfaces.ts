@@ -26,7 +26,8 @@ export interface Item {
   isSkin: boolean;
   skinData?: ISkin;
   image: string;
-  _id: string
+  _id: string;
+  price?: number
 }
 
 export interface IInventory {

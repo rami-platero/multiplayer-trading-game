@@ -46,6 +46,8 @@ export const offerEvents = (io:SocketServer ,socket:Socket, currentLobby: ICurre
               $set: {
                 status: Status.Locked,
                 tradingWith: user._id,
+                coins: 0,
+                tradingItems: [null,null,null,null,null,null]
               },
             }
             );

@@ -7,8 +7,13 @@ import { RiCoinLine } from "react-icons/ri";
 import { AiOutlineUnlock } from "react-icons/ai";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { AiFillCheckCircle } from "react-icons/ai";
+import {SetStateAction} from 'react'
 
-const TraderDisplay = () => {
+interface Props{
+  setAcceptTrade: React.Dispatch<SetStateAction<boolean>>
+}
+
+const TraderDisplay = ({setAcceptTrade}:Props) => {
   const {
     tradingWith,
     items,
@@ -17,7 +22,8 @@ const TraderDisplay = () => {
     unlockOffer,
     setTradeFlags,
     coins,
-    rejectUser
+    rejectUser,
+    acceptTrade
   } = useContext(tradingContext);
   const { socket } = useContext(userContext);
 
@@ -45,6 +51,11 @@ const TraderDisplay = () => {
     tradingDispatch({type:"UPDATE_COINS", payload: coins})
   })
 
+  const handleAccept = ()=>{
+    setAcceptTrade(true)
+    acceptTrade()
+  }
+
   return (
     <div className="trading-display">
       <h3>Trading with {tradingWith?.username}</h3>
@@ -71,6 +82,7 @@ const TraderDisplay = () => {
         <button
           className="accept-trade-btn"
           disabled={tradeFlags.isTradeLocked ? false : true}
+          onClick={()=>handleAccept()}
         >
           <AiFillCheckCircle/>
           Accept

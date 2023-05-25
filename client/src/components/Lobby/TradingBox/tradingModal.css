@@ -110,9 +110,15 @@
       font-family: "Space Mono";
       font-weight: bold;
       transition: 0.2s ease-in-out;
+      &:disabled{
+        pointer-events: none !important;
+        cursor: default !important;
+      }
+
       &:hover{
       transition: 0.2s ease-in-out;
       background-color: #ffd723;
+
       }
     }
   }

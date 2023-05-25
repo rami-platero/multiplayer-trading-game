@@ -38,6 +38,7 @@ interface ILobbyContext {
   currentTradeOffer: IOffer | null;
   setIsTrading: React.Dispatch<SetStateAction<boolean>>
   setCurrentTradeOffer: React.Dispatch<SetStateAction<IOffer | null>>
+  setOfferState: React.Dispatch<SetStateAction<OfferState>>
 }
 
 export const lobbyContext = createContext<ILobbyContext>({
@@ -53,7 +54,8 @@ export const lobbyContext = createContext<ILobbyContext>({
   isTrading: false,
   currentTradeOffer: null,
   setIsTrading: ()=>{},
-  setCurrentTradeOffer: ()=>{}
+  setCurrentTradeOffer: ()=>{},
+  setOfferState: ()=>{}
 });
 
 const LobbyContextProvider = ({ children }: ContextProps) => {
@@ -69,22 +71,6 @@ const LobbyContextProvider = ({ children }: ContextProps) => {
   );
   const [isTrading, setIsTrading] = useState(false);
 
-  socket?.off("send-new-offer").on("send-new-offer", (offers) => {
-    lobbyDispatch({ type: "MAKE_OFFER", payload: offers.offers });
-  });
-
-  socket?.off("remove-offer").on("remove-offer", (itemID) => {
-    lobbyDispatch({ type: "REMOVE_OFFER", payload: itemID });
-  });
-
-  socket?.off("lock-offer").on("lock-offer", (offer) => {
-    lobbyDispatch({ type: "LOCK_OFFER", payload: { ...offer } });
-  });
-
-  socket?.off("unlock-offer").on("unlock-offer", (ID) => {
-    lobbyDispatch({ type: "UNLOCK_OFFER", payload: ID });
-  });
-
   socket?.off("user:leaves").on("user-leaves", (id) => {
     lobbyDispatch({ type: "USER:LEAVES", payload: id });
   });
@@ -98,12 +84,12 @@ const LobbyContextProvider = ({ children }: ContextProps) => {
   };
 
   const closeOffer = () => {
+    // To remove the offer instantly (only for the one offering)
+    lobbyDispatch({ type: "REMOVE_OFFER", payload: itemOffering?._id! });
     setItemOffering(null);
     setOfferState(OfferState.None);
     socket?.emit("close-offer", itemOffering?._id);
 
-    // To remove the offer instantly (only for the one offering)
-    lobbyDispatch({ type: "REMOVE_OFFER", payload: itemOffering?._id! });
   };
 
   const openOffer = (offer: IOffer) => {
@@ -129,7 +115,8 @@ const LobbyContextProvider = ({ children }: ContextProps) => {
         isTrading,
         currentTradeOffer,
         setIsTrading,
-        setCurrentTradeOffer
+        setCurrentTradeOffer,
+        setOfferState
       }}
     >
       {children}

@@ -62,11 +62,11 @@ const Inventory = () => {
           <input
             type="checkbox"
             name="item_type"
-            value="common"
+            value="premium"
             onChange={handleChange}
           />
-          <label className="common" htmlFor="item_type">
-            Common
+          <label className="premium" htmlFor="item_type">
+            Premium
           </label>
         </div>
       </div>

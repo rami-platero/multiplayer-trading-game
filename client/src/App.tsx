@@ -91,8 +91,14 @@ const App = () => {
     };
   }, []); */
 
+  
+
   socket?.off("TRADE:UPDATE-ITEMS").on("TRADE:UPDATE-ITEMS", items=>{
     authDispatch({type: "UPDATE_INVENTORY",payload: items})
+  })
+
+  socket?.off("TRADE:UPDATE-COINS").on("TRADE:UPDATE-COINS", coins=>{
+    authDispatch({type:"UPDATE_COINS",payload: coins})
   })
   
   return (

@@ -1,4 +1,4 @@
-import { IInventory, ISkin, IUser } from "../interfaces/interfaces";
+import { IInventory, IUser, Item } from "../interfaces/interfaces";
 
 export const initialState = {
   user: null,
@@ -15,7 +15,9 @@ export type ActionType =
     }
   | { type: "LOG_OUT" }
   | { type: "CHANGE_SKIN"; payload: string }
-  | { type: "UPDATE_INVENTORY"; payload: IInventory[] };
+  | { type: "UPDATE_INVENTORY"; payload: IInventory[] }
+  | { type: "UPDATE_COINS"; payload: number }
+  | { type: "BUY_ITEM"; payload: Item };
 
 export const authReducer = (state: IState, action: ActionType) => {
   switch (action.type) {
@@ -40,6 +42,39 @@ export const authReducer = (state: IState, action: ActionType) => {
         ...state,
         user: { ...(state.user as IUser), items: action.payload },
       };
+    case "UPDATE_COINS":
+      return {
+        ...state,
+        user: { ...(state.user as IUser), coins: action.payload },
+      };
+    case "BUY_ITEM":
+      const foundItem = state.user?.items.find((item) => {
+        return item.itemId._id === action.payload._id;
+      });
+      if (foundItem) {
+        const newItems = (state.user?.items as IInventory[]).map((item) => {
+          if (item.itemId._id === action.payload._id) {
+            return { ...item, count: item.count + 1 };
+          } else {
+            return item;
+          }
+        });
+        return {
+          ...state,
+          user: { ...(state.user as IUser), items: [...newItems] },
+        };
+      } else {
+        return {
+          ...state,
+          user: {
+            ...(state.user as IUser),
+            items: [
+              ...(state.user?.items as IInventory[]),
+              { itemId: action.payload, count: 1 },
+            ],
+          },
+        };
+      }
     default:
       return state;
   }
