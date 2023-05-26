@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useContext, useRef, useEffect } from "react";
+import { useContext, useRef,} from "react";
 import AuthScreen from "./components/Auth/AuthScreen";
 import { userContext } from "./context/UserContext";
 import { IGameState } from "./interfaces/interfaces";
@@ -9,8 +9,6 @@ import Shop from "./components/Shop/Shop";
 import useScaleContainer from "./hooks/useScaleContainer";
 import LobbySelector from "./components/Lobby Selector/LobbySelector";
 import Lobby from "./components/Lobby/Lobby";
-import { StickGame } from "./Game/StickGame";
-import Game from "./Game/gameIndex";
 import { transitionContext } from "./context/transitionContext";
 import ErrorModal from "./components/UI/ErrorModal";
 import LoadingScreen from "./components/UI/LoadingScreen";
@@ -20,11 +18,11 @@ const App = () => {
   const { user, gameState, errorMessage, socket, authDispatch, loading } =
     useContext(userContext);
   const screenRef = useRef<HTMLDivElement>(null);
-  const [screenStyle, setScreenStyle] = useState<boolean>(false);
+  /* const [screenStyle, setScreenStyle] = useState<boolean> */(false);
   const containerRef = useScaleContainer(1600);
   const { selectorTimeout } = useContext(transitionContext);
-  const gameContainerRef = useRef<HTMLDivElement>(null);
-  const gameRef = useRef<Phaser.Game | null>(null);
+  /* const gameContainerRef = useRef<HTMLDivElement>(null);
+  const gameRef = useRef<Phaser.Game | null>(null); */
   axios.defaults.baseURL = `https://trading-game.onrender.com/`;
   /* const containerRef = useScaleContainer(1250); */
 
@@ -112,10 +110,10 @@ const App = () => {
 
       <div
         className="game-parent"
-        style={{
+        /* style={{
           width: screenStyle ? "1920px" : "1280px",
           height: screenStyle ? "1080px" : "720px",
-        }}
+        }} */
         ref={containerRef}
       >
         <div className="main-game-wrapper" ref={screenRef}>

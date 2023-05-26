@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { userContext } from "../../context/UserContext";
 import useSignUp from "../../hooks/useSignUp";
 import useLogin from "../../hooks/useLogin";
 
@@ -19,8 +18,8 @@ const useAuthForm = (initialState: IForm) => {
   const [form, setForm] = useState<IForm>(initialState);
   const [errors, setErrors] = useState<IErrors | null>(null);
   let objErrors: IErrors = {};
-  const { signup, isLoading: loadingSignUp } = useSignUp();
-  const { login, isLoading: loadingLogin } = useLogin();
+  const { signup} = useSignUp();
+  const { login} = useLogin();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -49,9 +48,9 @@ const useAuthForm = (initialState: IForm) => {
         setErrors(objErrors);
       }
     }
-  };
+  }; 
 
-  return { handleChange, handleSubmit, errors, loadingLogin, loadingSignUp };
+  return { handleChange, handleSubmit, errors};
 };
 
 export default useAuthForm;

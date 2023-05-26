@@ -14,7 +14,7 @@ import {
 import { CSSTransition } from "react-transition-group";
 import Coins from "../UI/Coins";
 import { RiShoppingCart2Fill } from "react-icons/ri";
-import { FaUserFriends } from "react-icons/fa";
+/* import { FaUserFriends } from "react-icons/fa"; */
 import { AiFillSkin } from "react-icons/ai";
 import { btn_click_SFX, hover_btn_SFX } from "../SFX";
 import Inventory from "../Inventory/Inventory";

@@ -1,5 +1,5 @@
-import { useState, useContext } from "react";
-import useAuthForm, { IErrors, IForm } from "../components/Auth/useAuthForm";
+import { useContext } from "react";
+import { IErrors, IForm } from "../components/Auth/useAuthForm";
 import { userContext } from "../context/UserContext";
 import { IGameState } from "../interfaces/interfaces";
 
