@@ -12,7 +12,7 @@ const useSignUp = () => {
   ) => {
     setLoading(true);
 
-    const res = await fetch("http://localhost:4000/signup", {
+    const res = await fetch("/signup", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ ...form, socketID }),

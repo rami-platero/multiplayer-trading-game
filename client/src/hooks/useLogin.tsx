@@ -10,7 +10,7 @@ const useLogin = () => {
     setErrors: React.Dispatch<React.SetStateAction<IErrors | null>>) => {
     setLoading(true);
 
-    const res = await fetch("http://localhost:4000/login", {
+    const res = await fetch("/login", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({...form,socketID}),

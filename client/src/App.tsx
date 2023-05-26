@@ -14,6 +14,7 @@ import Game from "./Game/gameIndex";
 import { transitionContext } from "./context/transitionContext";
 import ErrorModal from "./components/UI/ErrorModal";
 import LoadingScreen from "./components/UI/LoadingScreen";
+import axios from "axios";
 
 const App = () => {
   const { user, gameState, errorMessage, socket, authDispatch, loading } =
@@ -24,6 +25,7 @@ const App = () => {
   const { selectorTimeout } = useContext(transitionContext);
   const gameContainerRef = useRef<HTMLDivElement>(null);
   const gameRef = useRef<Phaser.Game | null>(null);
+  axios.defaults.baseURL = `https://trading-game.onrender.com/`;
   /* const containerRef = useScaleContainer(1250); */
 
   /* const handleFullscreen = () => {
