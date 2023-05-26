@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import {  userContext } from "../../context/UserContext";
+import {  InventoryState, userContext } from "../../context/UserContext";
 import Inv_Item from "./Inv_Item";
 import "./inventory.css";
 import { IoMdRemoveCircle } from "react-icons/io";
@@ -8,6 +8,7 @@ import { IoMdClose } from "react-icons/io";
 const Inventory = () => {
   const { user, closeInventory, inventoryState } = useContext(userContext);
   const [filters, setFilters] = useState<string[]>([]);
+  const [isRemoving, setIsRemoving] = useState<boolean>(false)
 
   const filteredItems = !filters.length
     ? user?.items
@@ -34,8 +35,10 @@ const Inventory = () => {
       <div className="inventory-top-elements">
         <div className="header">
           <h2>ITEMS</h2>
-          {inventoryState === null && (
-            <button>
+          {inventoryState === InventoryState.Menu && (
+            <button onClick={()=>{
+              setIsRemoving(!isRemoving)
+            }}>
               <IoMdRemoveCircle /> Remove Item
             </button>
           )}
@@ -72,7 +75,7 @@ const Inventory = () => {
       </div>
       <div className="items-wrapper">
         {filteredItems?.map((item) => {
-          return <Inv_Item item={item} key={item.itemId._id} />;
+          return <Inv_Item item={item} key={item.itemId._id} isRemoving={isRemoving}/>;
         })}
       </div>
     </div>

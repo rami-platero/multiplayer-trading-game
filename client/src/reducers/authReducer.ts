@@ -17,7 +17,9 @@ export type ActionType =
   | { type: "CHANGE_SKIN"; payload: string }
   | { type: "UPDATE_INVENTORY"; payload: IInventory[] }
   | { type: "UPDATE_COINS"; payload: number }
-  | { type: "BUY_ITEM"; payload: Item };
+  | { type: "BUY_ITEM"; payload: Item }
+  | { type: "REMOVE_ITEM"; payload: string }
+  | { type: "UPDATE_COUNT_ITEM"; payload: string };
 
 export const authReducer = (state: IState, action: ActionType) => {
   switch (action.type) {
@@ -75,6 +77,32 @@ export const authReducer = (state: IState, action: ActionType) => {
           },
         };
       }
+    case "REMOVE_ITEM":
+      const updatedItems = (state.user?.items as IInventory[]).filter(
+        (item) => {
+          if (item.itemId._id !== action.payload) {
+            return item;
+          }
+        }
+      );
+      return {
+        ...state,
+        user: { ...(state.user as IUser), items: updatedItems },
+      };
+    case "UPDATE_COUNT_ITEM":
+      const updatedCountItems = (state.user?.items as IInventory[]).map(
+        (item) => {
+          if (item.itemId?._id === action.payload) {
+            return {...item, count: item.count-1};
+          } else {
+            return item;
+          }
+        }
+      );
+      return {
+        ...state,
+        user: { ...(state.user as IUser), items: updatedCountItems },
+      };
     default:
       return state;
   }

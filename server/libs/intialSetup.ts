@@ -83,8 +83,8 @@ export const initUser = async (): Promise<IInitSetup> => {
   return {
     items: [...itemsArray],
     skin: {
-      chatColor: "#cccccc",
-      badgeColor: "#e0e0e0",
+      chatColor: "red",
+      badgeColor: "red",
     },
   };
 };

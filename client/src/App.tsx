@@ -13,9 +13,10 @@ import { StickGame } from "./Game/StickGame";
 import Game from "./Game/gameIndex";
 import { transitionContext } from "./context/transitionContext";
 import ErrorModal from "./components/UI/ErrorModal";
+import LoadingScreen from "./components/UI/LoadingScreen";
 
 const App = () => {
-  const { user, gameState, errorMessage,socket,authDispatch} =
+  const { user, gameState, errorMessage, socket, authDispatch, loading } =
     useContext(userContext);
   const screenRef = useRef<HTMLDivElement>(null);
   const [screenStyle, setScreenStyle] = useState<boolean>(false);
@@ -91,16 +92,14 @@ const App = () => {
     };
   }, []); */
 
-  
+  socket?.off("TRADE:UPDATE-ITEMS").on("TRADE:UPDATE-ITEMS", (items) => {
+    authDispatch({ type: "UPDATE_INVENTORY", payload: items });
+  });
 
-  socket?.off("TRADE:UPDATE-ITEMS").on("TRADE:UPDATE-ITEMS", items=>{
-    authDispatch({type: "UPDATE_INVENTORY",payload: items})
-  })
+  socket?.off("TRADE:UPDATE-COINS").on("TRADE:UPDATE-COINS", (coins) => {
+    authDispatch({ type: "UPDATE_COINS", payload: coins });
+  });
 
-  socket?.off("TRADE:UPDATE-COINS").on("TRADE:UPDATE-COINS", coins=>{
-    authDispatch({type:"UPDATE_COINS",payload: coins})
-  })
-  
   return (
     <>
       {/* <button
@@ -108,6 +107,7 @@ const App = () => {
       >
         full screen
       </button> */}
+
       <div
         className="game-parent"
         style={{
@@ -117,6 +117,7 @@ const App = () => {
         ref={containerRef}
       >
         <div className="main-game-wrapper" ref={screenRef}>
+          {loading && <LoadingScreen />}
           {!user && gameState == IGameState.Auth && <AuthScreen />}
           <CSSTransition
             in={errorMessage !== null}
@@ -124,7 +125,7 @@ const App = () => {
             unmountOnExit
             classNames={"grow"}
           >
-            <ErrorModal/>
+            <ErrorModal />
           </CSSTransition>
           <CSSTransition
             in={gameState === IGameState.Main}
@@ -152,7 +153,6 @@ const App = () => {
             <LobbySelector />
           </CSSTransition>
           {gameState == IGameState.Lobby && <Lobby />}
-          {/* <StickGame ref={gameContainerRef} id="game-container" /> */}
         </div>
       </div>
     </>

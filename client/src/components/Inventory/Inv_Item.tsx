@@ -4,15 +4,17 @@ import { InventoryState, userContext } from "../../context/UserContext";
 import { IInventory } from "../../interfaces/interfaces";
 import './items_styles.css'
 import {useContext} from 'react'
+import {GrFormClose} from 'react-icons/gr'
 
 interface Props {
   item: IInventory;
+  isRemoving?: boolean
 }
 
-const Inv_Item = ({ item }: Props) => {
+const Inv_Item = ({ item, isRemoving }: Props) => {
 
   const {makeOffer,currentTradeOffer}= useContext(lobbyContext)
-  const {inventoryState,closeInventory,socket} = useContext(userContext)
+  const {inventoryState,closeInventory,socket,removeItem} = useContext(userContext)
   const {tradingDispatch,items,setCurrentIndexItem,currentIndexItem} = useContext(tradingContext)
 
   const addItem = (item: IInventory) => {
@@ -44,12 +46,16 @@ const Inv_Item = ({ item }: Props) => {
     }
   }
 
-
   return (
     <>
-    <div onClick={handleItem} key={item.itemId._id} className={`item ${item.itemId.type}`}>
+    <div onClick={handleItem} key={item.itemId._id} className={`item ${item.itemId.type} ${isRemoving}`}>
       {item.count > 1 && <p className="item-count">{item.count}</p>}
       <img src={`../src/assets/items/${item.itemId.image}`} />
+      {isRemoving && inventoryState===InventoryState.Menu &&
+      <GrFormClose onClick={()=>{
+        removeItem(item.itemId)
+      }}/>
+      }
     </div>
     </>
   );

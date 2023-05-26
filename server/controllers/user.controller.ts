@@ -34,3 +34,27 @@ export const SignUp = async (req: Request, res: Response) => {
 };
 
 
+export const buyItem = async (req: Request, res: Response)=>{
+  try {
+    const {id} = req.params
+    const {userID} = req.body
+    const {newCoins, boughtItem} = await User.buyItem(userID,id)
+    return res.status(200).json({newCoins,boughtItem})
+  } catch (error:any) {
+    return res.status(400).json(JSON.parse(error.message));
+  }
+}
+
+export const removeItem = async (req: Request, res: Response)=>{
+  try {
+    const {id} = req.params
+    const {userID} = req.body
+    const item = await User.removeItem(userID,id)
+    return res.status(200).json({item})
+  } catch (error:any) {
+    return res.status(400).json(JSON.parse(error.message));
+  }
+}
+
+
+

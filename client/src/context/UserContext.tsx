@@ -5,16 +5,18 @@ import {
   useState,
   SetStateAction,
 } from "react";
-import { IUser } from "../interfaces/interfaces";
+import { IUser, Item } from "../interfaces/interfaces";
 import { authReducer, initialState, ActionType } from "../reducers/authReducer";
 import io, { Socket } from "socket.io-client";
 import { IGameState } from "../interfaces/interfaces";
 import { ContextProps } from "../interfaces/interfaces";
 import { btn_click_SFX } from "../components/SFX";
+import { deleteItem } from "../api/item";
 
 export enum InventoryState {
   Offer = "offer",
   Trading = "trading",
+  Menu = "menu",
 }
 
 interface IAuthContext {
@@ -28,12 +30,13 @@ interface IAuthContext {
   closeErrorMessage: () => void;
   loading: boolean;
   setLoading: React.Dispatch<SetStateAction<boolean>>;
-  setErrorMessage: React.Dispatch<SetStateAction<string | null>>
-  isInventoryOpen: boolean
-  openInventory: ()=>void
-  closeInventory: ()=>void
+  setErrorMessage: React.Dispatch<SetStateAction<string | null>>;
+  isInventoryOpen: boolean;
+  openInventory: () => void;
+  closeInventory: () => void;
   setInventoryState: React.Dispatch<SetStateAction<InventoryState | null>>;
   inventoryState: InventoryState | null;
+  removeItem: (item: Item) => void;
 }
 
 export enum ErrorType {
@@ -53,10 +56,11 @@ export const userContext = createContext<IAuthContext>({
   setLoading: () => {},
   setErrorMessage: () => {},
   isInventoryOpen: false,
-  openInventory: ()=>{},
-  closeInventory: ()=>{},  
+  openInventory: () => {},
+  closeInventory: () => {},
   setInventoryState: (): void => {},
   inventoryState: null,
+  removeItem: () => {},
 });
 
 export const UserContextProvider = ({ children }: ContextProps) => {
@@ -65,7 +69,7 @@ export const UserContextProvider = ({ children }: ContextProps) => {
   const [gameState, setGameState] = useState<IGameState>(IGameState.Auth);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [isInventoryOpen, setIsInventoryOpen] = useState(false)
+  const [isInventoryOpen, setIsInventoryOpen] = useState(false);
   const [inventoryState, setInventoryState] = useState<InventoryState | null>(
     null
   );
@@ -82,14 +86,31 @@ export const UserContextProvider = ({ children }: ContextProps) => {
     };
   }, []);
 
-  const openInventory = ()=>{
-    btn_click_SFX.play()
-    setIsInventoryOpen(true)
-  }
+  const removeItem = async (item: Item) => {
+    setLoading(true);
+    try {
+      const res = await deleteItem(authState?.user?._id!, item._id);
+      if (res.data.item !== null) {
+        console.log("updating count")
+        authDispatch({ type: "UPDATE_COUNT_ITEM", payload: item._id });
+      } else {
+        authDispatch({ type: "REMOVE_ITEM", payload: item._id });
+      }
+      setLoading(false);
+    } catch (error: any) {
+      setLoading(false);
+      console.log(error.response.data.message);
+    }
+  };
 
-  const closeInventory = ()=>{
-    setIsInventoryOpen(false)
-  }
+  const openInventory = () => {
+    btn_click_SFX.play();
+    setIsInventoryOpen(true);
+  };
+
+  const closeInventory = () => {
+    setIsInventoryOpen(false);
+  };
 
   const closeErrorMessage = () => {
     setErrorMessage(null);
@@ -114,6 +135,7 @@ export const UserContextProvider = ({ children }: ContextProps) => {
         openInventory,
         inventoryState,
         setInventoryState,
+        removeItem,
       }}
     >
       {children}

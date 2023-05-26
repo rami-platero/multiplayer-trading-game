@@ -13,15 +13,25 @@
     border: 2px solid white;
     position: relative;
 
-    &:hover {
-      transform: scale(1.2);
+    > svg {
+      z-index: 10;
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      background-color: rgb(255, 75, 75);
       transition: 0.2s ease-in-out;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgb(255, 23, 23);
+        transition: 0.2s ease-in-out;
+      }
     }
 
-    .item-count{
+    .item-count {
       position: absolute;
       right: 0;
-      bottom: -.5rem;
+      bottom: -0.5rem;
       font-family: "Space Mono";
       font-weight: bold;
       font-size: 1.5rem;
@@ -32,12 +42,17 @@
       height: 100%;
     }
   }
+  .item.false:hover {
+    &:hover {
+      transform: scale(1.2);
+      transition: 0.2s ease-in-out;
+    }
+  }
 }
 
-.item.rare{
+.item.rare {
   border: 2px solid rgb(107, 252, 71) !important;
 }
-.item.premium{
+.item.premium {
   border: 2px solid rgb(239, 255, 91) !important;
 }
-

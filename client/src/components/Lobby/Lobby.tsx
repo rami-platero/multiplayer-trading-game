@@ -87,7 +87,7 @@ const Lobby = () => {
         in={tradeAccept === true}
         timeout={300}
         unmountOnExit
-        classNames={"trade"}
+        classNames={"grow"}
       >
         <TradeModal setTradeAccept={setTradeAccept}/>
       </CSSTransition>

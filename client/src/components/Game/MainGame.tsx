@@ -50,6 +50,10 @@ const MainGame = () => {
     setMainState(null);
   };
 
+  useEffect(()=>{
+    setInventoryState(InventoryState.Menu)
+  },[])
+
   return (
     <div className={`game-container ${changeFrom}`}>
       <Coins style={{ left: "0" }} />

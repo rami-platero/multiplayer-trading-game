@@ -5,7 +5,6 @@ import { AiOutlineEye } from "react-icons/ai";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState, useContext } from "react";
 import useAuthForm from "./useAuthForm";
-import LoadingScreen from "../UI/LoadingScreen";
 import { userContext } from "../../context/UserContext";
 
 const INITIAL_STATE = {
@@ -23,9 +22,6 @@ const Login = () => {
       <form onSubmit={(e)=>{
       handleSubmit(e,false)
     }}>
-      {loading &&
-      <LoadingScreen />
-      }
         <div className={`input ${errors?.username && "error"}`}>
           <AiOutlineUser />
           <input

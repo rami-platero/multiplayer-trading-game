@@ -1,8 +1,9 @@
 .grow-enter {
-  transform: scale(0);
+  transform: scale(0) !important;
 }
+
 .grow-enter-active {
-  transform: scale(1);
+  transform: scale(1) !important;
   transition: transform 200ms ease-in-out;
 }
 
@@ -14,7 +15,6 @@
   transform: scale(0);
   transition: transform 200ms ease-in-out;
 }
-
 
 .game-container.shop.slide-enter {
   transform: translateX(-150%);
@@ -34,7 +34,6 @@
   transition: transform 300ms ease-in-out;
 }
 
-
 .game-container.selector.slide-exit {
   transform: translateX(0%);
 }
@@ -43,7 +42,6 @@
   transform: translateX(0%);
   transition: transform 300ms ease-in-out;
 }
-
 
 .lobby-selector-container.slide2-enter{
   transform: translateY(-150%);
