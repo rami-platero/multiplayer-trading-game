@@ -17,5 +17,8 @@ app.use(cors())
 app.use(morgan("dev"))
 
 app.use("/", userRouter,tradeRouter);
+app.get("/", (_req,res)=>{
+    res.setHeader("Access-Control-Allow-Credentials","true")
+  })
 
 app.set("port", process.env.PORT);

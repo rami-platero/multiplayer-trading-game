@@ -75,7 +75,7 @@ export const UserContextProvider = ({ children }: ContextProps) => {
   );
 
   useEffect(() => {
-    const socket = io("http://localhost:4000");
+    const socket = io("https://trading-game.onrender.com");
 
     socket.on("connect", () => {
       setSocket(socket);
