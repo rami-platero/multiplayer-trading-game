@@ -46,10 +46,10 @@ function LobbyButton({ room_name, type, lobby, setFromLobby }: Props) {
         onMouseEnter={() => {
           hover_btn_SFX.play();
         }}
-        disabled={type == LobbyType.VIP && !user?.isVIP ? true : false}
+        disabled={type === LobbyType.VIP && user?.isVIP===false ? true : false}
         onClick={handleLobby}
       >
-        {!user?.isVIP && type == LobbyType.VIP && <AiFillLock />}
+        {user?.isVIP===false && type == LobbyType.VIP && <AiFillLock />}
         <p>Lobby {room_name}</p>
         <p className="users-amount">
           <BiUser />
