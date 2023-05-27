@@ -11,6 +11,10 @@
   user-select: none;
 }
 
+.lobby-container.VIP{
+  background: linear-gradient(0deg, rgb(163, 195, 228) 0%, rgb(57, 120, 172) 100%);
+}
+
 .lobby-top-elements {
   display: flex;
   flex-direction: row;

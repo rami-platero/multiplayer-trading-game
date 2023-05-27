@@ -3,7 +3,7 @@ import Offers from "./Offers/Offers";
 import OnlineMembers from "./OnlineMembers.tsx/OnlineMembers";
 import BackBtn from "../UI/BackBtn";
 import "./lobby.css";
-import { useContext,useState } from "react";
+import { useContext, useState } from "react";
 import { userContext } from "../../context/UserContext";
 import { OfferState, lobbyContext } from "../../context/LobbyContext";
 import Offering from "./Offering/Offering";
@@ -12,13 +12,21 @@ import TradingModal from "./TradingBox/TradingModal";
 import { tradingContext } from "../../context/TradingContext";
 import LobbyModal from "../UI/LobbyModal";
 import TradeModal from "../UI/TradeModal";
+import { LobbyType } from "../../interfaces/interfaces";
 
 const Lobby = () => {
   const { socket, user } = useContext(userContext);
-  const { lobby, offerState, closeOffer, isTrading, currentTradeOffer,lobbyDispatch } =
-    useContext(lobbyContext);
-  const { closeTrade, setTradeMessage,tradeMessage } = useContext(tradingContext);
-  const [tradeAccept, setTradeAccept] = useState<boolean>(false)
+  const {
+    lobby,
+    offerState,
+    closeOffer,
+    isTrading,
+    currentTradeOffer,
+    lobbyDispatch,
+  } = useContext(lobbyContext);
+  const { closeTrade, setTradeMessage, tradeMessage } =
+    useContext(tradingContext);
+  const [tradeAccept, setTradeAccept] = useState<boolean>(false);
 
   socket?.off("send-new-offer").on("send-new-offer", (offers) => {
     lobbyDispatch({ type: "MAKE_OFFER", payload: offers.offers });
@@ -46,27 +54,30 @@ const Lobby = () => {
       username: currentTradeOffer?.createdBy.username,
       description: "rejected your offer.",
       reason: "Trade Rejected",
-      dismissed: false
+      dismissed: false,
     });
     closeTrade();
   });
 
-  socket?.off("ERROR:OPENING-OFFER").on("ERROR:OPENING-OFFER",()=>{
+  socket?.off("ERROR:OPENING-OFFER").on("ERROR:OPENING-OFFER", () => {
     setTradeMessage({
-      description: "You can't open this offer because the seller already closed it.",
+      description:
+        "You can't open this offer because the seller already closed it.",
       reason: "Offer Error",
-      dismissed: false
-    })
-    closeTrade()
-  })
+      dismissed: false,
+    });
+    closeTrade();
+  });
 
-  socket?.off("TRADE:ACCEPT").on("TRADE:ACCEPT", ()=>{
-    closeTrade()
-    setTradeAccept(true)
-  })
+  socket?.off("TRADE:ACCEPT").on("TRADE:ACCEPT", () => {
+    closeTrade();
+    setTradeAccept(true);
+  });
 
   return (
-    <div className="lobby-container">
+    <div
+      className={`lobby-container ${lobby?.type}`}
+    >
       <CSSTransition
         in={isTrading == true}
         timeout={300}
@@ -89,7 +100,7 @@ const Lobby = () => {
         unmountOnExit
         classNames={"grow"}
       >
-        <TradeModal setTradeAccept={setTradeAccept}/>
+        <TradeModal setTradeAccept={setTradeAccept} />
       </CSSTransition>
       <div className="lobby-top-elements">
         <h1>Lobby {lobby?.name}</h1>
@@ -97,7 +108,9 @@ const Lobby = () => {
       </div>
       <div className="lobby-wrapper">
         {offerState == OfferState.None && <Offers />}
-        {offerState == OfferState.Offering && <Offering setAcceptTrade={setTradeAccept}/>}
+        {offerState == OfferState.Offering && (
+          <Offering setAcceptTrade={setTradeAccept} />
+        )}
         <OnlineMembers />
         <Chat />
       </div>

@@ -26,12 +26,16 @@
   margin-top: .2rem;
   font-size: 1rem;
   gap: .5rem;
+
+  .Inzanic{
+    color: rgb(0, 174, 255);
+    text-shadow: rgb(16, 187, 255) 0px 0px 10px;
+  }
 }
 
 .chat-container .messages .message p{
   color: rgb(219, 219, 219);
-  /* color: rgb(0, 174, 255);
-  text-shadow: rgb(16, 187, 255) 0px 0px 10px; */
+  
 }
 
 /* .chat-container .messages .message span{

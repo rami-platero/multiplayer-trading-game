@@ -9,8 +9,8 @@
   transition: background 0.5s ease;
 }
 
-.vip-lobbies button.true:hover {
-  background: linear-gradient(180deg, #b0efff 0%, #6cc4f7 100%);
+.vip-lobbies button:hover {
+  background: linear-gradient(180deg, #c2f3ff 0%, #7ccfff 100%);
 }
 
 .vip-lobbies h3 {

@@ -127,7 +127,7 @@ const Chat = () => {
                   >
                     {msg.username}:
                   </span>
-                  <p> {msg.message}</p>
+                  <p className={`${msg.username}`}> {msg.message}</p>
                 </>
               )}
             </div>
