@@ -1,6 +1,7 @@
 import { userContext } from "../../context/UserContext";
 import { SetStateAction, useContext, useState} from "react";
 import "./tradeModal.css";
+import { deal_SFX } from "../SFX";
 
 interface Props{
   setTradeAccept: React.Dispatch<SetStateAction<boolean>>
@@ -31,6 +32,7 @@ const TradeModal = ({setTradeAccept}:Props) => {
     setProgressState(num)
     if(num===100){
       resetTradeModal()
+      deal_SFX.play()
     }
   })
 

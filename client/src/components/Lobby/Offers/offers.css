@@ -51,6 +51,12 @@
       border: none;
       cursor: pointer;
 
+      &:disabled{
+        color: black;
+        opacity: 0.2;
+        pointer-events: none;
+      }
+
       &:hover{
         background: linear-gradient(
           180deg,

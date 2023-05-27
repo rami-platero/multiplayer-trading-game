@@ -16,13 +16,12 @@
   gap: 1.5rem;
   opacity: 0.9;
   transition: 0.2s ease-in-out;
+  user-select: none;
 
-
-  &:hover{
+  &:hover {
     transition: 0.2s ease-in-out;
     opacity: 1;
   }
-
 
   .icon {
     padding: 2rem;
@@ -38,13 +37,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    user-select: none;
+
     /* width: 45%; */
-    >p{
-        margin-bottom: 1rem;
-        color: rgba(255, 255, 255, 0.836);
+    > p {
+      margin-bottom: 1rem;
+      color: rgba(255, 255, 255, 0.836);
     }
     > button {
-    font-family: "Archivo Narrow";
+      font-family: "Archivo Narrow";
       position: absolute;
       bottom: 0;
       right: 0;
@@ -72,25 +73,25 @@
       width: 4rem;
       height: 4rem;
       align-self: center;
-      /* border: 2px solid rgb(239, 255, 91) !important; */
+      user-select: none;
     }
   }
 
-  .close-btn{
+  .close-btn {
     position: absolute;
     top: 0;
     right: 0;
-    padding: .7rem;
+    padding: 0.7rem;
     cursor: pointer;
     transition: 0.2s ease-in-out;
 
-    &:hover{
-        transition: 0.2s ease-in-out;
-        opacity: .7;
+    &:hover {
+      transition: 0.2s ease-in-out;
+      opacity: 0.7;
     }
-    >svg{
-        width: 1.5rem;
-        height: 1.5rem;
+    > svg {
+      width: 1.5rem;
+      height: 1.5rem;
     }
   }
 }

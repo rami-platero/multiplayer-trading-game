@@ -26,20 +26,21 @@
       width: 100%;
       /* box-shadow: rgba(27, 190, 255, 0.822) 0px 0px 15px; */
       height: 35px;
-      /* background: linear-gradient(0deg, #88c9ff 0%, #3ab7ff 100%); */
+      background: rgb(197, 197, 197);
       color: black;
       padding: 0.2rem 0.7rem;
       transition: 0.2s background ease-in-out;
       position: relative;
+      transition: 0.2s ease-in-out;
       /* background-color: rgb(35, 180, 224); */
-
     }
   }
 }
 
-/* .online-members-container .member-badge-box:hover{
-  background: linear-gradient(0deg, #75c1ff 0%, #28b0ff 100%);
-} */
+.online-members-container .member-badge-box:hover{
+  opacity: 0.7;
+  transition: 0.2s ease-in-out;
+}
 
 /*SCROLLBAR*/
 .online-members-container .members-box::-webkit-scrollbar {
