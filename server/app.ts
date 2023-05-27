@@ -14,18 +14,15 @@ initSocket();
 
 app.use(express.json());
 app.use(cors({
-    origin: 'https://multiplayer-trading-game.vercel.app/',
-    credentials: true,
-  }));
+  origin: 'https://multiplayer-trading-game.vercel.app',
+  credentials: true,
+}));
 app.use(morgan("dev"));
 
-app.get("/", (_req, res:Response) => {
+app.get("/", (_req, res: Response) => {
   res.setHeader("Access-Control-Allow-Credentials", "true");
 });
-app.use((_req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://multiplayer-trading-game.vercel.app');
-    next();
-  });
+
 app.use("/", userRouter, tradeRouter);
 
 app.set("port", process.env.PORT);
