@@ -2,6 +2,7 @@ import { lobbyContext } from "../../../context/LobbyContext";
 import { OfferingState, tradeFlagsInitialState, tradingContext } from "../../../context/TradingContext";
 import { userContext } from "../../../context/UserContext";
 import { IUser } from "../../../interfaces/interfaces";
+import { new_trader_SFX } from "../../SFX";
 import TraderDisplay from "./TraderDisplay";
 import "./offering.css";
 import { useContext,SetStateAction } from "react";
@@ -18,6 +19,7 @@ const Offering = ({setAcceptTrade}:Props) => {
   socket?.off("new-trader").on("new-trader", (trader:IUser)=>{
     setTradingWith(trader);
     setOfferingState(OfferingState.Trading);
+    new_trader_SFX.play()
   })
 
   socket?.off("trader-leaves").on("trader-leaves", () => {

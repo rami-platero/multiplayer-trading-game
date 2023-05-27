@@ -56,3 +56,6 @@
 .item.premium {
   border: 2px solid rgb(239, 255, 91) !important;
 }
+.item.ultra {
+  border: 2px solid rgb(255, 28, 28) !important;
+}

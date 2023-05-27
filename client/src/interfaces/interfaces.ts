@@ -51,6 +51,7 @@ export interface IUser {
   createdAt: Date;
   coins: number;
   _id: string
+  isVIP: boolean
 }
 
 export interface IUserinLobby{

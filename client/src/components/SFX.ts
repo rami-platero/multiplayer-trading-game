@@ -13,3 +13,13 @@ place_item_SFX.volume = 0.5
 import Success from '../assets/success.mp3'
 export const success_SFX = new Audio(Success)
 success_SFX.volume = 0.5
+
+import NewTrader from '../assets/new-trader.wav'
+export const new_trader_SFX = new Audio(NewTrader)
+new_trader_SFX.volume = 0.5
+
+import LockSound from '../assets/lock-offer.wav'
+export const lock_SFX = new Audio(LockSound)
+
+import MSG from '../assets/msg.wav'
+export const tick_SFX = new Audio(MSG)

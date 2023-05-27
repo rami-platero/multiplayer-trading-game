@@ -1,7 +1,7 @@
 import { BiUser } from "react-icons/bi";
 import "./lobby_btn.css";
 import { LobbyCount } from "./LobbySelector";
-/* import { AiFillLock } from "react-icons/ai"; */
+import { AiFillLock } from "react-icons/ai";
 import { hover_btn_SFX } from "../SFX";
 import {  SetStateAction } from "react";
 import { userContext } from "../../context/UserContext";
@@ -21,10 +21,6 @@ interface Props {
 function LobbyButton({ room_name, type, lobby, setFromLobby }: Props) {
   const { lobbyDispatch} = useContext(lobbyContext);
   const { setGameState, socket, user,setLoading } = useContext(userContext);
-  if(1>2){
-    console.log(type)
-  }
-  /* const isVIP: boolean = false; */
   const { setSelectorTimeout } = useContext(transitionContext);
   /* const [modalIsOpen, setModalIsOpen] = useState<boolean>(false); */
 
@@ -46,14 +42,14 @@ function LobbyButton({ room_name, type, lobby, setFromLobby }: Props) {
     <>
       {/* {modalIsOpen && <LobbyModal />} */}
       <button
-       /*  className={`${isVIP}`} */
+        className={`${user?.isVIP}`}
         onMouseEnter={() => {
           hover_btn_SFX.play();
         }}
-        /* disabled={type == LobbyType.VIP && !isVIP ? true : false} */
+        disabled={type == LobbyType.VIP && !user?.isVIP ? true : false}
         onClick={handleLobby}
       >
-        {/* {!isVIP && type == LobbyType.VIP && <AiFillLock />} */}
+        {!user?.isVIP && type == LobbyType.VIP && <AiFillLock />}
         <p>Lobby {room_name}</p>
         <p className="users-amount">
           <BiUser />
