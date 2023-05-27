@@ -71,7 +71,7 @@ const TraderDisplay = ({setAcceptTrade}:Props) => {
           return (
             <div className={`item-slot item ${item?.itemId.type}`}>
               {item !== null && (
-                <img src={`../../src/assets/items/${item.itemId.image}`} />
+                <img src={item.itemId.image} />
               )}
               {item !== null && item.count > 1 && <p>{item?.count}</p>}
             </div>
