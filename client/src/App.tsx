@@ -23,7 +23,7 @@ const App = () => {
   const { selectorTimeout } = useContext(transitionContext);
   /* const gameContainerRef = useRef<HTMLDivElement>(null);
   const gameRef = useRef<Phaser.Game | null>(null); */
-  axios.defaults.baseURL = `https://trading-game.onrender.com/`;
+  axios.defaults.baseURL = `https://multiplayer-trading-game.onrender.com`;
   /* const containerRef = useScaleContainer(1250); */
 
   /* const handleFullscreen = () => {
