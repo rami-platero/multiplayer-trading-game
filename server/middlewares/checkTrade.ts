@@ -1,6 +1,6 @@
 import { NextFunction } from "express";
 import { Request, Response } from "express";
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 import User, { IUser } from "../models/User";
 import { IInventory } from "../models/Item";
 import Trade, { ITrade } from "../models/Trade";
