@@ -21,7 +21,8 @@ interface Props {
 function LobbyButton({ room_name, type, lobby, setFromLobby }: Props) {
   const { lobbyDispatch} = useContext(lobbyContext);
   const { setGameState, socket, user,setLoading } = useContext(userContext);
-  const isVIP: boolean = false;
+  console.log(type)
+  /* const isVIP: boolean = false; */
   const { setSelectorTimeout } = useContext(transitionContext);
   /* const [modalIsOpen, setModalIsOpen] = useState<boolean>(false); */
 
@@ -43,14 +44,14 @@ function LobbyButton({ room_name, type, lobby, setFromLobby }: Props) {
     <>
       {/* {modalIsOpen && <LobbyModal />} */}
       <button
-        className={`${isVIP}`}
+        /* className={`${isVIP}`} */
         onMouseEnter={() => {
           hover_btn_SFX.play();
         }}
-        disabled={type == LobbyType.VIP && !isVIP ? true : false}
+        /* disabled={type == LobbyType.VIP && !isVIP ? true : false} */
         onClick={handleLobby}
       >
-        {!isVIP && type == LobbyType.VIP && <AiFillLock />}
+        {/* {!isVIP && type == LobbyType.VIP && <AiFillLock />} */}
         <p>Lobby {room_name}</p>
         <p className="users-amount">
           <BiUser />
