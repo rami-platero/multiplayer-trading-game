@@ -21,12 +21,12 @@ app.use(
 );
 app.use(morgan("dev"));
 
-app.get("/", (_req, res: Response) => {
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-});
-
 app.use((_req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://multiplayer-trading-game.vercel.app"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", "true");
   next();
 });
 
