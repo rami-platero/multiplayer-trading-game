@@ -13,14 +13,21 @@ export const server = http.createServer(app);
 initSocket();
 
 app.use(express.json());
-app.use(cors({
-  origin: 'https://multiplayer-trading-game.vercel.app',
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: "https://multiplayer-trading-game.vercel.app",
+    credentials: true,
+  })
+);
 app.use(morgan("dev"));
 
 app.get("/", (_req, res: Response) => {
   res.setHeader("Access-Control-Allow-Credentials", "true");
+});
+
+app.use((_req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  next();
 });
 
 app.use("/", userRouter, tradeRouter);
