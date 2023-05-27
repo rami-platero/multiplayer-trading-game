@@ -19,7 +19,7 @@ const PurchaseModal = () => {
         <h1>{purchaseModal.error ? "ERROR" : "SUCCESS!"}</h1>
         <p>{purchaseModal.message}</p>
         {purchaseModal.error === false && (
-          <img src={`../src/assets/items/${purchaseModal.itemIMG}`} />
+          <img src={purchaseModal.itemIMG!} />
         )}
       </div>
       <div className="close-btn" onClick={closePurchaseModal}>
