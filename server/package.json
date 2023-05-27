@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node build/index.js",
     "dev": "ts-node-dev ./index.ts",
-    "tsc": "tsc",
+    "build": "tsc",
+    "prestart": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
