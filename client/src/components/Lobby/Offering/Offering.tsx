@@ -32,7 +32,7 @@ const Offering = ({setAcceptTrade}:Props) => {
       <div className="item-offered">
         <h2>Your Offer</h2>
         <img
-          src={`'../../src/assets/items/${itemOffering?.image}`}
+          src={itemOffering?.image}
           className={`item ${itemOffering?.type}`}
         />
       </div>
