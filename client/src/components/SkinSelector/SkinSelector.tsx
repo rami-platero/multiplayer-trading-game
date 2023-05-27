@@ -86,7 +86,7 @@ const SkinSelector = ({ handleState }: Props) => {
                     currentSkin == item.itemId.name ? "2px solid white" : "0px",
                 }}
               >
-                <img src={`../src/assets/items/${item.itemId.image}`} />
+                <img src={item.itemId.image} />
               </div>
             );
           })}

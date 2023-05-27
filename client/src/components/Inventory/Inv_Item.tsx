@@ -50,7 +50,7 @@ const Inv_Item = ({ item, isRemoving }: Props) => {
     <>
     <div onClick={handleItem} key={item.itemId._id} className={`item ${item.itemId.type} ${isRemoving}`}>
       {item.count > 1 && <p className="item-count">{item.count}</p>}
-      <img src={`../src/assets/items/${item.itemId.image}`} />
+      <img src={item.itemId.image} />
       {isRemoving && inventoryState===InventoryState.Menu &&
       <GrFormClose onClick={()=>{
         removeItem(item.itemId)

@@ -24,7 +24,7 @@ const Slot = ({ item, index }: Props) => {
 
   return (
     <button className={`add-item ${item !== null && "disabled"}`} onClick={handleSlot} disabled={tradeFlags.isTradeLocked? true: false}>
-      {item === null? <GrAdd />: <img className={`item ${item.itemId.type}`} src={`../../src/assets/items/${item.itemId.image}`}/>}
+      {item === null? <GrAdd />: <img className={`item ${item.itemId.type}`} src={item.itemId.image}/>}
       {item!==null && <GrAdd onClick={()=>{
         addItemAmount(item,index)
       }}/>}

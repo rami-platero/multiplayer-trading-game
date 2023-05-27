@@ -13,7 +13,7 @@ export const ShopItem = ({item}:Props) => {
   return (
     <div className="item-wrapper">
       <div>
-        <img src={`../src/assets/items/${item.image}`} />
+        <img src={item.image} />
       </div>
       <div className="col-1">
         <h3>{item.name}</h3>

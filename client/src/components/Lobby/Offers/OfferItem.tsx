@@ -17,7 +17,7 @@ const OfferItem = ({ offer }: Props) => {
         openOffer(offer);
       }}
     >
-      <img src={`../src/assets/items/${offer.itemOffering.image}`} className={`item ${offer.itemOffering?.type}`}/>
+      <img src={offer.itemOffering.image} className={`item ${offer.itemOffering?.type}`}/>
       <h3>{offer.createdBy.username}</h3>
     </div>
   );
