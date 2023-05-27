@@ -86,7 +86,7 @@ const TradingModal = () => {
       <div className="user-offer">
         <h2>{currentTradeOffer?.createdBy.username}'s Offer</h2>
         <img
-          src={`../src/assets/items/${currentTradeOffer?.itemOffering.image}`}
+          src={currentTradeOffer?.itemOffering.image}
           className={`item ${currentTradeOffer?.itemOffering?.type}`}
         />
       </div>
