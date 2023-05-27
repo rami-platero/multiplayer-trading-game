@@ -12,7 +12,7 @@ import TradingModal from "./TradingBox/TradingModal";
 import { tradingContext } from "../../context/TradingContext";
 import LobbyModal from "../UI/LobbyModal";
 import TradeModal from "../UI/TradeModal";
-import { LobbyType } from "../../interfaces/interfaces";
+
 
 const Lobby = () => {
   const { socket, user } = useContext(userContext);
