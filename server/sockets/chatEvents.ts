@@ -1,6 +1,4 @@
 import { Socket, Server as SocketServer } from "socket.io";
-import Room from "../models/Room";
-import { IUser } from "../models/User";
 
 export const chatEvents = (socket:Socket,io:SocketServer)=>{
 
@@ -8,6 +6,7 @@ export const chatEvents = (socket:Socket,io:SocketServer)=>{
         username: string;
         message: string;
         chatColor: string;
+        isAdmin: boolean
       }
 
     socket.on("send-message", (obj) => {

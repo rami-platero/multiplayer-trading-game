@@ -50,6 +50,7 @@ export const ShopContextProvider = ({ children }: ContextProps) => {
           payload: res.data.newCoins,
         });
         setLoading(false);
+        success_SFX.currentTime = 0;
         success_SFX.play()
         setPurchaseModal({
           itemIMG: item.image,

@@ -2,6 +2,7 @@ import { userContext } from "../../context/UserContext";
 import { useContext, useState} from "react";
 import "./tradeModal.css";
 import { tradingContext } from "../../context/TradingContext";
+import { deal_SFX } from "../SFX";
 
 const TradeModal = () => {
   const { socket } = useContext(userContext);
@@ -29,6 +30,7 @@ const TradeModal = () => {
     setProgressState(num)
     if(num===100){
       resetTradeModal()
+      deal_SFX.play()
     }
   })
 

@@ -2,7 +2,7 @@ import { tradingContext } from "../../../context/TradingContext";
 import { useContext } from "react";
 import "./traderDisplay.css";
 import { userContext } from "../../../context/UserContext";
-import { place_item_SFX } from "../../SFX";
+import { lock_SFX, place_item_SFX } from "../../SFX";
 import { RiCoinLine } from "react-icons/ri";
 import { AiOutlineUnlock } from "react-icons/ai";
 import { AiFillCloseCircle } from "react-icons/ai";
@@ -28,7 +28,6 @@ const TraderDisplay = () => {
   });
 
   socket?.off("TRADE:ADD_ITEM_AMOUNT").on("TRADE:ADD_ITEM_AMOUNT", (index) => {
-    console.log("index is", index);
     tradingDispatch({ type: "ADD_AMOUNT_ITEM", payload: index });
   });
 
@@ -41,6 +40,7 @@ const TraderDisplay = () => {
     setTradeFlags((prevFlags)=>({
       ...prevFlags,isTradeLocked: true
     }))
+    lock_SFX.play()
   });
 
   socket?.off("TRADE:UPDATE_COINS").on("TRADE:UPDATE_COINS", coins=>{

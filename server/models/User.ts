@@ -22,6 +22,7 @@ export interface IUser extends Document {
   roles: Types.ObjectId[];
   createdAt: Date;
   coins: number;
+  isVIP?: boolean 
 }
 
 interface IUserModel extends Model<IUser> {
@@ -73,6 +74,7 @@ const userSchema = new Schema<IUser>(
       type: Number,
       default: 400,
     },
+    isVIP: Boolean
   },
   { timestamps: true }
 );
@@ -135,6 +137,7 @@ userSchema.statics.signup = async function (
     password: hash,
     socketID,
     roles: [initRoles],
+    isVIP: false,
     ...initItems,
   });
   const savedUser = await user.save();

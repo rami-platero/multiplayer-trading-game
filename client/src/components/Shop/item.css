@@ -1,5 +1,6 @@
 .item-wrapper img {
   border: 3px solid rgb(255, 225, 56);
+  user-select: none;
 }
 
 .item-wrapper {
@@ -13,9 +14,11 @@
   gap: 1rem;
   transition: 0.2s ease-in-out;
   position: relative;
+  user-select: none;
   >button{
     position: absolute;
     right: 1rem;
+    user-select: none;
   }
 }
 
@@ -34,6 +37,7 @@
   background: rgb(255, 197, 36);
   width: 70px;
   transition: 0.2s ease-in-out;
+  user-select: none;
   &:hover {
     background: rgb(255, 218, 117);
     transition: 0.2s ease-in-out;

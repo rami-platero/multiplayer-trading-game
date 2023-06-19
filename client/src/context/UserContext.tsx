@@ -37,6 +37,7 @@ interface IAuthContext {
   setInventoryState: React.Dispatch<SetStateAction<InventoryState | null>>;
   inventoryState: InventoryState | null;
   removeItem: (item: Item) => void;
+  isAdmin: boolean
 }
 
 export enum ErrorType {
@@ -61,6 +62,7 @@ export const userContext = createContext<IAuthContext>({
   setInventoryState: (): void => {},
   inventoryState: null,
   removeItem: () => {},
+  isAdmin: false
 });
 
 export const UserContextProvider = ({ children }: ContextProps) => {
@@ -73,6 +75,14 @@ export const UserContextProvider = ({ children }: ContextProps) => {
   const [inventoryState, setInventoryState] = useState<InventoryState | null>(
     null
   );
+  const [isAdmin, setIsAdmin] = useState<boolean>(false)
+
+  useEffect(()=>{
+    const checkIfAdmin = authState.user?.roles.some((role) => {
+      return role.name === "admin";
+    });
+    setIsAdmin(checkIfAdmin!);
+  },[authState.user])
 
   useEffect(() => {
     const socket = io("https://multiplayer-trading-game.onrender.com");
@@ -91,7 +101,6 @@ export const UserContextProvider = ({ children }: ContextProps) => {
     try {
       const res = await deleteItem(authState?.user?._id!, item._id);
       if (res.data.item !== null) {
-        console.log("updating count")
         authDispatch({ type: "UPDATE_COUNT_ITEM", payload: item._id });
       } else {
         authDispatch({ type: "REMOVE_ITEM", payload: item._id });
@@ -99,7 +108,6 @@ export const UserContextProvider = ({ children }: ContextProps) => {
       setLoading(false);
     } catch (error: any) {
       setLoading(false);
-      console.log(error.response.data.message);
     }
   };
 
@@ -136,6 +144,7 @@ export const UserContextProvider = ({ children }: ContextProps) => {
         inventoryState,
         setInventoryState,
         removeItem,
+        isAdmin
       }}
     >
       {children}
