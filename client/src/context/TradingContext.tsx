@@ -70,6 +70,8 @@ interface ITradingContext {
   tradeMessage: ITradeMessage | null;
   setTradeMessage: React.Dispatch<SetStateAction<ITradeMessage>>;
   acceptTrade: () => void;
+  tradeModal: boolean;
+  setTradeModal: React.Dispatch<SetStateAction<boolean>>;
 }
 
 export const tradingContext = createContext<ITradingContext>({
@@ -94,6 +96,8 @@ export const tradingContext = createContext<ITradingContext>({
   tradeMessage: tradeMessageInitialState,
   setTradeMessage: () => {},
   acceptTrade: () => {},
+  tradeModal: false,
+  setTradeModal: () => {},
 });
 
 const TradingContextProvider = ({ children }: ContextProps) => {
@@ -116,6 +120,7 @@ const TradingContextProvider = ({ children }: ContextProps) => {
   const [tradeMessage, setTradeMessage] = useState<ITradeMessage>(
     tradeMessageInitialState
   );
+  const [tradeModal, setTradeModal] = useState<boolean>(false);
   const {
     socket,
     setErrorMessage,
@@ -135,7 +140,7 @@ const TradingContextProvider = ({ children }: ContextProps) => {
     offers,
     lobbyDispatch,
     itemOffering,
-    setOfferState
+    setOfferState,
   } = useContext(lobbyContext);
 
   const closeTrade = () => {
@@ -218,14 +223,25 @@ const TradingContextProvider = ({ children }: ContextProps) => {
       return offer.createdBy._id === user?._id;
     });
     if (foundOffer?._id) {
+      setTradeModal(true);
       lobbyDispatch({ type: "REMOVE_OFFER", payload: itemOffering?._id! });
       setTradeFlags(tradeFlagsInitialState);
       setInventoryState(InventoryState.Offer);
       setOfferingState(OfferingState.Offering);
-      setOfferState(OfferState.None)
+      setOfferState(OfferState.None);
       setTradingWith(null);
       tradingDispatch({ type: "RESET" });
-      await makeTrade(foundOffer._id, lobby?.name!);
+      try {
+        await makeTrade(foundOffer._id, lobby?.name!);
+      } catch (error: any) {
+        setTradeModal(false);
+        setTradeMessage({
+          description: error.response.data.message!,
+          reason: "Trade Error",
+          dismissed: false,
+        });
+        console.log(error);
+      }
     }
   };
 
@@ -276,6 +292,8 @@ const TradingContextProvider = ({ children }: ContextProps) => {
         tradeMessage,
         setTradeMessage,
         acceptTrade,
+        tradeModal,
+        setTradeModal,
       }}
     >
       {children}

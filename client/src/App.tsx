@@ -26,71 +26,7 @@ const App = () => {
   axios.defaults.baseURL = `https://multiplayer-trading-game.onrender.com`;
   /* const containerRef = useScaleContainer(1250); */
 
-  /* const handleFullscreen = () => {
-    screenRef.current!.requestFullscreen();
-    setScreenStyle(true);
-    resizeGame();
-  };
 
-  const handleFullscreenChange = () => {
-    if (document.fullscreenElement !== screenRef.current!) {
-      setScreenStyle(false);
-      resizeGame();
-    }
-  };
-
-  const resizeGame = () => {
-    if (gameRef.current) {
-      const width = screenStyle ? 1920 : 1280;
-      const height = screenStyle ? 1080 : 720;
-      gameRef.current!.scale.resize(width, height);
-    }
-  };
-
-  useEffect(() => {
-    screenRef.current!.addEventListener(
-      "fullscreenchange",
-      handleFullscreenChange
-    );
-    return () => {
-      screenRef.current!.removeEventListener(
-        "fullscreenchange",
-        handleFullscreenChange
-      );
-    };
-  }, []);
-
-  useEffect(() => {
-    resizeGame();
-  }, [screenStyle]);
-
-  useEffect(() => {
-    if (gameContainerRef.current) {
-      const config: Phaser.Types.Core.GameConfig = {
-        type: Phaser.AUTO,
-        parent: gameContainerRef.current,
-        width: 1280,
-        height: 720,
-        scene: [Game],
-        backgroundColor: 0xadd8e6,
-        physics: {
-          default: "arcade",
-          arcade: {
-            gravity: { y: 500 },
-            debug: false,
-          },
-        },
-      };
-
-      gameRef.current = new Phaser.Game(config);
-    }
-
-    return () => {
-      if (gameRef.current) {
-        gameRef.current.destroy(true, false);
-      }
-    };
-  }, []); */
 
   socket?.off("TRADE:UPDATE-ITEMS").on("TRADE:UPDATE-ITEMS", (items) => {
     authDispatch({ type: "UPDATE_INVENTORY", payload: items });

@@ -38,7 +38,7 @@
   color: red;
 }
 
-.error-message button {
+.error-message >button {
   font-size: 1rem;
   font-family: "Archivo Narrow";
   font-weight: bolder;

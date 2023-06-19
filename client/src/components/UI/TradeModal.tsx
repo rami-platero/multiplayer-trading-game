@@ -1,22 +1,20 @@
 import { userContext } from "../../context/UserContext";
-import { SetStateAction, useContext, useState} from "react";
+import { useContext, useState} from "react";
 import "./tradeModal.css";
+import { tradingContext } from "../../context/TradingContext";
 
-interface Props{
-  setTradeAccept: React.Dispatch<SetStateAction<boolean>>
-}
-
-const TradeModal = ({setTradeAccept}:Props) => {
+const TradeModal = () => {
   const { socket } = useContext(userContext);
   const [tradeStatus, setTradeStatus] = useState<string>("Verifying users");
   const [progressState, setProgressState] = useState<number>(0)
+  const {setTradeModal} = useContext(tradingContext)
 
   const style = {
     '--progressWidth': `${progressState}%`
   } as React.CSSProperties;
 
   const resetTradeModal = ()=>{
-    setTradeAccept(false)
+    setTradeModal(false)
     setTimeout(()=>{
       setTradeStatus("Verifying users")
       setProgressState(0)

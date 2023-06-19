@@ -3,7 +3,7 @@ import Offers from "./Offers/Offers";
 import OnlineMembers from "./OnlineMembers.tsx/OnlineMembers";
 import BackBtn from "../UI/BackBtn";
 import "./lobby.css";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { userContext } from "../../context/UserContext";
 import { OfferState, lobbyContext } from "../../context/LobbyContext";
 import Offering from "./Offering/Offering";
@@ -12,7 +12,6 @@ import TradingModal from "./TradingBox/TradingModal";
 import { tradingContext } from "../../context/TradingContext";
 import LobbyModal from "../UI/LobbyModal";
 import TradeModal from "../UI/TradeModal";
-
 
 const Lobby = () => {
   const { socket, user } = useContext(userContext);
@@ -24,9 +23,13 @@ const Lobby = () => {
     currentTradeOffer,
     lobbyDispatch,
   } = useContext(lobbyContext);
-  const { closeTrade, setTradeMessage, tradeMessage } =
-    useContext(tradingContext);
-  const [tradeAccept, setTradeAccept] = useState<boolean>(false);
+  const {
+    closeTrade,
+    setTradeMessage,
+    tradeMessage,
+    tradeModal,
+    setTradeModal,
+  } = useContext(tradingContext);
 
   socket?.off("send-new-offer").on("send-new-offer", (offers) => {
     lobbyDispatch({ type: "MAKE_OFFER", payload: offers.offers });
@@ -71,13 +74,20 @@ const Lobby = () => {
 
   socket?.off("TRADE:ACCEPT").on("TRADE:ACCEPT", () => {
     closeTrade();
-    setTradeAccept(true);
+    setTradeModal(true);
   });
 
+  socket?.off("TRADE:ERROR").on("TRADE:ERROR", ()=>{
+    setTradeModal(false)
+    setTradeMessage({
+      description: "There was an error with the trade.",
+      reason: "Trade Error",
+      dismissed: false,
+    });
+  })
+
   return (
-    <div
-      className={`lobby-container ${lobby?.type}`}
-    >
+    <div className={`lobby-container ${lobby?.type}`}>
       <CSSTransition
         in={isTrading == true}
         timeout={300}
@@ -95,12 +105,12 @@ const Lobby = () => {
         <LobbyModal />
       </CSSTransition>
       <CSSTransition
-        in={tradeAccept === true}
+        in={tradeModal}
         timeout={300}
         unmountOnExit
         classNames={"grow"}
       >
-        <TradeModal setTradeAccept={setTradeAccept} />
+        <TradeModal/>
       </CSSTransition>
       <div className="lobby-top-elements">
         <h1>Lobby {lobby?.name}</h1>
@@ -108,9 +118,7 @@ const Lobby = () => {
       </div>
       <div className="lobby-wrapper">
         {offerState == OfferState.None && <Offers />}
-        {offerState == OfferState.Offering && (
-          <Offering setAcceptTrade={setTradeAccept} />
-        )}
+        {offerState == OfferState.Offering && <Offering />}
         <OnlineMembers />
         <Chat />
       </div>

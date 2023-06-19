@@ -7,13 +7,9 @@ import { RiCoinLine } from "react-icons/ri";
 import { AiOutlineUnlock } from "react-icons/ai";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { AiFillCheckCircle } from "react-icons/ai";
-import {SetStateAction} from 'react'
 
-interface Props{
-  setAcceptTrade: React.Dispatch<SetStateAction<boolean>>
-}
 
-const TraderDisplay = ({setAcceptTrade}:Props) => {
+const TraderDisplay = () => {
   const {
     tradingWith,
     items,
@@ -52,7 +48,6 @@ const TraderDisplay = ({setAcceptTrade}:Props) => {
   })
 
   const handleAccept = ()=>{
-    setAcceptTrade(true)
     acceptTrade()
   }
 

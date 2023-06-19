@@ -78,8 +78,9 @@ export const tradeItems = async (req: Request<MyParams>, res: Response) => {
     emitProgress(100);
     return res.status(200).json({ message: "Trade successful!" });
   } catch (error: any) {
+    io.to(buyer?.socketID).emit("TRADE:ERROR")
     await session.abortTransaction();
     session.endSession();
-    return res.status(400).json(error);
+    return res.status(400).json(JSON.parse(error.message));
   }
 };

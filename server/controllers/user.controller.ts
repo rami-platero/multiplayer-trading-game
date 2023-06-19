@@ -16,7 +16,6 @@ export const Login = async (req: Request, res: Response) => {
     const token: string = createToken(user._id);
     return res.status(200).json({...user.toObject(),token,password:0});
   } catch (error: any) {
-    console.log(JSON.parse(error.message))
     return res.status(400).send({ error: JSON.parse(error.message) });
   }
 };
