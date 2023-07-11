@@ -44,7 +44,6 @@ export const initSocket = (): void => {
   app.set("io",io)
 
   io.on("connection", (socket) => {
-    console.log("user connected");
     const modalError = ({ message, to, type }: ModalProps): void => {
       io.to(to).emit("error", { message, type });
     };
