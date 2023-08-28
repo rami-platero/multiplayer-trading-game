@@ -26,6 +26,9 @@ app.use((_req, res, next)=> {
     return next()
 })
 
+app.get("/test", (_req,res)=>{
+    res.send("works")
+})
 app.use("/", userRouter, tradeRouter);
 
 app.set("port", process.env.PORT);
