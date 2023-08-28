@@ -12,7 +12,7 @@ const useSignUp = () => {
   ) => {
     setLoading(true);
 
-    const res = await fetch("https://trading-game-api-seven.vercel.app/signup", {
+    const res = await fetch("https://multiplayer-trading-game.onrender.com/signup", {
       method: "POST",
       body: JSON.stringify({ ...form, socketID }),
     });

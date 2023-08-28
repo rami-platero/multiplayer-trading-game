@@ -20,7 +20,7 @@ const App = () => {
   const screenRef = useRef<HTMLDivElement>(null);(false);
   const containerRef = useScaleContainer(1600);
   const { selectorTimeout } = useContext(transitionContext);
-  axios.defaults.baseURL = `https://trading-game-api-seven.vercel.app`;
+  axios.defaults.baseURL = `https://multiplayer-trading-game.onrender.com`;
 
 
 

@@ -1,4 +1,4 @@
-import express, { Response } from "express";
+import express from "express";
 import * as dotenv from "dotenv";
 dotenv.config({ path: __dirname + "/.env" });
 import cors from "cors";
