@@ -15,15 +15,13 @@ initSocket();
 app.use(express.json());
 
 app.use(morgan("dev"));
-app.use(cors({
-    origin: "https://multiplayer-trading-game.vercel.app"
-}))
+app.use(cors())
 app.use((_req, res, next)=> {
     res.setHeader('Access-Control-Allow-Origin', 'https://multiplayer-trading-game.vercel.app');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     return next()
 })
 
 app.use("/", userRouter, tradeRouter);
-
 
 app.set("port", process.env.PORT);
