@@ -13,10 +13,7 @@ export const server = http.createServer(app);
 initSocket();
 
 app.use(express.json());
-app.use(cors({
-    origin: "*",
-    credentials: true,
-  }));
+
 app.use(morgan("dev"));
 
 app.use("/", userRouter, tradeRouter);
