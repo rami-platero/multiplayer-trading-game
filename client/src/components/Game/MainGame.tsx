@@ -92,7 +92,7 @@ const MainGame = () => {
         </button>
         <button onClick={logout}>Log Out</button>
       </div>
-      <span className="version">Version: 0.0.0</span>
+      {/* <span className="version">Version: 0.0.0</span> */}
       <div className="game-content">
         <div className="buttons">
           <button onClick={handleClickMarketplace} onMouseEnter={hoverSFX}>
