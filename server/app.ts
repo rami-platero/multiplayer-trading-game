@@ -16,8 +16,12 @@ app.use(express.json());
 
 app.use(morgan("dev"));
 app.use(cors({
-    origin: "https://multiplayer-trading-game.vercel.app/"
+    origin: "https://multiplayer-trading-game.vercel.app"
 }))
+app.use((_req, res, next)=> {
+    res.setHeader('Access-Control-Allow-Origin', 'https://multiplayer-trading-game.vercel.app');
+    return next()
+})
 
 app.use("/", userRouter, tradeRouter);
 
