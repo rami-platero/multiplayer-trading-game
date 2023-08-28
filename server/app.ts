@@ -31,4 +31,4 @@ app.get("/test", (_req,res)=>{
 })
 app.use("/", userRouter, tradeRouter);
 
-app.set("port", process.env.PORT);
+app.set("port", process.env.PORT || 4000);
