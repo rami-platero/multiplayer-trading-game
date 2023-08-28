@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { IInventory, ISkin, Item } from "./Item";
 import IT from "./Item";
 import { IInitSetup, getRole, initUser } from "../libs/intialSetup";
+import { AppError } from "../helpers/AppError";
 
 interface IBuyItem {
   newCoins: number;
@@ -98,27 +99,27 @@ userSchema.statics.signup = async function (
   }
   const exists = await this.findOne({ email });
   if (exists) {
-    throw Error(JSON.stringify({ email: "Email already in use" }));
+    throw new AppError(400,JSON.stringify({ email: "Email already in use" }));
   }
   const existsName = await this.findOne({ username });
   if (existsName) {
-    throw Error(JSON.stringify({ username: "Username already in use" }));
+    throw new AppError(400,JSON.stringify({ username: "Username already in use" }));
   }
   if (!validator.isEmail(email)) {
-    throw Error(JSON.stringify({ email: "Email is not valid" }));
+    throw new AppError(400,JSON.stringify({ email: "Email is not valid" }));
   }
   if (!validator.isStrongPassword(password)) {
-    throw Error(JSON.stringify({ password: "Password not strong enough" }));
+    throw new AppError(400,JSON.stringify({ password: "Password not strong enough" }));
   }
   if (!validator.isAlphanumeric(username)) {
-    throw Error(
+    throw new AppError(400,
       JSON.stringify({
         username: "Username can only contain letters and numbers",
       })
     );
   }
   if (!validator.isLength(username, { min: 3, max: 15 })) {
-    throw Error(
+    throw new AppError(400,
       JSON.stringify({
         username: "Username must be between 3 and 15 characters",
       })
@@ -155,11 +156,11 @@ userSchema.statics.login = async function (
   }
   const user: IUser = await this.findOne({ username });
   if (!user) {
-    throw Error(JSON.stringify({ username: "Incorrect username" }));
+    throw new AppError(400,JSON.stringify({ username: "Incorrect username" }));
   }
   const match: boolean = await bcrypt.compare(password, user.password);
   if (!match) {
-    throw Error(JSON.stringify({ password: "Incorrect password" }));
+    throw new AppError(401,JSON.stringify({ password: "Incorrect password" }));
   }
 
   user.socketID = socketID;
@@ -178,13 +179,14 @@ userSchema.statics.buyItem = async function (userID: string, itemID: string) {
     return it._id.toString() === itemID.toString();
   });
   if (!boughtItem) {
-    throw new Error(JSON.stringify({ message: "This item does not exist" }));
+    throw new AppError(404,JSON.stringify({ message: "This item does not exist" }));
   }
   if (!boughtItem.price) {
-    throw new Error(JSON.stringify({ message: "This item is not for sale" }));
+    throw new AppError(401,JSON.stringify({ message: "This item is not for sale" }));
   }
   if (foundUser.coins < boughtItem?.price!) {
-    throw new Error(
+    throw new AppError(
+      401,
       JSON.stringify({
         message: "You don't have enough money to buy this item",
       })
@@ -215,13 +217,14 @@ userSchema.statics.removeItem = async function (
     "items.itemId"
   );
   if (!foundUser) {
-    throw new Error(JSON.stringify({ message: "User does not exist" }));
+    throw new AppError(404,JSON.stringify({ message: "User does not exist" }));
   }
   const foundItem = foundUser.items.find((item: IInventory) => {
     return item.itemId._id.toString() === itemID.toString();
   });
   if (!foundItem) {
-    throw new Error(
+    throw new AppError(
+      400,
       JSON.stringify({
         message: "This user does not have the item you want to remove",
       })

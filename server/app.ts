@@ -7,6 +7,7 @@ import { userRouter } from "./routes/users";
 import http from "http";
 import { initSocket } from "./sockets/socket";
 import { tradeRouter } from "./routes/trades";
+import { errorHandler } from "./middlewares/errorHandler";
 
 export const app = express();
 export const server = http.createServer(app);
@@ -30,5 +31,6 @@ app.get("/test", (_req,res)=>{
     res.send("works")
 })
 app.use("/", userRouter, tradeRouter);
+app.use(errorHandler)
 
 app.set("port", process.env.PORT || 4000);
