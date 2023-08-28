@@ -17,14 +17,10 @@ import axios from "axios";
 const App = () => {
   const { user, gameState, errorMessage, socket, authDispatch, loading } =
     useContext(userContext);
-  const screenRef = useRef<HTMLDivElement>(null);
-  /* const [screenStyle, setScreenStyle] = useState<boolean> */(false);
+  const screenRef = useRef<HTMLDivElement>(null);(false);
   const containerRef = useScaleContainer(1600);
   const { selectorTimeout } = useContext(transitionContext);
-  /* const gameContainerRef = useRef<HTMLDivElement>(null);
-  const gameRef = useRef<Phaser.Game | null>(null); */
-  axios.defaults.baseURL = `https://multiplayer-trading-game.onrender.com`;
-  /* const containerRef = useScaleContainer(1250); */
+  axios.defaults.baseURL = `https://trading-game-api-seven.vercel.app/`;
 
 
 
@@ -38,18 +34,8 @@ const App = () => {
 
   return (
     <>
-      {/* <button
-        style={{ position: "absolute", top: "0" }}
-      >
-        full screen
-      </button> */}
-
       <div
         className="game-parent"
-        /* style={{
-          width: screenStyle ? "1920px" : "1280px",
-          height: screenStyle ? "1080px" : "720px",
-        }} */
         ref={containerRef}
       >
         <div className="main-game-wrapper" ref={screenRef}>
@@ -96,11 +82,3 @@ const App = () => {
 };
 
 export default App;
-
-{
-  /* <div className="game-parent">
-  <div className="offers"></div>
-  <div className="online"></div>
-  <div className="chat"></div>
-</div> */
-}

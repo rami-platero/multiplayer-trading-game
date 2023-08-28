@@ -10,7 +10,7 @@ const useLogin = () => {
     setErrors: React.Dispatch<React.SetStateAction<IErrors | null>>) => {
     setLoading(true);
 
-    const res = await fetch("https://multiplayer-trading-game.onrender.com/login", {
+    const res = await fetch("https://trading-game-api-seven.vercel.app//login", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({...form,socketID}),

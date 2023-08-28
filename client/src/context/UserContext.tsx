@@ -85,7 +85,7 @@ export const UserContextProvider = ({ children }: ContextProps) => {
   },[authState.user])
 
   useEffect(() => {
-    const socket = io("https://multiplayer-trading-game.onrender.com");
+    const socket = io("https://trading-game-api-seven.vercel.app/");
 
     socket.on("connect", () => {
       setSocket(socket);
