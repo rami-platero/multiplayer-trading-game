@@ -19,6 +19,10 @@ app.use(cors())
 app.use((_req, res, next)=> {
     res.setHeader('Access-Control-Allow-Origin', 'https://multiplayer-trading-game.vercel.app');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader(
+        'Access-Control-Allow-Headers',
+        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+      )
     return next()
 })
 
