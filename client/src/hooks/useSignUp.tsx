@@ -14,6 +14,7 @@ const useSignUp = () => {
 
     const res = await fetch("https://multiplayer-trading-game.onrender.com/signup", {
       method: "POST",
+      headers: { "Content-type": "application/json" },
       body: JSON.stringify({ ...form, socketID }),
     });
     const json = await res.json();
@@ -21,7 +22,6 @@ const useSignUp = () => {
     if (!res.ok) {
       setLoading(false);
       setErrors(json.error);
-      console.log(json.error);
     }
 
     if (res.ok) {

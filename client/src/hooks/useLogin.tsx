@@ -12,6 +12,7 @@ const useLogin = () => {
 
     const res = await fetch("https://multiplayer-trading-game.onrender.com/login", {
       method: "POST",
+      headers: { "Content-type": "application/json" },
       body: JSON.stringify({...form,socketID}),
     });
     const json = await res.json();
