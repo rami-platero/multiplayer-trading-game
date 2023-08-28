@@ -12,7 +12,6 @@ const useLogin = () => {
 
     const res = await fetch("https://trading-game-api-seven.vercel.app/login", {
       method: "POST",
-      headers: { "Content-type": "application/json" },
       body: JSON.stringify({...form,socketID}),
     });
     const json = await res.json();

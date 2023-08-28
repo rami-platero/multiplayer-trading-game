@@ -14,7 +14,6 @@ const useSignUp = () => {
 
     const res = await fetch("https://trading-game-api-seven.vercel.app/signup", {
       method: "POST",
-      headers: { "Content-type": "application/json" },
       body: JSON.stringify({ ...form, socketID }),
     });
     const json = await res.json();

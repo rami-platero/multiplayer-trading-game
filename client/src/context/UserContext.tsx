@@ -37,7 +37,7 @@ interface IAuthContext {
   setInventoryState: React.Dispatch<SetStateAction<InventoryState | null>>;
   inventoryState: InventoryState | null;
   removeItem: (item: Item) => void;
-  isAdmin: boolean
+  isAdmin: boolean;
 }
 
 export enum ErrorType {
@@ -62,7 +62,7 @@ export const userContext = createContext<IAuthContext>({
   setInventoryState: (): void => {},
   inventoryState: null,
   removeItem: () => {},
-  isAdmin: false
+  isAdmin: false,
 });
 
 export const UserContextProvider = ({ children }: ContextProps) => {
@@ -75,17 +75,24 @@ export const UserContextProvider = ({ children }: ContextProps) => {
   const [inventoryState, setInventoryState] = useState<InventoryState | null>(
     null
   );
-  const [isAdmin, setIsAdmin] = useState<boolean>(false)
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     const checkIfAdmin = authState.user?.roles.some((role) => {
       return role.name === "admin";
     });
     setIsAdmin(checkIfAdmin!);
-  },[authState.user])
+  }, [authState.user]);
 
   useEffect(() => {
-    const socket = io("https://trading-game-api-seven.vercel.app");
+    const socket = io("https://trading-game-api-seven.vercel.app", {
+      reconnectionDelay: 1000,
+      reconnection: true,
+      transports: ["websocket"],
+      agent: false,
+      upgrade: false,
+      rejectUnauthorized: false,
+    });
 
     socket.on("connect", () => {
       setSocket(socket);
@@ -144,7 +151,7 @@ export const UserContextProvider = ({ children }: ContextProps) => {
         inventoryState,
         setInventoryState,
         removeItem,
-        isAdmin
+        isAdmin,
       }}
     >
       {children}
