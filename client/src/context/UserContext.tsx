@@ -85,14 +85,7 @@ export const UserContextProvider = ({ children }: ContextProps) => {
   }, [authState.user]);
 
   useEffect(() => {
-    const socket = io("https://trading-game-api-seven.vercel.app", {
-      reconnectionDelay: 1000,
-      reconnection: true,
-      transports: ["websocket"],
-      agent: false,
-      upgrade: false,
-      rejectUnauthorized: false,
-    });
+    const socket = io("https://trading-game-api-seven.vercel.app");
 
     socket.on("connect", () => {
       setSocket(socket);
