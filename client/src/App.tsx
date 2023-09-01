@@ -13,6 +13,7 @@ import { transitionContext } from "./context/transitionContext";
 import ErrorModal from "./components/UI/ErrorModal";
 import LoadingScreen from "./components/UI/LoadingScreen";
 import axios from "axios";
+import { API_URL } from "./config/config";
 
 const App = () => {
   const { user, gameState, errorMessage, socket, authDispatch, loading } =
@@ -20,8 +21,7 @@ const App = () => {
   const screenRef = useRef<HTMLDivElement>(null);(false);
   const containerRef = useScaleContainer(1600);
   const { selectorTimeout } = useContext(transitionContext);
-  axios.defaults.baseURL = `https://multiplayer-trading-game.onrender.com`;
-
+  axios.defaults.baseURL = API_URL
 
 
   socket?.off("TRADE:UPDATE-ITEMS").on("TRADE:UPDATE-ITEMS", (items) => {

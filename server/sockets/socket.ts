@@ -9,6 +9,7 @@ import { authEvents } from "./authEvents";
 import { tradeEvents } from "./tradeEvents";
 import { app } from "../app";
 import { Request,Response,NextFunction } from "express";
+import { CLIENT_BASE_URL } from "../config";
 
 export interface ConnectedUsers {
   [username: string]: Socket;
@@ -37,7 +38,7 @@ export const initSocket = (): void => {
 
   const io = new SocketServer(server, {
     cors: {
-      origin: "https://multiplayer-trading-game.vercel.app",
+      origin: CLIENT_BASE_URL
     },
   });
 

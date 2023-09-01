@@ -8,6 +8,7 @@ import http from "http";
 import { initSocket } from "./sockets/socket";
 import { tradeRouter } from "./routes/trades";
 import { errorHandler } from "./middlewares/errorHandler";
+import { CLIENT_BASE_URL } from "./config";
 
 export const app = express();
 export const server = http.createServer(app);
@@ -18,7 +19,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors())
 app.use((_req, res, next)=> {
-    res.setHeader('Access-Control-Allow-Origin', 'https://multiplayer-trading-game.vercel.app');
+    res.setHeader('Access-Control-Allow-Origin', CLIENT_BASE_URL!);
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader(
         'Access-Control-Allow-Headers',
