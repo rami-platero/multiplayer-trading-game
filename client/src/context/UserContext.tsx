@@ -87,7 +87,6 @@ export const UserContextProvider = ({ children }: ContextProps) => {
 
   useEffect(() => {
     const socket = io(API_URL);
-    console.log("checking", import.meta.env.MODE === "development", API_URL);
 
     socket.on("connect", () => {
       setSocket(socket);
