@@ -14,13 +14,21 @@ const useSignUp = () => {
     setErrors: React.Dispatch<React.SetStateAction<IErrors | null>>
   ) => {
     setLoading(true);
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => {
+      controller.abort();
+    }, 12000)
+
     try{
       const res = await fetch(`${API_URL}/signup`, {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({ ...form, socketID }),
+        signal: controller.signal
       });
       const json = await res.json();
+
+      clearTimeout(timeoutId);
   
       if (!res.ok) {
         setLoading(false);
@@ -38,9 +46,14 @@ const useSignUp = () => {
 
   } catch (error) {
     if (error instanceof Error) {
-      notifyError("Server is starting, please try again in a minute.");
+      if(error.name==="AbortError"){
+        notifyError("Server is starting, please try again in a minute.");
+      } else {
+        notifyError("Internal Server Error");
+      }
     }
   } finally{
+    clearTimeout(timeoutId);
     setLoading(false);
   }
   };
