@@ -85,7 +85,7 @@ export const UserContextProvider = ({ children }: ContextProps) => {
   }, [authState.user]);
 
   useEffect(() => {
-    const socket = io("https://trading-game-api-seven.vercel.app");
+    const socket = io(import.meta.env.MODE === "development"? "http://localhost:4000" : import.meta.env.VITE_REACT_BASE_API_URL);
 
     socket.on("connect", () => {
       setSocket(socket);
