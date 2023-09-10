@@ -12,7 +12,6 @@ import { IGameState } from "../interfaces/interfaces";
 import { ContextProps } from "../interfaces/interfaces";
 import { btn_click_SFX } from "../components/SFX";
 import { deleteItem } from "../api/item";
-import { API_URL } from "../config/config";
 
 export enum InventoryState {
   Offer = "offer",
@@ -86,7 +85,7 @@ export const UserContextProvider = ({ children }: ContextProps) => {
   }, [authState.user]);
 
   useEffect(() => {
-    const socket = io(API_URL);
+    const socket = io(import.meta.env.MODE === "development"? "http://localhost:4000" : import.meta.env.VITE_REACT_BASE_API_URL);
 
     socket.on("connect", () => {
       setSocket(socket);
