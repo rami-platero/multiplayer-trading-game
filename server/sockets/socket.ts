@@ -8,8 +8,9 @@ import { lobbyEvents } from "./lobbyEvents";
 import { authEvents } from "./authEvents";
 import { tradeEvents } from "./tradeEvents";
 import { app } from "../app";
-import { Request,Response,NextFunction } from "express";
-import { CLIENT_BASE_URL } from "../config";
+import { Request } from "express";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 export interface ConnectedUsers {
   [username: string]: Socket;
@@ -33,12 +34,14 @@ interface CustomRequest extends Request {
   io: SocketServer;
 }
 
+console.log(process.env.CLIENT_URL);
+
 export const initSocket = (): void => {
   const connectedSockets: ConnectedUsers = {};
 
   const io = new SocketServer(server, {
     cors: {
-      origin: CLIENT_BASE_URL
+      origin: process.env.NODE_ENV === "development"? "http://localhost:5173" : process.env.CLIENT_URL
     },
   });
 
